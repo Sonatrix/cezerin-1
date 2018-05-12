@@ -16,7 +16,7 @@ export default ({
   setDelivered,
   setPaid,
   setHold,
-  setDraft
+  setDraft,
 }) => (
   <div className={style.filter}>
     <SelectField

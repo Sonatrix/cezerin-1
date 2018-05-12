@@ -39,7 +39,7 @@ class EditShippingMethodForm extends React.Component {
       submitting,
       initialValues,
       methodId,
-      settings
+      settings,
     } = this.props;
     const isAdd = methodId === null || methodId === undefined;
 
@@ -220,5 +220,5 @@ class EditShippingMethodForm extends React.Component {
 export default reduxForm({
   form: 'EditShippingMethodForm',
   validate,
-  enableReinitialize: true
+  enableReinitialize: true,
 })(EditShippingMethodForm);

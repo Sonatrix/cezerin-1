@@ -4,7 +4,7 @@ const parse = require('../lib/parse');
 const ObjectID = require('mongodb').ObjectID;
 const cache = require('lru-cache')({
   max: 10000,
-  maxAge: 1000 * 60 * 60 * 24 // 24h
+  maxAge: 1000 * 60 * 60 * 24, // 24h
 });
 
 const WEBHOOKS_CACHE_KEY = 'webhooks';
@@ -58,10 +58,10 @@ class WebhooksService {
 
     const res = await mongo.db.collection('webhooks').updateOne(
       {
-        _id: webhookObjectID
+        _id: webhookObjectID,
       },
       {
-        $set: webhook
+        $set: webhook,
       }
     );
 
@@ -84,7 +84,7 @@ class WebhooksService {
 
   getValidDocumentForInsert(data) {
     const webhook = {
-      date_created: new Date()
+      date_created: new Date(),
     };
 
     webhook.description = parse.getString(data.description);
@@ -102,7 +102,7 @@ class WebhooksService {
     }
 
     const webhook = {
-      date_updated: new Date()
+      date_updated: new Date(),
     };
 
     if (data.description !== undefined) {

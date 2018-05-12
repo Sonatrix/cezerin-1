@@ -1,12 +1,10 @@
-import React from 'react';
-import {NavLink} from 'react-router-dom';
-import {themeSettings, text} from '../../lib/settings';
+import React, {Component} from 'react';
 
-class AttributeValue extends React.Component {
+class AttributeValue extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      checked: props.checked
+      checked: props.checked,
     };
   }
 
@@ -16,23 +14,23 @@ class AttributeValue extends React.Component {
     }
   }
 
-  onChange = event => {
+  onChange(event) {
     const {
       attributeName,
       valueName,
       setFilterAttribute,
-      unsetFilterAttribute
+      unsetFilterAttribute,
     } = this.props;
-    const checked = event.target.checked;
+    const {checked} = event.target;
 
-    this.setState({checked: checked});
+    this.setState({checked});
 
     if (checked) {
       setFilterAttribute(attributeName, valueName);
     } else {
       unsetFilterAttribute(attributeName, valueName);
     }
-  };
+  }
 
   render() {
     const {valueName, count} = this.props;
@@ -41,7 +39,7 @@ class AttributeValue extends React.Component {
     const classDisabled = isDisabled ? 'attribute-disabled' : '';
 
     return (
-      <label className={classChecked + ' ' + classDisabled}>
+      <label className={`${classChecked} ${classDisabled}`}>
         <input
           type="checkbox"
           disabled={isDisabled}
@@ -57,7 +55,7 @@ class AttributeValue extends React.Component {
 const AttributeSet = ({
   attribute,
   setFilterAttribute,
-  unsetFilterAttribute
+  unsetFilterAttribute,
 }) => {
   const values = attribute.values.map((value, index) => (
     <AttributeValue
@@ -82,7 +80,7 @@ const AttributeSet = ({
 const AttributeFilter = ({
   attributes,
   setFilterAttribute,
-  unsetFilterAttribute
+  unsetFilterAttribute,
 }) => {
   const attributeSets = attributes.map((attribute, index) => (
     <AttributeSet

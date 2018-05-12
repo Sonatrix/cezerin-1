@@ -10,13 +10,13 @@ const SITEMAP_EXCLUDE_PATH = [
   '/cart',
   '/login',
   '/logout',
-  '/register'
+  '/register',
 ];
 
 const sitemapRendering = (req, res) => {
   Promise.all([
     api.sitemap.list({enabled: true}),
-    api.settings.retrieve()
+    api.settings.retrieve(),
   ]).then(([sitemapResponse, settingsResponse]) => {
     const urls = sitemapResponse.json
       .filter(
@@ -28,7 +28,7 @@ const sitemapRendering = (req, res) => {
       .map(item => item.path);
     const sitemap = sm.createSitemap({
       hostname: settingsResponse.json.domain,
-      urls
+      urls,
     });
     sitemap.toXML((err, xml) => {
       if (err) {

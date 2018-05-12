@@ -4,7 +4,7 @@ import {
   deselectCategory,
   fetchCategories,
   deleteImage,
-  uploadImage
+  uploadImage,
 } from '../actions';
 import ProductCategoryEditForm from './components/form';
 
@@ -15,7 +15,7 @@ const mapStateToProps = state => ({
   initialValues: state.productCategories.items.find(
     item => item.id === state.productCategories.selectedId
   ),
-  isSaving: state.productCategories.isSaving
+  isSaving: state.productCategories.isSaving,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -31,7 +31,7 @@ const mapDispatchToProps = dispatch => ({
       values.slug = values.name;
     }
     dispatch(updateCategory(values));
-  }
+  },
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(

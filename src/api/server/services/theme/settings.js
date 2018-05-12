@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const cache = require('lru-cache')({
   max: 10000,
-  maxAge: 1000 * 60 * 60 * 24 // 24h
+  maxAge: 1000 * 60 * 60 * 24, // 24h
 });
 
 const THEME_SETTINGS_CACHE_KEY = 'themesettings';

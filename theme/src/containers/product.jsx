@@ -1,33 +1,33 @@
-import React from 'react';
-import {themeSettings, text} from '../lib/settings';
+import React, {Fragment} from 'react';
 import MetaTags from '../components/metaTags';
-import ProductDetails from '../components/productDetails';
-
-const Fragment = React.Fragment;
+import {ProductDetails} from '../components/productDetails';
 
 const ProductContainer = props => {
   const {productDetails, settings, categories} = props.state;
   const {addCartItem, getJSONLD} = props;
 
   if (productDetails) {
-    const images = productDetails.images;
+    const {
+      images,
+      meta_title: metaTitle,
+      name,
+      url,
+      meta_description: metaDescription,
+    } = productDetails;
     const imageUrl = images && images.length > 0 ? images[0].url : null;
-    const title =
-      productDetails.meta_title && productDetails.meta_title.length > 0
-        ? productDetails.meta_title
-        : productDetails.name;
+    const title = metaTitle && metaTitle.length > 0 ? metaTitle : name;
     const jsonld = getJSONLD(props.state);
 
     return (
       <Fragment>
         <MetaTags
           title={title}
-          description={productDetails.meta_description}
-          canonicalUrl={productDetails.url}
+          description={metaDescription}
+          canonicalUrl={url}
           imageUrl={imageUrl}
           ogType="product"
-          ogTitle={productDetails.name}
-          ogDescription={productDetails.meta_description}
+          ogTitle={name}
+          ogDescription={metaDescription}
           jsonld={jsonld}
         />
 

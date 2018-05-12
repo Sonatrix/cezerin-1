@@ -17,7 +17,7 @@ const ServiceSettingsForm = ({
   handleSubmit,
   pristine,
   submitting,
-  initialValues
+  initialValues,
 }) => {
   const fields = Object.keys(initialValues).map((key, index) => {
     const value = initialValues[key];
@@ -68,7 +68,7 @@ const ServiceSettingsForm = ({
         onSubmit={handleSubmit}
         style={{
           display: 'initial',
-          width: '100%'
+          width: '100%',
         }}
       >
         <Paper style={{margin: '0px 20px'}} zDepth={1}>
@@ -93,5 +93,5 @@ const ServiceSettingsForm = ({
 
 export default reduxForm({
   form: 'WebStoreServiceSettingsForm',
-  enableReinitialize: true
+  enableReinitialize: true,
 })(ServiceSettingsForm);

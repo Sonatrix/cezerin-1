@@ -41,7 +41,7 @@ class ThemePlaceholdersService {
       .updateOne(
         {key: placeholderKey},
         {
-          $set: field
+          $set: field,
         },
         {upsert: true}
       )

@@ -35,7 +35,7 @@ module.exports = {
     user: '',
     pass: '',
     fromName: '',
-    fromAddress: ''
+    fromAddress: '',
   },
 
   // key to sign tokens
@@ -62,5 +62,5 @@ module.exports = {
   // used by API
   orderStartNumber: 1000,
 
-  developerMode: true
+  developerMode: true,
 };

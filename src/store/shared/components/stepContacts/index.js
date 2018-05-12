@@ -13,7 +13,7 @@ import {
   updateCartShippingMethod,
   updateCartPaymentMethod,
   analyticsSetShippingMethod,
-  analyticsSetPaymentMethod
+  analyticsSetPaymentMethod,
 } from '../../actions';
 import Form from './form';
 
@@ -24,7 +24,7 @@ const mapStateToProps = (state, ownProps) => ({
   shippingMethods: state.app.shippingMethods,
   loadingShippingMethods: state.app.loadingShippingMethods,
   loadingPaymentMethods: state.app.loadingPaymentMethods,
-  checkoutFields: state.app.checkoutFields
+  checkoutFields: state.app.checkoutFields,
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
@@ -60,7 +60,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   onLoad: () => {
     dispatch(fetchShippingMethods());
     dispatch(fetchPaymentMethods());
-  }
+  },
 });
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Form));

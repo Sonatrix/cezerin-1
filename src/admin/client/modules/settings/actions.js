@@ -4,156 +4,156 @@ import messages from 'lib/text';
 
 export function exportRequest() {
   return {
-    type: t.THEME_EXPORT_REQUEST
+    type: t.THEME_EXPORT_REQUEST,
   };
 }
 
 export function exportReceive() {
   return {
-    type: t.THEME_EXPORT_RECEIVE
+    type: t.THEME_EXPORT_RECEIVE,
   };
 }
 
 export function installRequest() {
   return {
-    type: t.THEME_INSTALL_REQUEST
+    type: t.THEME_INSTALL_REQUEST,
   };
 }
 
 export function installReceive() {
   return {
-    type: t.THEME_INSTALL_RECEIVE
+    type: t.THEME_INSTALL_RECEIVE,
   };
 }
 
 function receiveSettings(settings) {
   return {
     type: t.SETTINGS_RECEIVE,
-    settings
+    settings,
   };
 }
 
 function receiveEmailSettings(emailSettings) {
   return {
     type: t.EMAIL_SETTINGS_RECEIVE,
-    emailSettings
+    emailSettings,
   };
 }
 
 function receiveEmailTemplate(emailTemplate) {
   return {
     type: t.EMAIL_TEMPLATE_RECEIVE,
-    emailTemplate
+    emailTemplate,
   };
 }
 
 function requestEmailTemplate() {
   return {
-    type: t.EMAIL_TEMPLATE_REQUEST
+    type: t.EMAIL_TEMPLATE_REQUEST,
   };
 }
 
 function receiveCheckoutFields(checkoutFields) {
   return {
     type: t.CHECKOUT_FIELDS_RECEIVE,
-    checkoutFields
+    checkoutFields,
   };
 }
 
 function receiveCheckoutField(checkoutField) {
   return {
     type: t.CHECKOUT_FIELD_RECEIVE,
-    checkoutField
+    checkoutField,
   };
 }
 
 function requestCheckoutField() {
   return {
-    type: t.CHECKOUT_FIELD_REQUEST
+    type: t.CHECKOUT_FIELD_REQUEST,
   };
 }
 
 function receiveShippingMethods(shippingMethods) {
   return {
     type: t.SHIPPING_METHODS_RECEIVE,
-    shippingMethods
+    shippingMethods,
   };
 }
 
 function receivePaymentMethods(paymentMethods) {
   return {
     type: t.PAYMENT_METHODS_RECEIVE,
-    paymentMethods
+    paymentMethods,
   };
 }
 
 function receivePaymentGateway(paymentGatewayEdit) {
   return {
     type: t.PAYMENT_GATEWAY_RECEIVE,
-    paymentGatewayEdit
+    paymentGatewayEdit,
   };
 }
 
 export function receiveShippingMethod(shippingMethodEdit) {
   return {
     type: t.SHIPPING_METHOD_RECEIVE,
-    shippingMethodEdit
+    shippingMethodEdit,
   };
 }
 
 export function receivePaymentMethod(paymentMethodEdit) {
   return {
     type: t.PAYMENT_METHOD_RECEIVE,
-    paymentMethodEdit
+    paymentMethodEdit,
   };
 }
 
 function receiveTokens(tokens) {
   return {
     type: t.TOKENS_RECEIVE,
-    tokens
+    tokens,
   };
 }
 
 export function receiveToken(tokenEdit) {
   return {
     type: t.TOKEN_RECEIVE,
-    tokenEdit
+    tokenEdit,
   };
 }
 
 export function receiveNewToken(newToken) {
   return {
     type: t.NEW_TOKEN_RECEIVE,
-    newToken
+    newToken,
   };
 }
 
 export function receiveThemeSettings(settings) {
   return {
     type: t.THEME_SETTINGS_RECEIVE,
-    settings
+    settings,
   };
 }
 
 export function receiveThemeSettingsSchema(schema) {
   return {
     type: t.THEME_SETTINGS_SCHEMA_RECEIVE,
-    schema
+    schema,
   };
 }
 
 function receiveWebhooks(webhooks) {
   return {
     type: t.WEBHOOKS_RECEIVE,
-    webhooks
+    webhooks,
   };
 }
 
 export function receiveWebhook(webhookEdit) {
   return {
     type: t.WEBHOOK_RECEIVE,
-    webhookEdit
+    webhookEdit,
   };
 }
 
@@ -467,7 +467,7 @@ export function fetchThemeSettings() {
   return (dispatch, getState) =>
     Promise.all([
       api.theme.settings.retrieve(),
-      api.theme.settings.retrieveSchema()
+      api.theme.settings.retrieveSchema(),
     ])
       .then(([settingsResponse, schemaResponse]) => {
         dispatch(receiveThemeSettings(settingsResponse.json));

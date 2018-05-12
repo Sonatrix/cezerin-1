@@ -6,18 +6,18 @@ const LOGS_FILE = 'logs/server.log';
 winston.configure({
   transports: [
     new winston.transports.Console({
-      colorize: true
+      colorize: true,
     }),
     new winston.transports.File({
       filename: LOGS_FILE,
-      handleExceptions: true
-    })
-  ]
+      handleExceptions: true,
+    }),
+  ],
 });
 
 const getResponse = message => ({
   error: true,
-  message
+  message,
 });
 
 const logUnauthorizedRequests = req => {
@@ -37,5 +37,5 @@ const sendResponse = (err, req, res, next) => {
 };
 
 module.exports = {
-  sendResponse
+  sendResponse,
 };

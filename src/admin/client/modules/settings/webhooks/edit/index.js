@@ -3,7 +3,7 @@ import {
   fetchWebhook,
   updateWebhook,
   createWebhook,
-  receiveWebhook
+  receiveWebhook,
 } from '../../actions';
 import Form from './components/form';
 
@@ -11,7 +11,7 @@ const mapStateToProps = (state, ownProps) => {
   const {webhookId} = ownProps.match.params;
   return {
     webhookId,
-    initialValues: state.settings.webhookEdit
+    initialValues: state.settings.webhookEdit,
   };
 };
 
@@ -31,7 +31,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
       dispatch(createWebhook(webhook));
       ownProps.history.push('/admin/settings/webhooks');
     }
-  }
+  },
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Form);

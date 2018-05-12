@@ -1,13 +1,16 @@
-export let themeSettings = {};
-export let text = {};
+/* eslint-disable */
+let themeSettings = {};
+let text = {};
 
 // Client - from Redux state
 if (typeof window !== 'undefined') {
   const appText = window.__APP_TEXT__;
-  const appState = window.__APP_STATE__;
+  const {
+    app: {themeSettings: settings}
+  } = window.__APP_STATE__;
 
-  if (appState.app.themeSettings) {
-    themeSettings = appState.app.themeSettings;
+  if (settings) {
+    themeSettings = settings;
   }
 
   if (appText) {
@@ -16,7 +19,9 @@ if (typeof window !== 'undefined') {
 }
 
 // Server - from render page method
-export const updateThemeSettings = options => {
-  themeSettings = options.settings;
-  text = options.text;
+const updateThemeSettings = ({settings, text: appText}) => {
+  themeSettings = settings;
+  text = appText;
 };
+
+export {themeSettings, text, updateThemeSettings};

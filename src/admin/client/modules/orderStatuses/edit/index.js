@@ -9,7 +9,7 @@ const mapStateToProps = state => ({
   initialValues: state.orderStatuses.items.find(
     item => item.id === state.orderStatuses.selectedId
   ),
-  isSaving: state.orderStatuses.isSaving
+  isSaving: state.orderStatuses.isSaving,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -23,7 +23,7 @@ const mapDispatchToProps = dispatch => ({
   onCancel: () => {
     dispatch(deselectStatus());
     dispatch(reset('FormOrderStatus'));
-  }
+  },
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Form);

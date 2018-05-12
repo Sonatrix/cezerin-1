@@ -2,13 +2,13 @@ import React from 'react';
 import {NavLink} from 'react-router-dom';
 import {text} from './settings';
 
-export const formatNumber = (number, settings) => {
+export const formatNumber = (number = 0, settings) => {
   const x = 3;
   const floatNumber = parseFloat(number || 0) || 0;
 
   const re = `\\d(?=(\\d{${x}})+${settings.decimal_number > 0 ? '\\D' : '$'})`;
 
-  const num = floatNumber.toFixed(Math.max(0, ~~settings.decimal_number));
+  const num = floatNumber.toFixed(Math.max(0, +settings.decimal_number));
 
   return (settings.decimal_separator
     ? num.replace('.', settings.decimal_separator)
@@ -38,13 +38,14 @@ export const getThumbnailUrl = (originalUrl, width) => {
 export const getParentIds = (categories, categoryId) => {
   const parentIds = [];
   let parentExists = false;
-
+  let searchCategoryId = categoryId;
   do {
-    const category = categories.find(item => item.id === categoryId);
-    parentExists = category && category.parent_id;
-    if (parentExists) {
-      parentIds.push(category.parent_id);
-      categoryId = category.parent_id;
+    const {parent_id: parentId} =
+      categories.find(item => item.id === searchCategoryId) || {};
+    parentExists = parentId && categories;
+    if (parentId) {
+      parentIds.push(parentId);
+      searchCategoryId = parentId;
     }
   } while (parentExists);
 
@@ -61,13 +62,14 @@ export const getProductBreadcrumbs = (product, categories) => {
     const breadcrumbs = ids.reverse().map(categoryId => {
       const category = categories.find(item => item.id === categoryId);
       if (category) {
-        index++;
+        index += 1;
         return (
           <li key={index}>
             <NavLink to={category.path}>{category.name}</NavLink>
           </li>
         );
       }
+      return null;
     });
 
     return breadcrumbs;
@@ -83,13 +85,14 @@ export const getCategoryBreadcrumbs = (currentCategoryId, categories) => {
     const breadcrumbs = ids.reverse().map(categoryId => {
       const category = categories.find(item => item.id === categoryId);
       if (category) {
-        index++;
+        index += 1;
         return (
           <li key={index}>
             <NavLink to={category.path}>{category.name}</NavLink>
           </li>
         );
       }
+      return null;
     });
 
     return breadcrumbs;

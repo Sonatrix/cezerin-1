@@ -82,7 +82,7 @@ const ProductAttributesForm = ({
   pristine,
   reset,
   submitting,
-  initialValues
+  initialValues,
 }) => (
   <form onSubmit={handleSubmit}>
     <Paper className="paper-box" zDepth={1}>
@@ -112,5 +112,5 @@ const ProductAttributesForm = ({
 
 export default reduxForm({
   form: 'ProductAttributesForm',
-  enableReinitialize: true
+  enableReinitialize: true,
 })(ProductAttributesForm);

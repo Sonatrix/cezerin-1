@@ -1,14 +1,12 @@
-import React from 'react';
-import {NavLink} from 'react-router-dom';
-import * as helper from '../../lib/helper';
+import React, {Component} from 'react';
 import api from '../../lib/api';
 import ProductList from '../productList';
 
-export default class CustomProducts extends React.Component {
+export default class CustomProducts extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      products: []
+      products: [],
     };
   }
 
@@ -20,32 +18,32 @@ export default class CustomProducts extends React.Component {
     this.fetchProducts(nextProps);
   }
 
-  fetchProducts = ({
+  fetchProducts({
     ids,
     sku,
     sort,
     limit,
-    category_id,
+    category_id: categoryId,
     tags,
     attributes,
-    price_from,
-    price_to,
-    on_sale
-  }) => {
-    let filter = {
-      ids: ids,
-      sku: sku,
-      tags: tags,
-      on_sale: on_sale,
+    price_from: priceFrom,
+    price_to: priceTo,
+    on_sale: onSale,
+  }) {
+    const filter = {
+      ids,
+      sku,
+      tags,
+      on_sale: onSale,
       search: null,
-      category_id: category_id,
-      price_from: price_from,
-      price_to: price_to,
-      sort: sort,
+      category_id: categoryId,
+      price_from: priceFrom,
+      price_to: priceTo,
+      sort,
       fields:
         'path,id,name,category_id,category_name,sku,images,enabled,discontinued,stock_status,stock_quantity,price,on_sale,regular_price,attributes,tags',
       limit: limit || 4,
-      offset: 0
+      offset: 0,
     };
 
     if (attributes && Array.isArray(attributes) && attributes.length > 0) {
@@ -56,13 +54,13 @@ export default class CustomProducts extends React.Component {
 
     api.ajax.products
       .list(filter)
-      .then(({status, json}) => {
+      .then(({json}) => {
         this.setState({
-          products: json.data
+          products: json.data,
         });
       })
       .catch(() => {});
-  };
+  }
 
   render() {
     const {
@@ -74,7 +72,7 @@ export default class CustomProducts extends React.Component {
       columnCountOnTablet,
       columnCountOnDesktop,
       columnCountOnWidescreen,
-      columnCountOnFullhd
+      columnCountOnFullhd,
     } = this.props;
 
     return (

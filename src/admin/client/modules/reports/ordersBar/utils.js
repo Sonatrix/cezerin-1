@@ -8,7 +8,7 @@ const chartColors = {
   green: 'rgb(75, 192, 192)',
   blue: 'rgb(54, 162, 235)',
   purple: 'rgb(153, 102, 255)',
-  grey: 'rgb(201, 203, 207)'
+  grey: 'rgb(201, 203, 207)',
 };
 
 const transparentize = (color, opacity) => {
@@ -50,7 +50,7 @@ export const getReportDataFromOrders = ordersResponse => {
       total: totalOrdersCount,
       success: successOrdersCount,
       new: newOrdersCount,
-      revenue: successOrdersRevenue
+      revenue: successOrdersRevenue,
     });
   }
 
@@ -69,15 +69,15 @@ export const getOrdersDataFromReportData = reportData => {
         label: messages.closedAndPaidOrders,
         data: successData,
         backgroundColor: chartColors.blue,
-        hoverBackgroundColor: transparentize(chartColors.blue, 0.4)
+        hoverBackgroundColor: transparentize(chartColors.blue, 0.4),
       },
       {
         label: messages.newOrders,
         data: newData,
         backgroundColor: chartColors.yellow,
-        hoverBackgroundColor: transparentize(chartColors.yellow, 0.4)
-      }
-    ]
+        hoverBackgroundColor: transparentize(chartColors.yellow, 0.4),
+      },
+    ],
   };
 };
 
@@ -92,8 +92,8 @@ export const getSalesDataFromReportData = reportData => {
         label: messages.closedAndPaidOrders,
         data: revenueData,
         backgroundColor: chartColors.blue,
-        hoverBackgroundColor: transparentize(chartColors.blue, 0.4)
-      }
-    ]
+        hoverBackgroundColor: transparentize(chartColors.blue, 0.4),
+      },
+    ],
   };
 };

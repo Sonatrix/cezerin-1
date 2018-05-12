@@ -5,7 +5,7 @@ import {
   deleteCartItem,
   updateCartItemQuantiry,
   fetchMoreProducts,
-  setSort
+  setSort,
 } from './actions';
 
 const setQuery = (history, query) => {
@@ -18,7 +18,7 @@ const setQuery = (history, query) => {
 };
 
 export const mapStateToProps = (state, ownProps) => ({
-  state: state.app
+  state: state.app,
 });
 
 export const mapDispatchToProps = (dispatch, ownProps) => ({
@@ -97,5 +97,5 @@ export const mapDispatchToProps = (dispatch, ownProps) => ({
       ownProps.history.goBack();
     }
   },
-  getJSONLD: state => getJSONLD(state)
+  getJSONLD: state => getJSONLD(state),
 });

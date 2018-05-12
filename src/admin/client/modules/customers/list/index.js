@@ -5,7 +5,7 @@ import {
   deselectCustomer,
   selectAllCustomer,
   deselectAllCustomer,
-  fetchMoreCustomers
+  fetchMoreCustomers,
 } from '../actions';
 import List from './components/list';
 
@@ -14,7 +14,7 @@ const mapStateToProps = state => ({
   items: state.customers.items,
   selected: state.customers.selected,
   loadingItems: state.customers.loadingItems,
-  hasMore: state.customers.hasMore
+  hasMore: state.customers.hasMore,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -37,7 +37,7 @@ const mapDispatchToProps = dispatch => ({
   },
   loadMore: () => {
     dispatch(fetchMoreCustomers());
-  }
+  },
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(List);

@@ -68,7 +68,7 @@ const EVENTS = [
   'PostProcess',
   'focus',
   'blur',
-  'dirty'
+  'dirty',
 ];
 
 const HANDLER_NAMES = EVENTS.map(event => `on${ucFirst(event)}`);
@@ -78,7 +78,7 @@ export default class TinyMCE extends React.Component {
     super(props);
     this.state = {
       config: {},
-      content: props.content
+      content: props.content,
     };
   }
 

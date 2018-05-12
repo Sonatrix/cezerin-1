@@ -1,13 +1,11 @@
-import React from 'react';
-import {themeSettings, text} from '../../lib/settings';
+import React, {Fragment, PureComponent} from 'react';
+import {text} from '../../lib/settings';
 
-const Fragment = React.Fragment;
-
-export default class Quantity extends React.PureComponent {
+export default class Quantity extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      quantity: 1
+      quantity: 1,
     };
   }
 
@@ -17,27 +15,27 @@ export default class Quantity extends React.PureComponent {
     }
   }
 
-  handleChange = event => {
+  handleChange(event) {
     this.setQuantity(event.target.value);
-  };
+  }
 
-  setQuantity = quantity => {
+  setQuantity(quantity) {
     const intQuantity = parseInt(quantity);
     if (intQuantity > 0 && intQuantity <= this.props.maxQuantity) {
       this.setState({quantity: intQuantity});
       this.props.onChange(intQuantity);
     }
-  };
+  }
 
-  increment = () => {
+  increment() {
     const newQuantity = this.state.quantity + 1;
     this.setQuantity(newQuantity);
-  };
+  }
 
-  decrement = () => {
+  decrement() {
     const newQuantity = this.state.quantity - 1;
     this.setQuantity(newQuantity);
-  };
+  }
 
   render() {
     const {maxQuantity} = this.props;

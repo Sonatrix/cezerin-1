@@ -4,7 +4,7 @@ const slug = require('slug');
 const slugConfig = {
   symbols: false, // replace unicode symbols or not
   remove: null, // (optional) regex to remove characters
-  lower: true // result in lower case
+  lower: true, // result in lower case
 };
 
 const cleanSlug = text => slug(text || '', slugConfig);
@@ -44,5 +44,5 @@ module.exports = {
   cleanSlug,
   getAvailableSlug,
   getCorrectFileName,
-  getProjectionFromFields
+  getProjectionFromFields,
 };

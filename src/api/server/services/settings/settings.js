@@ -33,7 +33,7 @@ class SettingsService {
       weight_unit: 'kg',
       length_unit: 'cm',
       hide_billing_address: false,
-      order_confirmation_copy_to: ''
+      order_confirmation_copy_to: '',
     };
   }
 
@@ -52,7 +52,7 @@ class SettingsService {
         .updateOne(
           {},
           {
-            $set: settings
+            $set: settings,
           },
           {upsert: true}
         )

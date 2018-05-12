@@ -5,7 +5,7 @@ import Form from './components/form';
 const mapStateToProps = state => ({
   files: state.files.files,
   uploading: state.files.uploading,
-  settings: state.settings.settings
+  settings: state.settings.settings,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -17,7 +17,7 @@ const mapDispatchToProps = dispatch => ({
   },
   onUpload: form => {
     dispatch(uploadFiles(form));
-  }
+  },
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Form);

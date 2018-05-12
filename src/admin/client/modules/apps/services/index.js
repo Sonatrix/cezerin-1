@@ -8,14 +8,14 @@ const mapStateToProps = (state, ownProps) => {
   const webstoreAuthorized = webstoreAuth.isCurrentTokenValid();
   return {
     services: state.apps.services,
-    webstoreAuthorized
+    webstoreAuthorized,
   };
 };
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   fetchData: () => {
     dispatch(fetchServices());
-  }
+  },
 });
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(List));

@@ -64,7 +64,7 @@ const showNotification = (title, body, requireInteraction = false) => {
   const msg = new Notification(title, {
     body,
     tag: 'dashboard',
-    requireInteraction
+    requireInteraction,
   });
 
   msg.addEventListener('click', event => {

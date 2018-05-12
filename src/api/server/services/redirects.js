@@ -4,7 +4,7 @@ const parse = require('../lib/parse');
 const ObjectID = require('mongodb').ObjectID;
 const cache = require('lru-cache')({
   max: 10000,
-  maxAge: 1000 * 60 * 60 * 24 // 24h
+  maxAge: 1000 * 60 * 60 * 24, // 24h
 });
 
 const REDIRECTS_CACHE_KEY = 'redirects';
@@ -63,7 +63,7 @@ class RedirectsService {
       .collection('redirects')
       .updateOne(
         {
-          _id: redirectObjectID
+          _id: redirectObjectID,
         },
         {$set: redirect}
       )
@@ -91,7 +91,7 @@ class RedirectsService {
     const redirect = {
       from: parse.getString(data.from),
       to: parse.getString(data.to),
-      status: 301
+      status: 301,
     };
 
     return redirect;

@@ -8,7 +8,7 @@ const LiqPay = require('./LiqPay');
 const getOptions = orderId =>
   Promise.all([
     OrdersService.getSingleOrder(orderId),
-    SettingsService.getSettings()
+    SettingsService.getSettings(),
   ]).then(([order, settings]) => {
     if (order && order.payment_method_id) {
       return PaymentGatewaysService.getGateway(
@@ -19,7 +19,7 @@ const getOptions = orderId =>
           gatewaySettings,
           order,
           amount: order.grand_total,
-          currency: settings.currency_code
+          currency: settings.currency_code,
         };
 
         return options;
@@ -45,7 +45,7 @@ const paymentNotification = (req, res, gateway) =>
       gateway,
       gatewaySettings,
       req,
-      res
+      res,
     };
 
     switch (gateway) {
@@ -60,5 +60,5 @@ const paymentNotification = (req, res, gateway) =>
 
 module.exports = {
   getPaymentFormSettings,
-  paymentNotification
+  paymentNotification,
 };

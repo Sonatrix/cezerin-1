@@ -7,14 +7,14 @@ import {
   moveUpCategory,
   moveDownCategory,
   replaceCategory,
-  createCategory
+  createCategory,
 } from '../actions';
 import Buttons from './components/buttons';
 
 const mapStateToProps = state => ({
   selected: state.productCategories.items.find(
     item => item.id === state.productCategories.selectedId
-  )
+  ),
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -34,7 +34,7 @@ const mapDispatchToProps = dispatch => ({
   },
   onCreate: () => {
     dispatch(createCategory());
-  }
+  },
 });
 
 export default withRouter(

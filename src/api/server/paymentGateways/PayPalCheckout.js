@@ -18,7 +18,7 @@ const getPaymentFormSettings = options => {
     size: gatewaySettings.size,
     shape: gatewaySettings.shape,
     color: gatewaySettings.color,
-    notify_url: gatewaySettings.notify_url
+    notify_url: gatewaySettings.notify_url,
   };
 
   return Promise.resolve(formSettings);
@@ -41,7 +41,7 @@ const paymentNotification = options => {
       if (paymentCompleted) {
         OrdersService.updateOrder(orderId, {
           paid: true,
-          date_paid: new Date()
+          date_paid: new Date(),
         }).then(() => {
           OrdertTansactionsService.addTransaction(orderId, {
             transaction_id: params.txn_id,
@@ -51,7 +51,7 @@ const paymentNotification = options => {
             details: `${params.first_name} ${params.last_name}, ${
               params.payer_email
             }`,
-            success: true
+            success: true,
           });
         });
       }
@@ -65,7 +65,7 @@ const verify = (params, settings) =>
   new Promise((resolve, reject) => {
     if (!settings) {
       settings = {
-        allow_sandbox: false
+        allow_sandbox: false,
       };
     }
 
@@ -81,7 +81,7 @@ const verify = (params, settings) =>
       host: params.test_ipn ? SANDBOX_URL : REGULAR_URL,
       method: 'POST',
       path: '/cgi-bin/webscr',
-      headers: {'Content-Length': body.length}
+      headers: {'Content-Length': body.length},
     };
 
     if (params.test_ipn && !settings.allow_sandbox) {
@@ -117,5 +117,5 @@ const verify = (params, settings) =>
 
 module.exports = {
   getPaymentFormSettings,
-  paymentNotification
+  paymentNotification,
 };

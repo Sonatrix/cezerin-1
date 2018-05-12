@@ -10,8 +10,8 @@ const SMTP_FROM_CONFIG_FILE = {
   secure: settings.smtpServer.secure,
   auth: {
     user: settings.smtpServer.user,
-    pass: settings.smtpServer.pass
-  }
+    pass: settings.smtpServer.pass,
+  },
 };
 
 const getSmtpFromEmailSettings = emailSettings => ({
@@ -20,8 +20,8 @@ const getSmtpFromEmailSettings = emailSettings => ({
   secure: emailSettings.port === 465,
   auth: {
     user: emailSettings.user,
-    pass: emailSettings.pass
-  }
+    pass: emailSettings.pass,
+  },
 });
 
 const getSmtp = emailSettings => {
@@ -73,5 +73,5 @@ const send = async message => {
 };
 
 module.exports = {
-  send
+  send,
 };

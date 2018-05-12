@@ -1,13 +1,11 @@
-import React from 'react';
+import React, {Fragment} from 'react';
 import {themeSettings, text} from '../lib/settings';
 import MetaTags from '../components/metaTags';
 import ProductList from '../components/productList';
-import ProductFilter from '../components/productFilter';
+import {ProductFilter} from '../components/productFilter';
 import Sort from '../components/sort';
 import CategoryBreadcrumbs from '../components/categoryBreadcrumbs';
 import * as helper from '../lib/helper';
-
-const Fragment = React.Fragment;
 
 const getFilterAttributesSummary = productFilter => {
   let attributesSummary = '';
@@ -47,6 +45,7 @@ const CategoryHero = ({categoryDetails, categories}) => (
         <h1 className="category-title">{categoryDetails.name}</h1>
         <div
           className="category-description is-hidden-mobile content"
+          /* eslint-disable-next-line */
           dangerouslySetInnerHTML={{__html: categoryDetails.description}}
         />
       </div>
@@ -63,7 +62,7 @@ const CategoryContainer = props => {
     productsHasMore,
     categories,
     loadingProducts,
-    loadingMoreProducts
+    loadingMoreProducts,
   } = props.state;
   const {setSort, addCartItem, loadMoreProducts, getJSONLD} = props;
 

@@ -53,7 +53,7 @@ const ProductCategoryEditForm = ({
   onImageUpload,
   onImageDelete,
   isSaving,
-  initialValues
+  initialValues,
 }) => {
   let imageUrl = null;
   let categoryId = null;
@@ -148,5 +148,5 @@ export default reduxForm({
   validate,
   asyncValidate,
   asyncBlurFields: ['slug'],
-  enableReinitialize: true
+  enableReinitialize: true,
 })(ProductCategoryEditForm);

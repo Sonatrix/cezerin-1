@@ -9,7 +9,7 @@ class EmailSettingsService {
       user: '',
       pass: 0,
       from_name: '',
-      from_address: ''
+      from_address: '',
     };
   }
 
@@ -28,7 +28,7 @@ class EmailSettingsService {
         .updateOne(
           {},
           {
-            $set: settings
+            $set: settings,
           },
           {upsert: true}
         )

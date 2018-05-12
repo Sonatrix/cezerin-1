@@ -7,7 +7,7 @@ const SummaryItem = ({
   settings,
   item,
   deleteCartItem,
-  updateCartItemQuantiry
+  updateCartItemQuantiry,
 }) => {
   const thumbnail = helper.getThumbnailUrl(
     item.image_url,

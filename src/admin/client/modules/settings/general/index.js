@@ -3,7 +3,7 @@ import {fetchSettings, updateSettings} from '../actions';
 import Form from './components/form';
 
 const mapStateToProps = state => ({
-  initialValues: state.settings.settings
+  initialValues: state.settings.settings,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -12,7 +12,7 @@ const mapDispatchToProps = dispatch => ({
   },
   onSubmit: values => {
     dispatch(updateSettings(values));
-  }
+  },
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Form);

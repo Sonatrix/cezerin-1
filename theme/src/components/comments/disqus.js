@@ -6,7 +6,7 @@ const DISQUS_CONFIG = [
   'title',
   'url',
   'category_id',
-  'onNewComment'
+  'onNewComment',
 ];
 let __disqusAdded = false;
 
@@ -20,7 +20,7 @@ function copyProps(context, props, prefix = '') {
       this.callbacks.onNewComment = [
         function handleNewComment(comment) {
           props.onNewComment(comment);
-        }
+        },
       ];
     };
   }
@@ -81,7 +81,7 @@ export default class Disqus extends React.PureComponent {
 
           // Disqus needs hashbang URL, see https://help.disqus.com/customer/portal/articles/472107
           this.page.url = `${this.page.url.replace(/#/, '')}#!newthread`;
-        }
+        },
       });
     } else {
       // Otherwise add Disqus to the page

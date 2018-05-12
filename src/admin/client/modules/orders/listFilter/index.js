@@ -8,7 +8,7 @@ const mapStateToProps = state => ({
   isDelivered: state.orders.filter.delivered,
   isPaid: state.orders.filter.paid,
   isHold: state.orders.filter.hold,
-  isDraft: state.orders.filter.draft
+  isDraft: state.orders.filter.draft,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -35,7 +35,7 @@ const mapDispatchToProps = dispatch => ({
   setClosed: value => {
     dispatch(setFilter({closed: value}));
     dispatch(fetchOrders());
-  }
+  },
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Filter);

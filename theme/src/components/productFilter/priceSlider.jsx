@@ -1,7 +1,6 @@
 import React from 'react';
-import {NavLink} from 'react-router-dom';
 import {Range} from 'rc-slider';
-import {themeSettings, text} from '../../lib/settings';
+import {text} from '../../lib/settings';
 import * as helper from '../../lib/helper';
 
 export default class PriceSlider extends React.Component {
@@ -9,7 +8,7 @@ export default class PriceSlider extends React.Component {
     super(props);
     this.state = {
       minValue: props.minValue > 0 ? props.minValue : props.minPrice,
-      maxValue: props.maxValue > 0 ? props.maxValue : props.maxPrice
+      maxValue: props.maxValue > 0 ? props.maxValue : props.maxPrice,
     };
   }
 
@@ -20,19 +19,19 @@ export default class PriceSlider extends React.Component {
     ) {
       this.setState({
         minValue: nextProps.minPrice,
-        maxValue: nextProps.maxPrice
+        maxValue: nextProps.maxPrice,
       });
     }
   }
 
-  setValues = values => {
+  setValues(values) {
     if (Array.isArray(values) && values.length === 2) {
       this.setState({
         minValue: values[0],
-        maxValue: values[1]
+        maxValue: values[1],
       });
     }
-  };
+  }
 
   render() {
     const {minPrice, maxPrice, setPriceFromAndTo, settings} = this.props;

@@ -1,12 +1,10 @@
-import React from 'react';
-import {themeSettings, text} from '../lib/settings';
+import React, {Fragment} from 'react';
+import {themeSettings} from '../lib/settings';
 import MetaTags from '../components/metaTags';
-import PageList from '../components/pageList';
-
-const Fragment = React.Fragment;
+import {PageList} from '../components/pageList';
 
 const PageContainer = props => {
-  const {pageDetails, currentPage} = props.state;
+  const {pageDetails} = props.state;
   const pageListTag = themeSettings.page_list_tag;
   const pageListTagDefined = pageListTag && pageListTag.length > 0;
   const pageListPath = pageListTagDefined ? `/${pageListTag}` : null;
@@ -28,8 +26,9 @@ const PageContainer = props => {
           <div className="content">
             <div
               className="page-content"
+              /* eslint-disable-next-line */
               dangerouslySetInnerHTML={{
-                __html: pageDetails.content
+                __html: pageDetails.content,
               }}
             />
             {showPageList && (

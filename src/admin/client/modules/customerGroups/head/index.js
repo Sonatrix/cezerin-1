@@ -7,7 +7,7 @@ import Buttons from './components/buttons';
 const mapStateToProps = state => ({
   selected: state.customerGroups.items.find(
     item => item.id === state.customerGroups.selectedId
-  )
+  ),
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -17,7 +17,7 @@ const mapDispatchToProps = dispatch => ({
   },
   onCreate: () => {
     dispatch(deselectGroup());
-  }
+  },
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Buttons);

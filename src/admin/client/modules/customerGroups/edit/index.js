@@ -9,7 +9,7 @@ const mapStateToProps = state => ({
   initialValues: state.customerGroups.items.find(
     item => item.id === state.customerGroups.selectedId
   ),
-  isSaving: state.customerGroups.isSaving
+  isSaving: state.customerGroups.isSaving,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -23,7 +23,7 @@ const mapDispatchToProps = dispatch => ({
   onCancel: () => {
     dispatch(deselectGroup());
     dispatch(reset('FormCustomerGroup'));
-  }
+  },
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Form);

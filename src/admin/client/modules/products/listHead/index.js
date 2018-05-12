@@ -6,13 +6,13 @@ import {
   deleteProducts,
   setCategory,
   setFilter,
-  createProduct
+  createProduct,
 } from '../actions';
 import Buttons from './components/buttons';
 
 const mapStateToProps = (state, ownProps) => ({
   search: state.products.filter.search,
-  selectedCount: state.products.selected.length
+  selectedCount: state.products.selected.length,
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
@@ -28,7 +28,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   },
   onCreate: () => {
     dispatch(createProduct(ownProps.history));
-  }
+  },
 });
 
 export default withRouter(

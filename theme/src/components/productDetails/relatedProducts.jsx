@@ -1,14 +1,8 @@
-import React from 'react';
+import React, {PureComponent} from 'react';
 import {themeSettings, text} from '../../lib/settings';
 import CustomProducts from '../products/custom';
 
-const Fragment = React.Fragment;
-
-export default class RelatedProducts extends React.PureComponent {
-  constructor(props) {
-    super(props);
-  }
-
+export default class RelatedProducts extends PureComponent {
   render() {
     const {ids, settings, addCartItem, limit} = this.props;
     if (ids && ids.length > 0) {

@@ -14,7 +14,7 @@ export default ({
   setActive,
   setDiscontinued,
   setOnSale,
-  setStock
+  setStock,
 }) => (
   <div className={style.filter}>
     <Toggle

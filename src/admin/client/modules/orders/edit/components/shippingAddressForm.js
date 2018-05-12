@@ -39,7 +39,7 @@ class ShippingAddressForm extends React.Component {
       submitting,
       initialValues,
       onCancel,
-      shippingMethod
+      shippingMethod,
     } = this.props;
 
     let shippingFields = null;
@@ -116,5 +116,5 @@ class ShippingAddressForm extends React.Component {
 export default reduxForm({
   form: 'ShippingAddressForm',
   validate,
-  enableReinitialize: true
+  enableReinitialize: true,
 })(ShippingAddressForm);

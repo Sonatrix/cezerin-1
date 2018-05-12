@@ -4,7 +4,7 @@ import Details from './components/details';
 import * as webstoreAuth from 'lib/webstoreAuth';
 
 const mapStateToProps = (state, ownProps) => ({
-  account: state.apps.account
+  account: state.apps.account,
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
@@ -21,7 +21,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   },
   onDeveloperSubmit: values => {
     dispatch(updateDeveloperAccount(values));
-  }
+  },
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Details);

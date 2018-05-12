@@ -5,7 +5,7 @@ import List from '../components/list';
 
 const mapStateToProps = state => ({
   items: state.orderStatuses.items,
-  selectedId: state.orderStatuses.selectedId
+  selectedId: state.orderStatuses.selectedId,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -15,7 +15,7 @@ const mapDispatchToProps = dispatch => ({
   onSelect: statusId => {
     dispatch(selectStatus(statusId));
     dispatch(fetchOrders());
-  }
+  },
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(List);

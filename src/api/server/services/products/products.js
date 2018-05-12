@@ -14,7 +14,7 @@ class ProductsService {
 
   async getProducts(params = {}) {
     const categories = await CategoriesService.getCategories({
-      fields: 'parent_id'
+      fields: 'parent_id',
     });
     const fieldsArray = this.getArrayFromCSV(params.fields);
     const limit = parse.getNumberIfPositive(params.limit) || 1000;
@@ -41,8 +41,8 @@ class ProductsService {
         from: 'productCategories',
         localField: 'category_id',
         foreignField: '_id',
-        as: 'categories'
-      }
+        as: 'categories',
+      },
     });
     itemsAggregation.push({
       $project: {
@@ -56,8 +56,8 @@ class ProductsService {
         'categories.enabled': 0,
         'categories.sort': 0,
         'categories.parent_id': 0,
-        'categories.position': 0
-      }
+        'categories.position': 0,
+      },
     });
 
     const [
@@ -66,7 +66,7 @@ class ProductsService {
       minMaxPriceResult,
       allAttributesResult,
       attributesResult,
-      generalSettings
+      generalSettings,
     ] = await Promise.all([
       mongo.db
         .collection('products')
@@ -91,7 +91,7 @@ class ProductsService {
         matchTextQuery,
         projectQuery
       ),
-      SettingsService.getSettings()
+      SettingsService.getSettings(),
     ]);
 
     const {domain = ''} = generalSettings || {};
@@ -128,12 +128,12 @@ class ProductsService {
     return {
       price: {
         min: min_price,
-        max: max_price
+        max: max_price,
       },
       attributes,
       total_count,
       has_more: offset + items.length < total_count,
-      data: items
+      data: items,
     };
   }
 
@@ -163,7 +163,7 @@ class ProductsService {
     params
   ) {
     const uniqueAttributesName = [
-      ...new Set(allAttributesResult.map(a => a._id.name))
+      ...new Set(allAttributesResult.map(a => a._id.name)),
     ];
 
     return uniqueAttributesName.sort().map(attributeName => ({
@@ -185,8 +185,8 @@ class ProductsService {
             filteredAttributesResult,
             b._id.name,
             b._id.value
-          )
-        }))
+          ),
+        })),
     }));
   }
 
@@ -237,8 +237,8 @@ class ProductsService {
         $group: {
           _id: null,
           min_price: {$min: '$price'},
-          max_price: {$max: '$price'}
-        }
+          max_price: {$max: '$price'},
+        },
       });
       return mongo.db
         .collection('products')
@@ -318,7 +318,7 @@ class ProductsService {
             '-'
           )
             ? -1
-            : 1
+            : 1,
         }))
       );
     }
@@ -368,77 +368,77 @@ class ProductsService {
       on_sale: {
         $and: [
           {
-            $lt: [new Date(), '$date_sale_to']
+            $lt: [new Date(), '$date_sale_to'],
           },
           {
-            $gt: [new Date(), '$date_sale_from']
-          }
-        ]
+            $gt: [new Date(), '$date_sale_from'],
+          },
+        ],
       },
       variable: {
         $gt: [
           {
-            $size: {$ifNull: ['$variants', []]}
+            $size: {$ifNull: ['$variants', []]},
           },
-          0
-        ]
+          0,
+        ],
       },
       price: {
         $cond: {
           if: {
             $and: [
               {
-                $lt: [new Date(), '$date_sale_to']
+                $lt: [new Date(), '$date_sale_to'],
               },
               {
-                $gt: [new Date(), '$date_sale_from']
+                $gt: [new Date(), '$date_sale_from'],
               },
               {
-                $gt: ['$sale_price', 0]
-              }
-            ]
+                $gt: ['$sale_price', 0],
+              },
+            ],
           },
           then: salePrice,
-          else: regularPrice
-        }
+          else: regularPrice,
+        },
       },
       stock_status: {
         $cond: {
           if: {
-            $eq: ['$discontinued', true]
+            $eq: ['$discontinued', true],
           },
           then: 'discontinued',
           else: {
             $cond: {
               if: {
-                $gt: ['$stock_quantity', 0]
+                $gt: ['$stock_quantity', 0],
               },
               then: 'available',
               else: {
                 $cond: {
                   if: {
-                    $eq: ['$stock_backorder', true]
+                    $eq: ['$stock_backorder', true],
                   },
                   then: 'backorder',
                   else: {
                     $cond: {
                       if: {
-                        $eq: ['$stock_preorder', true]
+                        $eq: ['$stock_preorder', true],
                       },
                       then: 'preorder',
-                      else: 'out_of_stock'
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
+                      else: 'out_of_stock',
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
       },
       url: {$literal: ''},
       path: {$literal: ''},
       category_name: {$literal: ''},
-      category_slug: {$literal: ''}
+      category_slug: {$literal: ''},
     };
 
     if (fieldsArray && fieldsArray.length > 0) {
@@ -470,7 +470,7 @@ class ProductsService {
       search !== 'undefined'
     ) {
       return {
-        $or: [{sku: new RegExp(search, 'i')}, {$text: {$search: search}}]
+        $or: [{sku: new RegExp(search, 'i')}, {$text: {$search: search}}],
       };
     }
     return null;
@@ -487,7 +487,7 @@ class ProductsService {
 
         return {
           name: paramName.replace('attributes.', ''),
-          values: paramValueArray
+          values: paramValueArray,
         };
       });
 
@@ -505,7 +505,7 @@ class ProductsService {
       price_to,
       sku,
       ids,
-      tags
+      tags,
     } = params;
 
     // parse values
@@ -531,50 +531,50 @@ class ProductsService {
       queries.push({
         $or: [
           {
-            category_id: {$in: categoryChildren}
+            category_id: {$in: categoryChildren},
           },
           {
-            category_ids: category_id
-          }
-        ]
+            category_ids: category_id,
+          },
+        ],
       });
     }
 
     if (enabled !== null) {
       queries.push({
-        enabled
+        enabled,
       });
     }
 
     if (discontinued !== null) {
       queries.push({
-        discontinued
+        discontinued,
       });
     }
 
     if (on_sale !== null) {
       queries.push({
-        on_sale
+        on_sale,
       });
     }
 
     if (usePrice) {
       if (price_from !== null && price_from > 0) {
         queries.push({
-          price: {$gte: price_from}
+          price: {$gte: price_from},
         });
       }
 
       if (price_to !== null && price_to > 0) {
         queries.push({
-          price: {$lte: price_to}
+          price: {$lte: price_to},
         });
       }
     }
 
     if (stock_status && stock_status.length > 0) {
       queries.push({
-        stock_status
+        stock_status,
       });
     }
 
@@ -587,7 +587,7 @@ class ProductsService {
         }
       }
       queries.push({
-        id: {$in: objectIDs}
+        id: {$in: objectIDs},
       });
     }
 
@@ -596,19 +596,19 @@ class ProductsService {
         // multiple values
         const skus = sku.split(',');
         queries.push({
-          sku: {$in: skus}
+          sku: {$in: skus},
         });
       } else {
         // single value
         queries.push({
-          sku
+          sku,
         });
       }
     }
 
     if (tags && tags.length > 0) {
       queries.push({
-        tags
+        tags,
       });
     }
 
@@ -618,11 +618,11 @@ class ProductsService {
         const matchesArray = attributesArray.map(attribute => ({
           $elemMatch: {
             name: attribute.name,
-            value: {$in: attribute.values}
-          }
+            value: {$in: attribute.values},
+          },
         }));
         queries.push({
-          attributes: {$all: matchesArray}
+          attributes: {$all: matchesArray},
         });
       }
     }
@@ -632,7 +632,7 @@ class ProductsService {
       matchQuery = queries[0];
     } else if (queries.length > 1) {
       matchQuery = {
-        $and: queries
+        $and: queries,
       };
     }
 
@@ -702,8 +702,8 @@ class ProductsService {
       dimensions: {
         length: 0,
         width: 0,
-        height: 0
-      }
+        height: 0,
+      },
     };
 
     product.name = parse.getString(data.name);
@@ -770,7 +770,7 @@ class ProductsService {
     }
 
     const product = {
-      date_updated: new Date()
+      date_updated: new Date(),
     };
 
     if (data.name !== undefined) {
@@ -937,7 +937,7 @@ class ProductsService {
         )
         .map(item => ({
           name: parse.getString(item.name),
-          value: parse.getString(item.value)
+          value: parse.getString(item.value),
         }));
     }
     return [];
@@ -1007,7 +1007,7 @@ class ProductsService {
 
   isSkuExists(sku, productId) {
     const filter = {
-      sku
+      sku,
     };
 
     if (productId && ObjectID.isValid(productId)) {
@@ -1047,7 +1047,7 @@ class ProductsService {
 
   isSlugExists(slug, productId) {
     const filter = {
-      slug: utils.cleanSlug(slug)
+      slug: utils.cleanSlug(slug),
     };
 
     if (productId && ObjectID.isValid(productId)) {

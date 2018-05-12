@@ -10,7 +10,7 @@ const STORE_ACCESS_TOKEN = jwt.sign(TOKEN_PAYLOAD, serverSettings.jwtSecretKey);
 
 const api = new CezerinClient({
   apiBaseUrl: serverSettings.apiBaseUrl,
-  apiToken: STORE_ACCESS_TOKEN
+  apiToken: STORE_ACCESS_TOKEN,
 });
 
 const DEFAULT_CACHE_CONTROL = 'public, max-age=60';
@@ -22,7 +22,7 @@ const getCartCookieOptions = isHttps => ({
   httpOnly: true,
   signed: true,
   secure: isHttps,
-  sameSite: 'strict'
+  sameSite: 'strict',
 });
 
 const getIP = req => {
@@ -76,7 +76,7 @@ const fillCartItems = cartResponse => {
       .list({
         ids: productIds,
         fields:
-          'images,enabled,stock_quantity,variants,path,stock_backorder,stock_preorder'
+          'images,enabled,stock_quantity,variants,path,stock_backorder,stock_preorder',
       })
       .then(({status, json}) => {
         const newCartItem = cart.items.map(cartItem =>
@@ -144,9 +144,9 @@ ajaxRouter.post('/cart/items', (req, res, next) => {
       landing_url: req.signedCookies.landing_url,
       browser: {
         ip: getIP(req),
-        user_agent: getUserAgent(req)
+        user_agent: getUserAgent(req),
       },
-      shipping_address: {}
+      shipping_address: {},
     };
 
     api.settings
@@ -308,7 +308,7 @@ ajaxRouter.get('/sitemap', async (req, res, next) => {
 ajaxRouter.get('/payment_methods', (req, res, next) => {
   const filter = {
     enabled: true,
-    order_id: req.signedCookies.order_id
+    order_id: req.signedCookies.order_id,
   };
   api.paymentMethods.list(filter).then(({status, json}) => {
     const methods = json.map(item => {
@@ -323,7 +323,7 @@ ajaxRouter.get('/payment_methods', (req, res, next) => {
 ajaxRouter.get('/shipping_methods', (req, res, next) => {
   const filter = {
     enabled: true,
-    order_id: req.signedCookies.order_id
+    order_id: req.signedCookies.order_id,
   };
   api.shippingMethods.list(filter).then(({status, json}) => {
     res.status(status).send(json);

@@ -9,7 +9,7 @@ const SET_TOKEN_AS_REVOKEN_ON_EXCEPTION = true;
 const PATHS_WITH_OPEN_ACCESS = [
   '/api/v1/authorize',
   /\/api\/v1\/notifications/i,
-  /\/ajax\//i
+  /\/ajax\//i,
 ];
 
 const scope = {
@@ -39,7 +39,7 @@ const scope = {
   READ_SETTINGS: 'read:settings',
   WRITE_SETTINGS: 'write:settings',
   READ_FILES: 'read:files',
-  WRITE_FILES: 'write:files'
+  WRITE_FILES: 'write:files',
 };
 
 const checkUserScope = (requiredScope, req, res, next) => {
@@ -86,7 +86,7 @@ const applyMiddleware = app => {
     app.use(
       expressJwt({
         secret: settings.jwtSecretKey,
-        isRevoked: checkTokenInBlacklistCallback
+        isRevoked: checkTokenInBlacklistCallback,
       }).unless({path: PATHS_WITH_OPEN_ACCESS})
     );
   }
@@ -100,5 +100,5 @@ module.exports = {
   verifyToken,
   applyMiddleware,
   getAccessControlAllowOrigin,
-  DEVELOPER_MODE
+  DEVELOPER_MODE,
 };

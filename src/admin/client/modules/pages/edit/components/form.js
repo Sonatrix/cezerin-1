@@ -76,7 +76,7 @@ class EditPageForm extends React.Component {
       pristine,
       submitting,
       initialValues,
-      pageId
+      pageId,
     } = this.props;
     const isAdd = pageId === null || pageId === undefined;
 
@@ -154,5 +154,5 @@ export default reduxForm({
   validate,
   asyncValidate,
   asyncBlurFields: ['slug'],
-  enableReinitialize: true
+  enableReinitialize: true,
 })(EditPageForm);

@@ -101,7 +101,7 @@ const CheckoutSuccess = ({
   settings,
   pageDetails,
   shippingMethod,
-  checkoutFields
+  checkoutFields,
 }) => {
   if (order && order.items && order.items.length > 0) {
     return (
@@ -114,7 +114,7 @@ const CheckoutSuccess = ({
 
         <div
           dangerouslySetInnerHTML={{
-            __html: pageDetails.content
+            __html: pageDetails.content,
           }}
         />
 

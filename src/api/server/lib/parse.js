@@ -40,17 +40,17 @@ const getBrowser = browser =>
   browser
     ? {
         ip: getString(browser.ip),
-        user_agent: getString(browser.user_agent)
+        user_agent: getString(browser.user_agent),
       }
     : {
         ip: '',
-        user_agent: ''
+        user_agent: '',
       };
 
 const getCustomerAddress = address => {
   const coordinates = {
     latitude: '',
-    longitude: ''
+    longitude: '',
   };
 
   if (address && address.coordinates) {
@@ -74,7 +74,7 @@ const getCustomerAddress = address => {
         coordinates,
         details: address.details,
         default_billing: false,
-        default_shipping: false
+        default_shipping: false,
       }
     : {};
 };
@@ -82,7 +82,7 @@ const getCustomerAddress = address => {
 const getOrderAddress = address => {
   const coordinates = {
     latitude: '',
-    longitude: ''
+    longitude: '',
   };
 
   if (address && address.coordinates) {
@@ -102,7 +102,7 @@ const getOrderAddress = address => {
     company: '',
     tax_number: '',
     coordinates,
-    details: null
+    details: null,
   };
 
   return address
@@ -120,7 +120,7 @@ const getOrderAddress = address => {
           company: getString(address.company),
           tax_number: getString(address.tax_number),
           coordinates,
-          details: address.details
+          details: address.details,
         },
         address
       )
@@ -138,5 +138,5 @@ module.exports = {
   getBooleanIfValid,
   getBrowser,
   getCustomerAddress,
-  getOrderAddress
+  getOrderAddress,
 };

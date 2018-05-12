@@ -3,7 +3,7 @@ import {fetchEmailTemplate, updateEmailTemplate} from '../actions';
 import Form from './components/form';
 
 const mapStateToProps = (state, ownProps) => ({
-  initialValues: state.settings.emailTemplate
+  initialValues: state.settings.emailTemplate,
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
@@ -13,7 +13,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   },
   onSubmit: values => {
     dispatch(updateEmailTemplate(values));
-  }
+  },
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Form);

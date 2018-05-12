@@ -1,10 +1,13 @@
 import React from 'react';
 import {themeSettings, text} from '../../lib/settings';
 
-const LoadMore = ({loadMoreProducts, hasMore, loading, className}) => {
+const LoadMore = ({
+  loadMoreProducts,
+  hasMore,
+  loading,
+  className = 'button is-fullwidth is-dark',
+}) => {
   if (hasMore) {
-    className = className || 'button is-fullwidth is-dark';
-
     const buttonStyle = {};
     if (
       themeSettings.button_loadmore_bg &&

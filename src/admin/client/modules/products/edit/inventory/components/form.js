@@ -20,7 +20,7 @@ const validate = values => {
     'regular_price',
     'sale_price',
     'stock_quantity',
-    'weight'
+    'weight',
   ];
 
   requiredFields.map(field => {
@@ -82,7 +82,7 @@ const ProductInventoryForm = ({
   reset,
   submitting,
   initialValues,
-  settings
+  settings,
 }) => (
   <form onSubmit={handleSubmit}>
     <Paper className="paper-box" zDepth={1}>
@@ -181,7 +181,7 @@ const ProductInventoryForm = ({
         <Divider
           style={{
             marginTop: 10,
-            marginBottom: 10
+            marginBottom: 10,
           }}
         />
         <Field
@@ -192,7 +192,7 @@ const ProductInventoryForm = ({
         <Divider
           style={{
             marginTop: 10,
-            marginBottom: 10
+            marginBottom: 10,
           }}
         />
         <Field
@@ -203,7 +203,7 @@ const ProductInventoryForm = ({
         <Divider
           style={{
             marginTop: 10,
-            marginBottom: 10
+            marginBottom: 10,
           }}
         />
         <Field
@@ -214,7 +214,7 @@ const ProductInventoryForm = ({
         <Divider
           style={{
             marginTop: 10,
-            marginBottom: 10
+            marginBottom: 10,
           }}
         />
         <Field
@@ -251,5 +251,5 @@ export default reduxForm({
   validate,
   asyncValidate,
   asyncBlurFields: ['sku'],
-  enableReinitialize: true
+  enableReinitialize: true,
 })(ProductInventoryForm);

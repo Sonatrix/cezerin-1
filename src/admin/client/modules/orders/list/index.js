@@ -6,7 +6,7 @@ import {
   deselectOrder,
   selectAllOrder,
   deselectAllOrder,
-  fetchMoreOrders
+  fetchMoreOrders,
 } from '../actions';
 import List from './components/list';
 
@@ -15,7 +15,7 @@ const mapStateToProps = (state, ownProps) => ({
   items: state.orders.items,
   selected: state.orders.selected,
   loadingItems: state.orders.loadingItems,
-  hasMore: state.orders.hasMore
+  hasMore: state.orders.hasMore,
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
@@ -38,7 +38,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   },
   loadMore: () => {
     dispatch(fetchMoreOrders());
-  }
+  },
 });
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(List));

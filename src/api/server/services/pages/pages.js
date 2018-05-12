@@ -33,7 +33,7 @@ class PagesService {
             '-'
           )
             ? -1
-            : 1
+            : 1,
         }))
       );
     }
@@ -101,7 +101,7 @@ class PagesService {
   getValidDocumentForInsert(data) {
     const page = {
       is_system: false,
-      date_created: new Date()
+      date_created: new Date(),
     };
 
     page.content = parse.getString(data.content);
@@ -127,7 +127,7 @@ class PagesService {
     }
     return this.getSinglePage(id).then(prevPageData => {
       const page = {
-        date_updated: new Date()
+        date_updated: new Date(),
       };
 
       if (data.content !== undefined) {

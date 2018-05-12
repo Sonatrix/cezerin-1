@@ -64,7 +64,7 @@ class ProductEditContainer extends React.Component {
 }
 
 const mapStateToProps = (state, ownProps) => ({
-  product: state.products.editProduct
+  product: state.products.editProduct,
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
@@ -75,7 +75,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   },
   eraseData: () => {
     dispatch(cancelProductEdit());
-  }
+  },
 });
 
 export default withRouter(

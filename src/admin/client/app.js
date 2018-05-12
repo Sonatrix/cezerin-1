@@ -30,7 +30,7 @@ import {
   grey400,
   white,
   darkBlack,
-  fullBlack
+  fullBlack,
 } from 'material-ui/styles/colors';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
@@ -49,9 +49,9 @@ const muiTheme = getMuiTheme({
     canvasColor: white,
     borderColor: grey300,
     pickerHeaderColor: blue700,
-    shadowColor: fullBlack
+    shadowColor: fullBlack,
   },
-  appBar: {}
+  appBar: {},
 });
 
 export default () => (

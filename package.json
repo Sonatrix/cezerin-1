@@ -44,8 +44,8 @@
     "build": "npm run compile && npm run theme:build && npm run webpack:admin",
     "build:watch": "npm run compile:watch & npm run webpack:store:watch & npm run webpack:admin:watch",
     "prettify": "./node_modules/.bin/prettier --config .prettierrc --write '*/**/*.{js,jsx,scss}'",
-    "lint": "eslint --ext .js,.jsx .",
-    "lint-fix": "eslint --ext .js,.jsx --fix .",
+    "lint": "eslint -c .eslintrc.js --ext .js,.jsx .",
+    "lint-fix": "eslint -c .eslintrc.js --ext .js,.jsx --fix .",
     "start-api": "node src/api/server/index.js",
     "start-store": "node dist/store/server/index.js",
     "start": "npm run start-api & npm run start-store"
@@ -82,7 +82,7 @@
     "nodemailer": "^4.6.3",
     "nodemailer-smtp-transport": "^2.7.4",
     "query-string": "^6.1.0",
-    "react": "^16.2.0",
+    "react": "^16.3.2",
     "react-chartjs-2": "^2.7.0",
     "react-dom": "^16.2.0",
     "react-dropzone": "^4.2.9",
@@ -103,10 +103,10 @@
     "slug": "^0.9.1",
     "theme": "file:theme",
     "ua-parser-js": "^0.7.17",
-    "winston": "^2.4.1",
-    "ws": "^5.1.0",
     "webpack": "4.8.2",
-    "webpack-cli": "^2.0.15"
+    "webpack-cli": "^2.0.15",
+    "winston": "^2.4.1",
+    "ws": "^5.1.0"
   },
   "devDependencies": {
     "eslint": "4.19.1",

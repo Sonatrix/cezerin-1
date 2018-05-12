@@ -7,13 +7,13 @@ import Form from './form';
 const mapStateToProps = (state, ownProps) => ({
   cart: state.app.cart,
   settings: state.app.settings,
-  processingCheckout: state.app.processingCheckout
+  processingCheckout: state.app.processingCheckout,
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   finishCheckout: () => {
     dispatch(checkout(null, ownProps.history));
-  }
+  },
 });
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Form));

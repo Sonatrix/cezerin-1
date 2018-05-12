@@ -1,41 +1,38 @@
-import React from 'react';
-import {NavLink} from 'react-router-dom';
-import {themeSettings, text} from '../../lib/settings';
+import React, {Component} from 'react';
+import {text} from '../../lib/settings';
 
 import Sort from '../sort';
 import PriceSlider from './priceSlider';
 import AttributeFilter from './attributeFilter';
 
-export default class ProductFilter extends React.Component {
+export default class ProductFilter extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      sidebarIsActive: false
+      sidebarIsActive: false,
     };
   }
 
-  sidebarToggle = () => {
+  sidebarToggle() {
     this.setState({
-      sidebarIsActive: !this.state.sidebarIsActive
+      sidebarIsActive: !this.state.sidebarIsActive,
     });
     document.body.classList.toggle('noscroll');
-  };
+  }
 
-  sidebarClose = () => {
+  sidebarClose() {
     this.setState({sidebarIsActive: false});
     document.body.classList.remove('noscroll');
-  };
+  }
 
   render() {
     const {sidebarIsActive} = this.state;
     const {
-      categoryDetails,
-      categories,
       settings,
       productFilter,
       productsMinPrice,
       productsMaxPrice,
-      productsAttributes
+      productsAttributes,
     } = this.props.state;
 
     return (

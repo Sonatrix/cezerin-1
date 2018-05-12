@@ -64,7 +64,7 @@ class GeneralSettings extends React.Component {
         onSubmit={handleSubmit}
         style={{
           display: 'initial',
-          width: '100%'
+          width: '100%',
         }}
       >
         <Paper className="paper-box" zDepth={1}>
@@ -105,7 +105,7 @@ class GeneralSettings extends React.Component {
             <Divider
               style={{
                 marginTop: 10,
-                marginBottom: 10
+                marginBottom: 10,
               }}
             />
 
@@ -172,7 +172,7 @@ class GeneralSettings extends React.Component {
             <Divider
               style={{
                 marginTop: 10,
-                marginBottom: 10
+                marginBottom: 10,
               }}
             />
 
@@ -195,7 +195,7 @@ class GeneralSettings extends React.Component {
             <Divider
               style={{
                 marginTop: 10,
-                marginBottom: 10
+                marginBottom: 10,
               }}
             />
 
@@ -228,7 +228,7 @@ class GeneralSettings extends React.Component {
             <Divider
               style={{
                 marginTop: 10,
-                marginBottom: 10
+                marginBottom: 10,
               }}
             />
 
@@ -253,7 +253,7 @@ class GeneralSettings extends React.Component {
             <Divider
               style={{
                 marginTop: 10,
-                marginBottom: 10
+                marginBottom: 10,
               }}
             />
 
@@ -291,7 +291,7 @@ class GeneralSettings extends React.Component {
             <Divider
               style={{
                 marginTop: 10,
-                marginBottom: 10
+                marginBottom: 10,
               }}
             />
 
@@ -321,7 +321,7 @@ class GeneralSettings extends React.Component {
             <Divider
               style={{
                 marginTop: 10,
-                marginBottom: 10
+                marginBottom: 10,
               }}
             />
 
@@ -342,7 +342,7 @@ class GeneralSettings extends React.Component {
             <Divider
               style={{
                 marginTop: 10,
-                marginBottom: 10
+                marginBottom: 10,
               }}
             />
 
@@ -361,7 +361,7 @@ class GeneralSettings extends React.Component {
             <Divider
               style={{
                 marginTop: 10,
-                marginBottom: 10
+                marginBottom: 10,
               }}
             />
 
@@ -381,7 +381,7 @@ class GeneralSettings extends React.Component {
             <Divider
               style={{
                 marginTop: 10,
-                marginBottom: 10
+                marginBottom: 10,
               }}
             />
 
@@ -404,7 +404,7 @@ class GeneralSettings extends React.Component {
             <Divider
               style={{
                 marginTop: 10,
-                marginBottom: 10
+                marginBottom: 10,
               }}
             />
 
@@ -424,7 +424,7 @@ class GeneralSettings extends React.Component {
             <Divider
               style={{
                 marginTop: 10,
-                marginBottom: 10
+                marginBottom: 10,
               }}
             />
 
@@ -444,7 +444,7 @@ class GeneralSettings extends React.Component {
             <Divider
               style={{
                 marginTop: 10,
-                marginBottom: 10
+                marginBottom: 10,
               }}
             />
 
@@ -458,7 +458,7 @@ class GeneralSettings extends React.Component {
             <Divider
               style={{
                 marginTop: 10,
-                marginBottom: 10
+                marginBottom: 10,
               }}
             />
 
@@ -477,7 +477,7 @@ class GeneralSettings extends React.Component {
             <Divider
               style={{
                 marginTop: 10,
-                marginBottom: 10
+                marginBottom: 10,
               }}
             />
 
@@ -511,5 +511,5 @@ class GeneralSettings extends React.Component {
 
 export default reduxForm({
   form: 'GeneralSettingsForm',
-  enableReinitialize: true
+  enableReinitialize: true,
 })(GeneralSettings);

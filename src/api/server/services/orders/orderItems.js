@@ -41,7 +41,7 @@ class OrderItemsService {
 
     if (availableQuantity > 0) {
       await this.updateItem(order_id, orderItem.id, {
-        quantity: availableQuantity
+        quantity: availableQuantity,
       });
     }
   }
@@ -58,12 +58,12 @@ class OrderItemsService {
       newItem.quantity = availableQuantity;
       await mongo.db.collection('orders').updateOne(
         {
-          _id: orderObjectID
+          _id: orderObjectID,
         },
         {
           $push: {
-            items: newItem
-          }
+            items: newItem,
+          },
         }
       );
 
@@ -101,10 +101,10 @@ class OrderItemsService {
     const orderObjectID = new ObjectID(order_id);
     const order = await mongo.db.collection('orders').findOne(
       {
-        _id: orderObjectID
+        _id: orderObjectID,
       },
       {
-        items: 1
+        items: 1,
       }
     );
 
@@ -135,10 +135,10 @@ class OrderItemsService {
     await mongo.db.collection('orders').updateOne(
       {
         _id: orderObjectID,
-        'items.id': itemObjectID
+        'items.id': itemObjectID,
       },
       {
-        $set: item
+        $set: item,
       }
     );
 
@@ -224,10 +224,10 @@ class OrderItemsService {
         await mongo.db.collection('orders').updateOne(
           {
             _id: orderObjectID,
-            'items.id': itemObjectID
+            'items.id': itemObjectID,
           },
           {
-            $set: itemData
+            $set: itemData,
           }
         );
       }
@@ -250,7 +250,7 @@ class OrderItemsService {
         'items.$.tax_total': 0,
         'items.$.weight': product.weight || 0,
         'items.$.discount_total': 0,
-        'items.$.price_total': item.custom_price * item.quantity
+        'items.$.price_total': item.custom_price * item.quantity,
       };
     } else if (item.variant_id) {
       // product with variant
@@ -272,7 +272,7 @@ class OrderItemsService {
           'items.$.tax_total': 0,
           'items.$.weight': variant.weight || 0,
           'items.$.discount_total': 0,
-          'items.$.price_total': variantPrice * item.quantity
+          'items.$.price_total': variantPrice * item.quantity,
         };
       }
       // variant not exists
@@ -288,7 +288,7 @@ class OrderItemsService {
       'items.$.tax_total': 0,
       'items.$.weight': product.weight || 0,
       'items.$.discount_total': 0,
-      'items.$.price_total': product.price * item.quantity
+      'items.$.price_total': product.price * item.quantity,
     };
   }
 
@@ -315,14 +315,14 @@ class OrderItemsService {
     await ProductStockService.handleDeleteOrderItem(order_id, item_id);
     await mongo.db.collection('orders').updateOne(
       {
-        _id: orderObjectID
+        _id: orderObjectID,
       },
       {
         $pull: {
           items: {
-            id: itemObjectID
-          }
-        }
+            id: itemObjectID,
+          },
+        },
       }
     );
 
@@ -334,7 +334,7 @@ class OrderItemsService {
       id: new ObjectID(),
       product_id: parse.getObjectIDIfValid(data.product_id),
       variant_id: parse.getObjectIDIfValid(data.variant_id),
-      quantity: parse.getNumberIfPositive(data.quantity) || 1
+      quantity: parse.getNumberIfPositive(data.quantity) || 1,
     };
 
     if (data.custom_price) {

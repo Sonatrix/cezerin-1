@@ -6,11 +6,11 @@ import Form from './form';
 const mapStateToProps = (state, ownProps) => ({
   cart: state.app.cart,
   settings: state.app.settings,
-  themeSettings: state.app.themeSettings
+  themeSettings: state.app.themeSettings,
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  onLoad: () => {}
+  onLoad: () => {},
 });
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Form));

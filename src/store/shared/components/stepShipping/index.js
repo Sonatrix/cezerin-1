@@ -23,7 +23,7 @@ const mapStateToProps = (state, ownProps) => {
     initialValues: state.app.cart,
     settings: state.app.settings,
     checkoutFields: state.app.checkoutFields,
-    processingCheckout: state.app.processingCheckout
+    processingCheckout: state.app.processingCheckout,
   };
 };
 
@@ -36,7 +36,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   },
   finishCheckout: values => {
     dispatch(checkout(values, ownProps.history));
-  }
+  },
 });
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Form));

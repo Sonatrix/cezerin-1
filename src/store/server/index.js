@@ -15,7 +15,7 @@ const pageRendering = require('./pageRendering').default;
 
 const ADMIN_INDEX_PATH = path.resolve('public/admin/index.html');
 const STATIC_OPTIONS = {
-  maxAge: 31536000000 // One year
+  maxAge: 31536000000, // One year
 };
 
 app.set('trust proxy', 1);

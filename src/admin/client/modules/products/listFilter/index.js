@@ -3,7 +3,7 @@ import {fetchProducts, setFilter} from '../actions';
 import Filter from './components/filter';
 
 const mapStateToProps = state => ({
-  filter: state.products.filter
+  filter: state.products.filter,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -22,7 +22,7 @@ const mapDispatchToProps = dispatch => ({
   setStock: value => {
     dispatch(setFilter({stockStatus: value}));
     dispatch(fetchProducts());
-  }
+  },
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Filter);

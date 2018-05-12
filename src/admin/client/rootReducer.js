@@ -23,5 +23,5 @@ export default combineReducers({
   orderStatuses,
   pages,
   apps,
-  files
+  files,
 });

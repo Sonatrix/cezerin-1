@@ -161,7 +161,7 @@ class ProductCategoriesService {
     const category = {
       date_created: new Date(),
       date_updated: null,
-      image: ''
+      image: '',
     };
 
     category.name = parse.getString(data.name);
@@ -193,7 +193,7 @@ class ProductCategoriesService {
       }
 
       const category = {
-        date_updated: new Date()
+        date_updated: new Date(),
       };
 
       if (data.name !== undefined) {

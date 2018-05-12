@@ -39,7 +39,7 @@ export const getProductFilterForCategory = (locationSearch, sortBy) => {
     priceTo: parseInt(queryFilter.price_to || 0),
     attributes,
     search: null,
-    sort: sortBy
+    sort: sortBy,
   };
 };
 
@@ -51,7 +51,7 @@ export const getProductFilterForSearch = locationSearch => {
     priceFrom: parseInt(queryFilter.price_from || 0),
     priceTo: parseInt(queryFilter.price_to || 0),
     search: queryFilter.search,
-    sort: 'search'
+    sort: 'search',
   };
 };
 
@@ -67,7 +67,7 @@ export const getParsedProductFilter = productFilter => {
       sort: productFilter.sort,
       fields: productFilter.fields,
       limit: productFilter.limit,
-      offset: 0
+      offset: 0,
     },
     productFilter.attributes
   );
@@ -107,7 +107,7 @@ const requestMoreProducts = () => ({type: t.MORE_PRODUCTS_REQUEST});
 
 const receiveMoreProducts = products => ({
   type: t.MORE_PRODUCTS_RECEIVE,
-  products
+  products,
 });
 
 const requestPage = () => ({type: t.PAGE_REQUEST});
@@ -136,7 +136,7 @@ export const addCartItem = item => (dispatch, getState) => {
       dispatch(receiveCart(json));
       analytics.addCartItem({
         item,
-        cart: json
+        cart: json,
       });
     })
     .catch(error => {});
@@ -159,7 +159,7 @@ export const updateCartItemQuantiry = (item_id, quantity) => (
 };
 
 const requestUpdateCartItemQuantiry = () => ({
-  type: t.CART_ITEM_UPDATE_REQUEST
+  type: t.CART_ITEM_UPDATE_REQUEST,
 });
 
 export const deleteCartItem = item_id => (dispatch, getState) => {
@@ -172,7 +172,7 @@ export const deleteCartItem = item_id => (dispatch, getState) => {
       dispatch(fetchShippingMethods());
       analytics.deleteCartItem({
         itemId: item_id,
-        cart: app.cart
+        cart: app.cart,
       });
     })
     .catch(error => {});
@@ -194,7 +194,7 @@ const requestPaymentMethods = () => ({type: t.PAYMENT_METHODS_REQUEST});
 
 const receivePaymentMethods = methods => ({
   type: t.PAYMENT_METHODS_RECEIVE,
-  methods
+  methods,
 });
 
 export const fetchShippingMethods = () => (dispatch, getState) => {
@@ -211,7 +211,7 @@ const requestShippingMethods = () => ({type: t.SHIPPING_METHODS_REQUEST});
 
 const receiveShippingMethods = methods => ({
   type: t.SHIPPING_METHODS_RECEIVE,
-  methods
+  methods,
 });
 
 export const checkout = (cart, history) => (dispatch, getState) => {
@@ -227,7 +227,7 @@ export const checkout = (cart, history) => (dispatch, getState) => {
           mobile: cart.mobile,
           payment_method_id: cart.payment_method_id,
           shipping_method_id: cart.shipping_method_id,
-          comments: cart.comments
+          comments: cart.comments,
         })
       )
       .then(() => api.ajax.cart.checkout())
@@ -255,12 +255,12 @@ const receiveCheckout = order => ({type: t.CHECKOUT_RECEIVE, order});
 
 export const receiveSitemap = currentPage => ({
   type: t.SITEMAP_RECEIVE,
-  currentPage
+  currentPage,
 });
 
 export const setCurrentLocation = location => ({
   type: t.LOCATION_CHANGED,
-  location
+  location,
 });
 
 export const setCategory = categoryId => (dispatch, getState) => {
@@ -275,7 +275,7 @@ export const setCategory = categoryId => (dispatch, getState) => {
 
 const setCurrentCategory = category => ({
   type: t.SET_CURRENT_CATEGORY,
-  category
+  category,
 });
 
 export const setSort = sort => (dispatch, getState) => {
@@ -285,13 +285,13 @@ export const setSort = sort => (dispatch, getState) => {
 
 const setProductsFilter = filter => ({
   type: t.SET_PRODUCTS_FILTER,
-  filter
+  filter,
 });
 
 export const updateCartShippingCountry = country => (dispatch, getState) =>
   [
     api.ajax.cart.updateShippingAddress({country}),
-    api.ajax.cart.update({payment_method_id: null, shipping_method_id: null})
+    api.ajax.cart.update({payment_method_id: null, shipping_method_id: null}),
   ]
     .reduce((p, fn) => p.then(() => fn), Promise.resolve())
     .then(({status, json}) => {
@@ -304,7 +304,7 @@ export const updateCartShippingCountry = country => (dispatch, getState) =>
 export const updateCartShippingState = state => (dispatch, getState) =>
   [
     api.ajax.cart.updateShippingAddress({state}),
-    api.ajax.cart.update({payment_method_id: null, shipping_method_id: null})
+    api.ajax.cart.update({payment_method_id: null, shipping_method_id: null}),
   ]
     .reduce((p, fn) => p.then(() => fn), Promise.resolve())
     .then(({status, json}) => {
@@ -317,7 +317,7 @@ export const updateCartShippingState = state => (dispatch, getState) =>
 export const updateCartShippingCity = city => (dispatch, getState) =>
   [
     api.ajax.cart.updateShippingAddress({city}),
-    api.ajax.cart.update({payment_method_id: null, shipping_method_id: null})
+    api.ajax.cart.update({payment_method_id: null, shipping_method_id: null}),
   ]
     .reduce((p, fn) => p.then(() => fn), Promise.resolve())
     .then(({status, json}) => {
@@ -350,7 +350,7 @@ export const analyticsSetShippingMethod = method_id => (dispatch, getState) => {
   const {app} = getState();
   analytics.setShippingMethod({
     methodId: method_id,
-    allMethods: app.shippingMethods
+    allMethods: app.shippingMethods,
   });
 };
 
@@ -358,7 +358,7 @@ export const analyticsSetPaymentMethod = method_id => (dispatch, getState) => {
   const {app} = getState();
   analytics.setPaymentMethod({
     methodId: method_id,
-    allMethods: app.paymentMethods
+    allMethods: app.paymentMethods,
   });
 };
 
@@ -366,8 +366,8 @@ export const updateCart = cart => (dispatch, getState) =>
   [
     api.ajax.cart.update({
       email: cart.email,
-      mobile: cart.mobile
-    })
+      mobile: cart.mobile,
+    }),
   ]
     .reduce((p, fn) => p.then(() => fn), Promise.resolve())
     .then(({status, json}) => {
@@ -379,7 +379,7 @@ export const updateShipping = cart => (dispatch, getState) =>
   [
     api.ajax.cart.updateShippingAddress(cart.shipping_address),
     api.ajax.cart.updateBillingAddress(cart.billing_address),
-    api.ajax.cart.update({comments: cart.comments})
+    api.ajax.cart.update({comments: cart.comments}),
   ]
     .reduce((p, fn) => p.then(() => fn), Promise.resolve())
     .then(({status, json}) => {
@@ -420,7 +420,7 @@ export const setCurrentPage = location => (dispatch, getState) => {
         hasHistory: true,
         pathname: locationPathname,
         search: locationSearch,
-        hash: locationHash
+        hash: locationHash,
       })
     );
 
@@ -429,7 +429,7 @@ export const setCurrentPage = location => (dispatch, getState) => {
       const newCurrentPage = {
         type: 'product-category',
         path: category.path,
-        resource: category.id
+        resource: category.id,
       };
       dispatch(receiveSitemap(newCurrentPage)); // remove .data
       dispatch(fetchDataOnCurrentPageChange(newCurrentPage));
@@ -442,7 +442,7 @@ export const setCurrentPage = location => (dispatch, getState) => {
               receiveSitemap({
                 type: 404,
                 path: locationPathname,
-                resource: null
+                resource: null,
               })
             );
           } else {
@@ -464,7 +464,7 @@ const fetchDataOnCurrentPageChange = currentPage => (dispatch, getState) => {
 
   analytics.pageView({
     path: currentPage.path,
-    title: '-'
+    title: '-',
   });
 
   switch (currentPage.type) {

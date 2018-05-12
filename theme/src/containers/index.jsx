@@ -1,14 +1,11 @@
-import React from 'react';
-import {themeSettings, text} from '../lib/settings';
+import React, {Fragment} from 'react';
+import {themeSettings} from '../lib/settings';
 import MetaTags from '../components/metaTags';
-import CategoryGallery from '../components/categoryGallery';
-import CustomProducts from '../components/products/custom';
+import {CustomProducts} from '../components/products/custom';
 import HomeSlider from '../components/homeSlider';
 
-const Fragment = React.Fragment;
-
 const IndexContainer = props => {
-  const {pageDetails, categories, settings} = props.state;
+  const {pageDetails, settings} = props.state;
   const {addCartItem} = props;
 
   return (
@@ -29,8 +26,9 @@ const IndexContainer = props => {
             <div className="container">
               <div className="content">
                 <div
+                  /* eslint-disable-next-line */
                   dangerouslySetInnerHTML={{
-                    __html: pageDetails.content
+                    __html: pageDetails.content,
                   }}
                 />
               </div>

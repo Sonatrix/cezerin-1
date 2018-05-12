@@ -25,7 +25,11 @@ module.exports = {
     'react/jsx-indent-props':'off',
     'react/jsx-max-props-per-line':'off',
     'react/jsx-tag-spacing':'off',
-    'react/jsx-wrap-multilines':'off'
+    'react/jsx-wrap-multilines':'off',
+    "import/extensions": "never",
+    "no-dynamic-require": 0,
+    "import/no-extraneous-dependencies": 'off',
+    "react/prop-types": 'off'
   },
   'parserOptions': {
     'ecmaFeatures': {

@@ -38,7 +38,7 @@ class CustomersService {
       filter.$or = [
         {email: new RegExp(params.search, 'i')},
         {mobile: new RegExp(params.search, 'i')},
-        {$text: {$search: params.search}}
+        {$text: {$search: params.search}},
       ];
     }
 
@@ -62,7 +62,7 @@ class CustomersService {
       mongo.db
         .collection('customers')
         .find(filter)
-        .count()
+        .count(),
     ]).then(([customerGroups, customers, customersCount]) => {
       const items = customers.map(customer =>
         this.changeProperties(customer, customerGroups)
@@ -70,7 +70,7 @@ class CustomersService {
       const result = {
         total_count: customersCount,
         has_more: offset + items.length < customersCount,
-        data: items
+        data: items,
       };
       return result;
     });
@@ -105,7 +105,7 @@ class CustomersService {
     const newCustomer = await this.getSingleCustomer(newCustomerId);
     await webhooks.trigger({
       event: webhooks.events.CUSTOMER_CREATED,
-      payload: newCustomer
+      payload: newCustomer,
     });
     return newCustomer;
   }
@@ -121,9 +121,9 @@ class CustomersService {
     if (customer.email && customer.email.length > 0) {
       const customerCount = await mongo.db.collection('customers').count({
         _id: {
-          $ne: customerObjectID
+          $ne: customerObjectID,
         },
-        email: customer.email
+        email: customer.email,
       });
 
       if (customerCount > 0) {
@@ -133,17 +133,17 @@ class CustomersService {
 
     await mongo.db.collection('customers').updateOne(
       {
-        _id: customerObjectID
+        _id: customerObjectID,
       },
       {
-        $set: customer
+        $set: customer,
       }
     );
 
     const updatedCustomer = await this.getSingleCustomer(id);
     await webhooks.trigger({
       event: webhooks.events.CUSTOMER_UPDATED,
-      payload: updatedCustomer
+      payload: updatedCustomer,
     });
     return updatedCustomer;
   }
@@ -155,7 +155,7 @@ class CustomersService {
     const customerObjectID = new ObjectID(customerId);
     const customerData = {
       total_spent: totalSpent,
-      orders_count: ordersCount
+      orders_count: ordersCount,
     };
 
     return mongo.db
@@ -174,7 +174,7 @@ class CustomersService {
       .deleteOne({_id: customerObjectID});
     await webhooks.trigger({
       event: webhooks.events.CUSTOMER_DELETED,
-      payload: customer
+      payload: customer,
     });
     return deleteResponse.deletedCount > 0;
   }
@@ -184,7 +184,7 @@ class CustomersService {
       date_created: new Date(),
       date_updated: null,
       total_spent: 0,
-      orders_count: 0
+      orders_count: 0,
     };
 
     customer.note = parse.getString(data.note);
@@ -219,7 +219,7 @@ class CustomersService {
     }
 
     const customer = {
-      date_updated: new Date()
+      date_updated: new Date(),
     };
 
     if (data.note !== undefined) {
@@ -313,12 +313,12 @@ class CustomersService {
 
     return mongo.db.collection('customers').updateOne(
       {
-        _id: customerObjectID
+        _id: customerObjectID,
       },
       {
         $push: {
-          addresses: validAddress
-        }
+          addresses: validAddress,
+        },
       }
     );
   }
@@ -404,7 +404,7 @@ class CustomersService {
     return mongo.db.collection('customers').updateOne(
       {
         _id: customerObjectID,
-        'addresses.id': addressObjectID
+        'addresses.id': addressObjectID,
       },
       {$set: addressFields}
     );
@@ -419,14 +419,14 @@ class CustomersService {
 
     return mongo.db.collection('customers').updateOne(
       {
-        _id: customerObjectID
+        _id: customerObjectID,
       },
       {
         $pull: {
           addresses: {
-            id: addressObjectID
-          }
-        }
+            id: addressObjectID,
+          },
+        },
       }
     );
   }
@@ -443,24 +443,24 @@ class CustomersService {
       .updateOne(
         {
           _id: customerObjectID,
-          'addresses.default_billing': true
+          'addresses.default_billing': true,
         },
         {
           $set: {
-            'addresses.$.default_billing': false
-          }
+            'addresses.$.default_billing': false,
+          },
         }
       )
       .then(res =>
         mongo.db.collection('customers').updateOne(
           {
             _id: customerObjectID,
-            'addresses.id': addressObjectID
+            'addresses.id': addressObjectID,
           },
           {
             $set: {
-              'addresses.$.default_billing': true
-            }
+              'addresses.$.default_billing': true,
+            },
           }
         )
       );
@@ -478,24 +478,24 @@ class CustomersService {
       .updateOne(
         {
           _id: customerObjectID,
-          'addresses.default_shipping': true
+          'addresses.default_shipping': true,
         },
         {
           $set: {
-            'addresses.$.default_shipping': false
-          }
+            'addresses.$.default_shipping': false,
+          },
         }
       )
       .then(res =>
         mongo.db.collection('customers').updateOne(
           {
             _id: customerObjectID,
-            'addresses.id': addressObjectID
+            'addresses.id': addressObjectID,
           },
           {
             $set: {
-              'addresses.$.default_shipping': true
-            }
+              'addresses.$.default_shipping': true,
+            },
           }
         )
       );

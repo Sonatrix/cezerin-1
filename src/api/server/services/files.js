@@ -15,7 +15,7 @@ class FilesService {
       return {
         file: fileName,
         size: stats.size,
-        modified: stats.mtime
+        modified: stats.mtime,
       };
     }
     return null;

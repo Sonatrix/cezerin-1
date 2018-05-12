@@ -1,9 +1,7 @@
-import React from 'react';
-import {themeSettings, text} from '../lib/settings';
-import Header from '../components/header';
-import Footer from '../components/footer';
-
-const Fragment = React.Fragment;
+import React, {Fragment} from 'react';
+import {themeSettings} from '../lib/settings';
+import {Header} from '../components/header';
+import {Footer} from '../components/footer';
 
 const SharedContainer = props => {
   const {currentPage, settings} = props.state;

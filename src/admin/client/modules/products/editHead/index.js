@@ -5,14 +5,14 @@ import {deleteCurrentProduct} from '../actions';
 import Buttons from './components/buttons';
 
 const mapStateToProps = (state, ownProps) => ({
-  product: state.products.editProduct
+  product: state.products.editProduct,
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   onDelete: () => {
     dispatch(deleteCurrentProduct());
     ownProps.history.push('/admin/products');
-  }
+  },
 });
 
 export default withRouter(

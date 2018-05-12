@@ -4,7 +4,7 @@ import {
   setFilterActive,
   setFilterDiscontinued,
   setFilterOnSale,
-  setFilterStock
+  setFilterStock,
 } from '../actions';
 import Filter from './components/fields';
 
@@ -12,7 +12,7 @@ const mapStateToProps = state => ({
   active: state.products.filter_active,
   discontinued: state.products.filter_discontinued,
   on_sale: state.products.filter_on_sale,
-  stock_status: state.products.filter_stock_status
+  stock_status: state.products.filter_stock_status,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -31,7 +31,7 @@ const mapDispatchToProps = dispatch => ({
   setStock: value => {
     dispatch(setFilterStock(value));
     dispatch(fetchProducts());
-  }
+  },
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Filter);

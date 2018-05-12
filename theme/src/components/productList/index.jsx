@@ -1,9 +1,6 @@
-import React from 'react';
-import {themeSettings, text} from '../../lib/settings';
+import React, {Fragment} from 'react';
 import Item from './item';
 import LoadMore from './loadMore';
-
-const Fragment = React.Fragment;
 
 const ProductList = ({
   products,
@@ -14,17 +11,13 @@ const ProductList = ({
   loadingProducts,
   loadingMoreProducts,
   isCentered,
-  className,
+  className = 'columns is-multiline is-mobile products',
   columnCountOnMobile,
   columnCountOnTablet,
   columnCountOnDesktop,
   columnCountOnWidescreen,
-  columnCountOnFullhd
+  columnCountOnFullhd,
 }) => {
-  if (!className || className === '') {
-    className = 'columns is-multiline is-mobile products';
-  }
-
   const items = products
     ? products.map((product, index) => (
         <Item

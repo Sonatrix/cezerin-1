@@ -4,7 +4,7 @@ import Form from './components/form';
 
 const mapStateToProps = (state, ownProps) => ({
   gateway: ownProps.gateway,
-  initialValues: state.settings.paymentGatewayEdit
+  initialValues: state.settings.paymentGatewayEdit,
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
@@ -13,7 +13,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   },
   onSubmit: data => {
     dispatch(updatePaymentGateway(ownProps.gateway, data));
-  }
+  },
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Form);

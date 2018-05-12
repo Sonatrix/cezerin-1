@@ -6,7 +6,7 @@ const mapStateToProps = (state, ownProps) => {
   const {pageId} = ownProps.match.params;
   return {
     pageId,
-    initialValues: state.pages.pageEdit
+    initialValues: state.pages.pageEdit,
   };
 };
 
@@ -29,7 +29,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   },
   eraseData: () => {
     dispatch(receivePage(null));
-  }
+  },
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Form);

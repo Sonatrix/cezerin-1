@@ -15,7 +15,7 @@ const initialState = {
     date_format: 'MMMM D, YYYY',
     time_format: 'h:mm a',
     weight_unit: 'kg',
-    length_unit: 'cm'
+    length_unit: 'cm',
   },
   emailSettings: null,
   emailTemplate: null,
@@ -32,7 +32,7 @@ const initialState = {
   webhooks: [],
   webhookEdit: {},
   themeSettings: null,
-  themeSettingsSchema: null
+  themeSettingsSchema: null,
 };
 
 export default (state = initialState, action) => {
@@ -55,23 +55,23 @@ export default (state = initialState, action) => {
       return Object.assign({}, state, {emailTemplate: action.emailTemplate});
     case t.SHIPPING_METHODS_RECEIVE:
       return Object.assign({}, state, {
-        shippingMethods: action.shippingMethods
+        shippingMethods: action.shippingMethods,
       });
     case t.PAYMENT_METHODS_RECEIVE:
       return Object.assign({}, state, {
-        paymentMethods: action.paymentMethods
+        paymentMethods: action.paymentMethods,
       });
     case t.SHIPPING_METHOD_RECEIVE:
       return Object.assign({}, state, {
-        shippingMethodEdit: action.shippingMethodEdit
+        shippingMethodEdit: action.shippingMethodEdit,
       });
     case t.PAYMENT_METHOD_RECEIVE:
       return Object.assign({}, state, {
-        paymentMethodEdit: action.paymentMethodEdit
+        paymentMethodEdit: action.paymentMethodEdit,
       });
     case t.PAYMENT_GATEWAY_RECEIVE:
       return Object.assign({}, state, {
-        paymentGatewayEdit: action.paymentGatewayEdit
+        paymentGatewayEdit: action.paymentGatewayEdit,
       });
     case t.CHECKOUT_FIELD_REQUEST:
       return Object.assign({}, state, {checkoutField: null});
@@ -79,14 +79,14 @@ export default (state = initialState, action) => {
       return Object.assign({}, state, {checkoutField: action.checkoutField});
     case t.CHECKOUT_FIELDS_RECEIVE:
       return Object.assign({}, state, {
-        checkoutFields: action.checkoutFields
+        checkoutFields: action.checkoutFields,
       });
     case t.TOKENS_RECEIVE:
       return Object.assign({}, state, {tokens: action.tokens});
     case t.TOKEN_RECEIVE:
       return Object.assign({}, state, {
         tokenEdit: action.tokenEdit,
-        newToken: null
+        newToken: null,
       });
     case t.NEW_TOKEN_RECEIVE:
       return Object.assign({}, state, {newToken: action.newToken});
