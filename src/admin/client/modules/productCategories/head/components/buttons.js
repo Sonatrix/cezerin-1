@@ -1,7 +1,7 @@
-import React from 'react'
-import messages from 'lib/text'
-import CategorySelect from 'modules/productCategories/select'
-import DeleteConfirmation from 'modules/shared/deleteConfirmation'
+import React from 'react';
+import messages from 'lib/text';
+import CategorySelect from 'modules/productCategories/select';
+import DeleteConfirmation from 'modules/shared/deleteConfirmation';
 import FontIcon from 'material-ui/FontIcon';
 import IconMenu from 'material-ui/IconMenu';
 import IconButton from 'material-ui/IconButton';
@@ -17,7 +17,7 @@ export default class Buttons extends React.Component {
     this.state = {
       categoryIdMoveTo: 'root',
       openMoveTo: false,
-      openDelete: false,
+      openDelete: false
     };
   }
 
@@ -47,43 +47,74 @@ export default class Buttons extends React.Component {
     this.props.onMoveTo(this.state.categoryIdMoveTo);
   };
 
-  selectMoveTo = (categoryId) => {
+  selectMoveTo = categoryId => {
     this.setState({categoryIdMoveTo: categoryId});
-  }
+  };
 
   render() {
-    const { selected, onMoveUp, onMoveDown, onDelete, onCreate } = this.props;
-    const categoryName = selected && selected.name && selected.name.length > 0 ? selected.name : 'Draft';
+    const {selected, onMoveUp, onMoveDown, onDelete, onCreate} = this.props;
+    const categoryName =
+      selected && selected.name && selected.name.length > 0
+        ? selected.name
+        : 'Draft';
 
     const actionsMoveTo = [
       <FlatButton
         label={messages.cancel}
         onClick={this.closeMoveTo}
-        style={{ marginRight: 10 }}
+        style={{marginRight: 10}}
       />,
       <FlatButton
         label={messages.actions_moveHere}
         primary={true}
         keyboardFocused={true}
         onClick={this.saveMoveTo}
-      />,
+      />
     ];
 
     return (
       <span>
-        {selected &&
+        {selected && (
           <Fragment>
-            <IconButton touch={true} tooltipPosition="bottom-left" tooltip={messages.actions_moveUp} onClick={onMoveUp}>
-              <FontIcon color="#fff" className="material-icons">arrow_upward</FontIcon>
+            <IconButton
+              touch={true}
+              tooltipPosition="bottom-left"
+              tooltip={messages.actions_moveUp}
+              onClick={onMoveUp}
+            >
+              <FontIcon color="#fff" className="material-icons">
+                arrow_upward
+              </FontIcon>
             </IconButton>
-            <IconButton touch={true} tooltipPosition="bottom-left" tooltip={messages.actions_moveDown} onClick={onMoveDown}>
-              <FontIcon color="#fff" className="material-icons">arrow_downward</FontIcon>
+            <IconButton
+              touch={true}
+              tooltipPosition="bottom-left"
+              tooltip={messages.actions_moveDown}
+              onClick={onMoveDown}
+            >
+              <FontIcon color="#fff" className="material-icons">
+                arrow_downward
+              </FontIcon>
             </IconButton>
-            <IconButton touch={true} tooltipPosition="bottom-left" tooltip={messages.actions_delete} onClick={this.showDelete}>
-              <FontIcon color="#fff" className="material-icons">delete</FontIcon>
+            <IconButton
+              touch={true}
+              tooltipPosition="bottom-left"
+              tooltip={messages.actions_delete}
+              onClick={this.showDelete}
+            >
+              <FontIcon color="#fff" className="material-icons">
+                delete
+              </FontIcon>
             </IconButton>
-            <IconButton touch={true} tooltipPosition="bottom-left" tooltip={messages.actions_moveTo} onClick={this.showMoveTo}>
-              <FontIcon color="#fff" className="material-icons">folder</FontIcon>
+            <IconButton
+              touch={true}
+              tooltipPosition="bottom-left"
+              tooltip={messages.actions_moveTo}
+              onClick={this.showMoveTo}
+            >
+              <FontIcon color="#fff" className="material-icons">
+                folder
+              </FontIcon>
             </IconButton>
             <Dialog
               title={messages.actions_moveTo}
@@ -109,11 +140,18 @@ export default class Buttons extends React.Component {
               onDelete={this.deleteCategory}
             />
           </Fragment>
-        }
-        <IconButton touch={true} tooltipPosition="bottom-left" tooltip={messages.productCategories_titleAdd} onClick={onCreate}>
-          <FontIcon color="#fff" className="material-icons">add</FontIcon>
+        )}
+        <IconButton
+          touch={true}
+          tooltipPosition="bottom-left"
+          tooltip={messages.productCategories_titleAdd}
+          onClick={onCreate}
+        >
+          <FontIcon color="#fff" className="material-icons">
+            add
+          </FontIcon>
         </IconButton>
       </span>
-    )
+    );
   }
 }

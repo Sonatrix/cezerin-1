@@ -1,0 +1,6 @@
+dist/*
+theme/dist/*
+public/*
+theme/assets/js/app-*
+theme/assets/js/theme-*
+theme/assets/css/bundle-*

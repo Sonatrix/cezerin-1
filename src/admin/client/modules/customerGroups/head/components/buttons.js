@@ -1,6 +1,6 @@
-import React from 'react'
-import messages from 'lib/text'
-import DeleteConfirmation from 'modules/shared/deleteConfirmation'
+import React from 'react';
+import messages from 'lib/text';
+import DeleteConfirmation from 'modules/shared/deleteConfirmation';
 import FontIcon from 'material-ui/FontIcon';
 import IconMenu from 'material-ui/IconMenu';
 import IconButton from 'material-ui/IconButton';
@@ -14,7 +14,7 @@ export default class Buttons extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      openDelete: false,
+      openDelete: false
     };
   }
 
@@ -32,15 +32,25 @@ export default class Buttons extends React.Component {
   };
 
   render() {
-    const { selected, onDelete, onCreate } = this.props;
-    const groupName = selected && selected.name && selected.name.length > 0 ? selected.name : 'Draft';
+    const {selected, onDelete, onCreate} = this.props;
+    const groupName =
+      selected && selected.name && selected.name.length > 0
+        ? selected.name
+        : 'Draft';
 
     return (
       <span>
-        {selected &&
+        {selected && (
           <Fragment>
-            <IconButton touch={true} tooltip={messages.actions_delete} tooltipPosition="bottom-left" onClick={this.showDelete}>
-              <FontIcon color="#fff" className="material-icons">delete</FontIcon>
+            <IconButton
+              touch={true}
+              tooltip={messages.actions_delete}
+              tooltipPosition="bottom-left"
+              onClick={this.showDelete}
+            >
+              <FontIcon color="#fff" className="material-icons">
+                delete
+              </FontIcon>
             </IconButton>
             <DeleteConfirmation
               open={this.state.openDelete}
@@ -51,11 +61,18 @@ export default class Buttons extends React.Component {
               onDelete={this.deleteGroup}
             />
           </Fragment>
-        }
-        <IconButton touch={true} tooltipPosition="bottom-left" tooltip={messages.customerGroups_titleAdd} onClick={onCreate}>
-          <FontIcon color="#fff" className="material-icons">add</FontIcon>
+        )}
+        <IconButton
+          touch={true}
+          tooltipPosition="bottom-left"
+          tooltip={messages.customerGroups_titleAdd}
+          onClick={onCreate}
+        >
+          <FontIcon color="#fff" className="material-icons">
+            add
+          </FontIcon>
         </IconButton>
       </span>
-    )
+    );
   }
 }

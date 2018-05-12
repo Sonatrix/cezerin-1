@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import List from 'modules/files/list';
 
 export default () => (
@@ -7,4 +7,4 @@ export default () => (
       <List />
     </div>
   </div>
-)
+);

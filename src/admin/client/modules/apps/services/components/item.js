@@ -1,7 +1,7 @@
 import React from 'react';
-import { Link } from 'react-router-dom'
-import messages from 'lib/text'
-import style from './style.css'
+import {Link} from 'react-router-dom';
+import messages from 'lib/text';
+import style from './style.css';
 import {Card, CardMedia, CardTitle} from 'material-ui/Card';
 import FontIcon from 'material-ui/FontIcon';
 
@@ -34,32 +34,39 @@ const styles = {
   link: {
     textDecoration: 'none'
   }
-}
+};
 
-const Item = ({ path, coverUrl, title, developer, enabled }) => {
-  return (
-    <Link to={path} style={styles.link}>
-      <Card style={styles.card} containerStyle={styles.textContainer} className={style.card}>
-        <CardMedia
-          className={style.servicesCover}
-          style={{ backgroundImage: `url(${coverUrl})` }}>
-        </CardMedia>
-        <CardTitle
-          title={title}
-          subtitle={
-            <div>
-              {developer}
-              {enabled &&
-                <FontIcon style={{ color: '#FF9900', float: 'right' }} className="material-icons">check_circle</FontIcon>
-              }
-            </div>
-          }
-          titleStyle={styles.title}
-          subtitleStyle={styles.subtitle}
-        />
-      </Card>
-    </Link>
-  )
-}
+const Item = ({path, coverUrl, title, developer, enabled}) => (
+  <Link to={path} style={styles.link}>
+    <Card
+      style={styles.card}
+      containerStyle={styles.textContainer}
+      className={style.card}
+    >
+      <CardMedia
+        className={style.servicesCover}
+        style={{backgroundImage: `url(${coverUrl})`}}
+      />
+      <CardTitle
+        title={title}
+        subtitle={
+          <div>
+            {developer}
+            {enabled && (
+              <FontIcon
+                style={{color: '#FF9900', float: 'right'}}
+                className="material-icons"
+              >
+                check_circle
+              </FontIcon>
+            )}
+          </div>
+        }
+        titleStyle={styles.title}
+        subtitleStyle={styles.subtitle}
+      />
+    </Card>
+  </Link>
+);
 
 export default Item;

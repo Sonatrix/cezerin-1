@@ -65,7 +65,7 @@ header {
     z-index: 1003;
     padding-top: 0;
     border-bottom: none;
-    box-shadow: 0px 0px 1px 1px rgba(0,0,0,0.20);
+    box-shadow: 0px 0px 1px 1px rgba(0, 0, 0, 0.2);
     transition: height 200ms ease-in-out;
   }
 
@@ -87,7 +87,6 @@ header {
     height: 3.25rem;
   }
 }
-
 
 /*
 DESKTOP
@@ -257,10 +256,11 @@ body.search-active .mobile-nav {
 }
 
 .search-box.has-focus {
-  box-shadow: 0 2px 2px 0 rgba(0,0,0,0.16), 0 0 0 1px rgba(0,0,0,0.08);
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.16), 0 0 0 1px rgba(0, 0, 0, 0.08);
 }
 
-.search-icon-search, .search-icon-clear {
+.search-icon-search,
+.search-icon-clear {
   cursor: pointer;
   position: absolute;
   width: 14px;

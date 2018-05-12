@@ -1,8 +1,8 @@
-import React from 'react'
-import messages from 'lib/text'
-import api from 'lib/api'
-import TextField from 'material-ui/TextField'
-import RaisedButton from 'material-ui/RaisedButton'
+import React from 'react';
+import messages from 'lib/text';
+import api from 'lib/api';
+import TextField from 'material-ui/TextField';
+import RaisedButton from 'material-ui/RaisedButton';
 
 export const Description = {
   key: 'facebook-customer-chat',
@@ -32,42 +32,52 @@ export class App extends React.Component {
   }
 
   handlePageIdChange = event => {
-    this.setState({ pageId: event.target.value });
+    this.setState({pageId: event.target.value});
   };
 
   handleMinimizedChange = event => {
-    this.setState({ minimized: event.target.value });
+    this.setState({minimized: event.target.value});
   };
 
   fetchSettings = () => {
-    api.apps.settings.retrieve('facebook-customer-chat')
-    .then(({status, json}) => {
-      const appSettings = json;
-      if(appSettings){
-        this.setState({
-          pageId: appSettings.pageId,
-          minimized: appSettings.minimized
-        });
-      }
-    })
-    .catch(error => {
-      console.log(error);
-    })
-  }
+    api.apps.settings
+      .retrieve('facebook-customer-chat')
+      .then(({status, json}) => {
+        const appSettings = json;
+        if (appSettings) {
+          this.setState({
+            pageId: appSettings.pageId,
+            minimized: appSettings.minimized
+          });
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
 
   updateSettings = () => {
-    const { pageId, minimized } = this.state;
-    const htmlCode = pageId && pageId.length > 0 ? CHAT_CODE.replace(/PAGE_ID/g, pageId).replace(/IS_MINIMIZED/g, minimized) : '';
+    const {pageId, minimized} = this.state;
+    const htmlCode =
+      pageId && pageId.length > 0
+        ? CHAT_CODE.replace(/PAGE_ID/g, pageId).replace(
+            /IS_MINIMIZED/g,
+            minimized
+          )
+        : '';
 
-    api.apps.settings.update('facebook-customer-chat', { pageId: pageId, minimized: minimized });
+    api.apps.settings.update('facebook-customer-chat', {
+      pageId: pageId,
+      minimized: minimized
+    });
     api.theme.placeholders.update('facebook-customer-chat', {
       place: 'body_end',
       value: htmlCode
     });
-  }
+  };
 
   componentDidMount() {
-    this.fetchSettings()
+    this.fetchSettings();
   }
 
   render() {
@@ -90,7 +100,7 @@ export class App extends React.Component {
           hintText="false"
         />
 
-        <div style={{ textAlign: 'right' }}>
+        <div style={{textAlign: 'right'}}>
           <RaisedButton
             label={messages.save}
             primary={true}
@@ -99,6 +109,6 @@ export class App extends React.Component {
           />
         </div>
       </div>
-    )
+    );
   }
 }

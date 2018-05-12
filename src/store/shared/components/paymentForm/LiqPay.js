@@ -1,6 +1,6 @@
-import React from 'react'
-import text from '../../text'
-import { formatCurrency } from '../../lib/helper'
+import React from 'react';
+import text from '../../text';
+import {formatCurrency} from '../../lib/helper';
 
 let scriptAdded = false;
 export default class PayPalButton extends React.Component {
@@ -23,27 +23,30 @@ export default class PayPalButton extends React.Component {
     };
     container.appendChild(script);
     scriptAdded = true;
-  }
+  };
 
   executeScript = () => {
-    const { formSettings, shopSettings, onPayment } = this.props;
+    const {formSettings, shopSettings, onPayment} = this.props;
 
     LiqPayCheckout.init({
       data: formSettings.data,
       signature: formSettings.signature,
       language: formSettings.language,
-      embedTo: "#liqpay_checkout",
-      mode: "embed"
-       }).on("liqpay.callback", function(data){
-        if(data.status === 'success'){
+      embedTo: '#liqpay_checkout',
+      mode: 'embed'
+    })
+      .on('liqpay.callback', function(data) {
+        if (data.status === 'success') {
           onPayment();
         }
-      }).on("liqpay.ready", function(data){
+      })
+      .on('liqpay.ready', function(data) {
         // ready
-      }).on("liqpay.close", function(data){
+      })
+      .on('liqpay.close', function(data) {
         // close
-    });
-  }
+      });
+  };
 
   componentDidMount() {
     this.addScript();
@@ -54,12 +57,12 @@ export default class PayPalButton extends React.Component {
   }
 
   render() {
-    const { formSettings, shopSettings, onPayment } = this.props;
+    const {formSettings, shopSettings, onPayment} = this.props;
 
     return (
       <div>
-        <div id="liqpay_checkout"></div>
+        <div id="liqpay_checkout" />
       </div>
-    )
+    );
   }
 }

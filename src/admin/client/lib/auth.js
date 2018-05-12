@@ -1,19 +1,19 @@
-import settings from './settings'
-import api from './api'
-import messages from './text'
+import settings from './settings';
+import api from './api';
+import messages from './text';
 
 const LOGIN_PATH = '/admin/login';
 const HOME_PATH = '/admin/';
 
 const getParameterByName = (name, url) => {
-    if (!url) url = window.location.href;
-    name = name.replace(/[\[\]]/g, "\\$&");
-    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
-        results = regex.exec(url);
-    if (!results) return null;
-    if (!results[2]) return '';
-    return decodeURIComponent(results[2].replace(/\+/g, " "));
-}
+  if (!url) url = window.location.href;
+  name = name.replace(/[\[\]]/g, '\\$&');
+  let regex = new RegExp(`[?&]${name}(=([^&#]*)|&|#|$)`),
+    results = regex.exec(url);
+  if (!results) return null;
+  if (!results[2]) return '';
+  return decodeURIComponent(results[2].replace(/\+/g, ' '));
+};
 
 export const validateCurrentToken = () => {
   if (location.pathname !== LOGIN_PATH) {
@@ -21,7 +21,7 @@ export const validateCurrentToken = () => {
       location.replace(LOGIN_PATH);
     }
   }
-}
+};
 
 export const checkTokenFromUrl = () => {
   if (location.pathname === LOGIN_PATH) {
@@ -40,15 +40,13 @@ export const checkTokenFromUrl = () => {
       } else {
         alert(messages.tokenInvalid);
       }
-    } else {
-      if (isCurrentTokenValid()) {
-        location.replace(HOME_PATH);
-      }
+    } else if (isCurrentTokenValid()) {
+      location.replace(HOME_PATH);
     }
   }
-}
+};
 
-const parseJWT = (jwt) => {
+const parseJWT = jwt => {
   try {
     const payload = jwt.split('.')[1];
     const tokenData = JSON.parse(atob(payload));
@@ -56,18 +54,22 @@ const parseJWT = (jwt) => {
   } catch (e) {
     return null;
   }
-}
+};
 
-const saveToken = (data) => {
+const saveToken = data => {
   localStorage.setItem('dashboard_token', data.token);
   localStorage.setItem('dashboard_email', data.email);
   localStorage.setItem('dashboard_exp', data.expiration_date);
-}
+};
 
 const isCurrentTokenValid = () => {
   const expiration_date = localStorage.getItem('dashboard_exp');
-  return localStorage.getItem('dashboard_token') && expiration_date && expiration_date > Date.now();
-}
+  return (
+    localStorage.getItem('dashboard_token') &&
+    expiration_date &&
+    expiration_date > Date.now()
+  );
+};
 
 export const removeToken = () => {
   localStorage.removeItem('dashboard_token');
@@ -77,4 +79,4 @@ export const removeToken = () => {
   localStorage.removeItem('webstore_email');
   localStorage.removeItem('webstore_exp');
   location.replace(LOGIN_PATH);
-}
+};

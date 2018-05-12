@@ -1,4 +1,4 @@
-import * as t from './actionTypes'
+import * as t from './actionTypes';
 
 const initialState = {
   editOrder: null,
@@ -36,71 +36,70 @@ export default (state = initialState, action) => {
     case t.ORDERS_REQUEST:
       return Object.assign({}, state, {
         loadingItems: true
-      })
+      });
     case t.ORDERS_RECEIVE:
       return Object.assign({}, state, {
         loadingItems: false,
         hasMore: action.has_more,
         totalCount: action.total_count,
         items: action.data
-      })
+      });
     case t.ORDERS_FAILURE:
       return Object.assign({}, state, {
         loadingItems: false,
         errorLoadingItems: action.error
-      })
+      });
     case t.ORDERS_SELECT:
       return Object.assign({}, state, {
         selected: [...state.selected, action.orderId]
-      })
+      });
     case t.ORDERS_DESELECT:
       return Object.assign({}, state, {
         selected: state.selected.filter(id => id !== action.orderId)
-      })
+      });
     case t.ORDERS_DESELECT_ALL:
       return Object.assign({}, state, {
         selected: []
-      })
+      });
     case t.ORDERS_SELECT_ALL:
-      let selected = state.items.map(item => item.id);
+      const selected = state.items.map(item => item.id);
       return Object.assign({}, state, {
-        selected: selected
-      })
+        selected
+      });
     case t.ORDERS_SET_FILTER:
-      const newFilter = Object.assign({}, state.filter, action.filter)
+      const newFilter = Object.assign({}, state.filter, action.filter);
       return Object.assign({}, state, {
         filter: newFilter
-      })
+      });
     case t.ORDERS_MORE_REQUEST:
       return Object.assign({}, state, {
         loadingItems: true
-      })
+      });
     case t.ORDERS_MORE_RECEIVE:
       return Object.assign({}, state, {
         loadingItems: false,
         hasMore: action.has_more,
         totalCount: action.total_count,
         items: [...state.items, ...action.data]
-      })
+      });
     case t.ORDER_DETAIL_REQUEST:
-      return Object.assign({}, state, {
-      })
+      return Object.assign({}, state, {});
     case t.ORDER_DETAIL_RECEIVE:
       return Object.assign({}, state, {
         editOrder: action.item
-      })
+      });
     case t.ORDER_CHECKOUT_REQUEST:
       return Object.assign({}, state, {
         processingCheckout: true
-      })
+      });
     case t.ORDER_CHECKOUT_RECEIVE:
       return Object.assign({}, state, {
         processingCheckout: false
-      })
+      });
     case t.ORDER_CHECKOUT_FAILURE:
       return Object.assign({}, state, {
         processingCheckout: false
-      })
+      });
     case t.ORDER_UPDATE_REQUEST:
     case t.ORDER_UPDATE_SUCCESS:
     case t.ORDER_UPDATE_FAILURE:
@@ -111,6 +110,6 @@ export default (state = initialState, action) => {
     case t.ORDER_DELETE_SUCCESS:
     case t.ORDER_CREATE_SUCCESS:
     default:
-      return state
+      return state;
   }
-}
+};

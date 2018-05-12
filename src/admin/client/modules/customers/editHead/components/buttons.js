@@ -1,7 +1,7 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
-import messages from 'lib/text'
-import DeleteConfirmation from 'modules/shared/deleteConfirmation'
+import React from 'react';
+import {Link} from 'react-router-dom';
+import messages from 'lib/text';
+import DeleteConfirmation from 'modules/shared/deleteConfirmation';
 import FontIcon from 'material-ui/FontIcon';
 import IconButton from 'material-ui/IconButton';
 import FlatButton from 'material-ui/FlatButton';
@@ -30,12 +30,22 @@ export default class Buttons extends React.Component {
 
   render() {
     const {customer} = this.props;
-    const customerName = customer && customer.full_name && customer.full_name.length > 0 ? customer.full_name : 'Draft';
+    const customerName =
+      customer && customer.full_name && customer.full_name.length > 0
+        ? customer.full_name
+        : 'Draft';
 
     return (
       <Fragment>
-        <IconButton touch={true} tooltipPosition="bottom-left" tooltip={messages.actions_delete} onClick={this.openDelete}>
-          <FontIcon color="#fff" className="material-icons">delete</FontIcon>
+        <IconButton
+          touch={true}
+          tooltipPosition="bottom-left"
+          tooltip={messages.actions_delete}
+          onClick={this.openDelete}
+        >
+          <FontIcon color="#fff" className="material-icons">
+            delete
+          </FontIcon>
         </IconButton>
         <DeleteConfirmation
           open={this.state.openDelete}
@@ -46,6 +56,6 @@ export default class Buttons extends React.Component {
           onDelete={this.props.onDelete}
         />
       </Fragment>
-    )
+    );
   }
 }

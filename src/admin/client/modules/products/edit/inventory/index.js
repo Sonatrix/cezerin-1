@@ -1,19 +1,17 @@
-import { connect } from 'react-redux'
-import { withRouter } from 'react-router'
-import { updateProduct  } from '../../actions'
-import ProductInventoryForm from './components/form'
+import {connect} from 'react-redux';
+import {withRouter} from 'react-router';
+import {updateProduct} from '../../actions';
+import ProductInventoryForm from './components/form';
 
-const mapStateToProps = (state, ownProps) => {
-  return {
-    settings: state.settings.settings,
-    initialValues: state.products.editProduct
-  }
-}
+const mapStateToProps = (state, ownProps) => ({
+  settings: state.settings.settings,
+  initialValues: state.products.editProduct
+});
 
-const mapDispatchToProps = (dispatch, ownProps) => {
-  return {
-    onSubmit: (values) => {
-      dispatch(updateProduct({
+const mapDispatchToProps = (dispatch, ownProps) => ({
+  onSubmit: values => {
+    dispatch(
+      updateProduct({
         id: values.id,
         regular_price: values.regular_price,
         sale_price: values.sale_price,
@@ -28,9 +26,11 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         stock_backorder: values.stock_backorder,
         discontinued: values.discontinued,
         enabled: values.enabled
-      }));
-    }
+      })
+    );
   }
-}
+});
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ProductInventoryForm));
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(ProductInventoryForm)
+);

@@ -1,10 +1,10 @@
-import React from 'react'
-import messages from 'lib/text'
+import React from 'react';
+import messages from 'lib/text';
 import CezerinClient from 'cezerin-client';
-import * as auth from 'lib/webstoreAuth'
+import * as auth from 'lib/webstoreAuth';
 
-import RaisedButton from 'material-ui/RaisedButton'
-import Paper from 'material-ui/Paper'
+import RaisedButton from 'material-ui/RaisedButton';
+import Paper from 'material-ui/Paper';
 import TextField from 'material-ui/TextField';
 
 export default class LoginForm extends React.Component {
@@ -12,23 +12,23 @@ export default class LoginForm extends React.Component {
     super(props);
     this.state = {
       email: localStorage.getItem('webstore_email') || '',
-    	isFetching: false,
-    	emailIsSent: false,
-    	error: null
+      isFetching: false,
+      emailIsSent: false,
+      error: null
     };
   }
 
-  handleChange = (event) => {
+  handleChange = event => {
     this.setState({
       email: event.target.value
     });
   };
 
-  handleKeyPress = (e) => {
+  handleKeyPress = e => {
     if (e.keyCode === 13 || e.which === 13) {
       this.handleSubmit();
     }
-  }
+  };
 
   handleSubmit = () => {
     this.setState({
@@ -37,34 +37,35 @@ export default class LoginForm extends React.Component {
       error: null
     });
 
-    CezerinClient.authorizeInWebStore(this.state.email, location.origin + '/admin')
-    .then(({status, json}) => {
+    CezerinClient.authorizeInWebStore(
+      this.state.email,
+      location.origin + '/admin'
+    ).then(({status, json}) => {
       this.setState({
         isFetching: false,
         emailIsSent: status === 200,
         error: status !== 200 && json ? json.message : null
       });
-    })
-  }
+    });
+  };
 
   componentWillMount() {
     auth.checkTokenFromUrl();
   }
 
   render() {
-    const {
-      email,
-      isFetching,
-    	emailIsSent,
-    	error
-    } = this.state;
+    const {email, isFetching, emailIsSent, error} = this.state;
 
     let response = null;
-    if(isFetching){
-      response = <div className="loginSuccessResponse">{messages.messages_loading}</div>;
+    if (isFetching) {
+      response = (
+        <div className="loginSuccessResponse">{messages.messages_loading}</div>
+      );
     } else if (emailIsSent) {
-      response = <div className="loginSuccessResponse">{messages.loginLinkSent}</div>;
-    } else if(emailIsSent === false && error) {
+      response = (
+        <div className="loginSuccessResponse">{messages.loginLinkSent}</div>
+      );
+    } else if (emailIsSent === false && error) {
       response = <div className="loginErrorResponse">{error}</div>;
     }
 
@@ -76,7 +77,7 @@ export default class LoginForm extends React.Component {
             <div className="loginDescription">{messages.loginDescription}</div>
             <div className="loginInput">
               <TextField
-                type='email'
+                type="email"
                 value={email}
                 onChange={this.handleChange}
                 onKeyPress={this.handleKeyPress}

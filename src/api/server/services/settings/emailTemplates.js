@@ -1,5 +1,3 @@
-'use strict';
-
 const mongo = require('../../lib/mongo');
 const parse = require('../../lib/parse');
 
@@ -7,16 +5,24 @@ class EmailTemplatesService {
   constructor() {}
 
   getEmailTemplate(name) {
-    return mongo.db.collection('emailTemplates').findOne({name: name}).then(template => {
-      return this.changeProperties(template);
-    });
+    return mongo.db
+      .collection('emailTemplates')
+      .findOne({name})
+      .then(template => this.changeProperties(template));
   }
 
   updateEmailTemplate(name, data) {
     const template = this.getValidDocumentForUpdate(data);
-    return mongo.db.collection('emailTemplates').updateOne({name: name}, {
-      $set: template
-    }, {upsert: true}).then(res => this.getEmailTemplate(name));
+    return mongo.db
+      .collection('emailTemplates')
+      .updateOne(
+        {name},
+        {
+          $set: template
+        },
+        {upsert: true}
+      )
+      .then(res => this.getEmailTemplate(name));
   }
 
   getValidDocumentForUpdate(data) {
@@ -24,7 +30,7 @@ class EmailTemplatesService {
       return new Error('Required fields are missing');
     }
 
-    let template = {}
+    const template = {};
 
     if (data.subject !== undefined) {
       template.subject = parse.getString(data.subject);
@@ -45,7 +51,7 @@ class EmailTemplatesService {
       return {
         subject: '',
         body: ''
-      }
+      };
     }
 
     return template;

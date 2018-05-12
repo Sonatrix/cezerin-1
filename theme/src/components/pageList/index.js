@@ -1,13 +1,13 @@
-import React from 'react'
-import api from '../../lib/api'
-import PageList from './list'
+import React from 'react';
+import api from '../../lib/api';
+import PageList from './list';
 
 export default class CustomPageList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       pages: []
-    }
+    };
   }
 
   componentDidMount() {
@@ -18,7 +18,7 @@ export default class CustomPageList extends React.Component {
     this.fetchData(nextProps);
   }
 
-  fetchData = ({ tags, sort }) => {
+  fetchData = ({tags, sort}) => {
     const filter = {
       tags: tags,
       sort: sort
@@ -27,14 +27,12 @@ export default class CustomPageList extends React.Component {
     api.ajax.pages.list(filter).then(({status, json}) => {
       this.setState({
         pages: json
-      })
+      });
     });
-  }
+  };
 
   render() {
-    const { pages } = this.state;
-    return (
-        <PageList pages={pages} />
-    )
+    const {pages} = this.state;
+    return <PageList pages={pages} />;
   }
 }

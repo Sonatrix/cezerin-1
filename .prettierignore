@@ -1,0 +1,8 @@
+dist/*
+theme/dist/*
+node_modules/*
+scripts/*
+public/*
+theme/assets/js/app-*
+theme/assets/js/theme-*
+theme/assets/css/bundle-*

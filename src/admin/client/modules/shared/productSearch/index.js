@@ -1,8 +1,8 @@
-import React from 'react'
+import React from 'react';
 
-import messages from 'lib/text'
-import api from 'lib/api'
-import * as helper from 'lib/helper'
+import messages from 'lib/text';
+import api from 'lib/api';
+import * as helper from 'lib/helper';
 
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
@@ -14,10 +14,10 @@ import {
   TableHeader,
   TableHeaderColumn,
   TableRow,
-  TableRowColumn,
+  TableRowColumn
 } from 'material-ui/Table';
 
-const SearchBox = ({ text, onChange }) => {
+const SearchBox = ({text, onChange}) => {
   return (
     <TextField
       fullWidth={true}
@@ -25,10 +25,10 @@ const SearchBox = ({ text, onChange }) => {
       onChange={onChange}
       value={text}
     />
-  )
-}
+  );
+};
 
-const SearchResult = ({ products, selectedId, settings, onSelect }) => {
+const SearchResult = ({products, selectedId, settings, onSelect}) => {
   const rows = products.map((product, index) => {
     let priceFormatted = helper.formatCurrency(product.price, settings);
     const isSelected = product.id === selectedId;
@@ -38,23 +38,24 @@ const SearchResult = ({ products, selectedId, settings, onSelect }) => {
         <TableRowColumn>{product.name}</TableRowColumn>
         <TableRowColumn>{product.category_name}</TableRowColumn>
         <TableRowColumn>{product.sku}</TableRowColumn>
-        <TableRowColumn style={{ textAlign: 'right' }}>{priceFormatted}</TableRowColumn>
+        <TableRowColumn style={{textAlign: 'right'}}>
+          {priceFormatted}
+        </TableRowColumn>
       </TableRow>
-    )
+    );
   });
 
   return (
     <Table
-      height='400px'
+      height="400px"
       selectable={true}
       multiSelectable={false}
-      onRowSelection={onSelect}>
-      <TableBody>
-        {rows}
-      </TableBody>
+      onRowSelection={onSelect}
+    >
+      <TableBody>{rows}</TableBody>
     </Table>
-  )
-}
+  );
+};
 
 export default class ConfirmationDialog extends React.Component {
   constructor(props) {
@@ -71,28 +72,31 @@ export default class ConfirmationDialog extends React.Component {
     if (this.state.open !== nextProps.open) {
       this.setState({
         open: nextProps.open
-      })
+      });
     }
   }
 
   handleCancel = () => {
     this.setState({open: false});
-    if(this.props.onCancel) {
+    if (this.props.onCancel) {
       this.props.onCancel();
     }
-  }
+  };
 
   handleSubmit = () => {
     this.setState({open: false});
-    if(this.props.onSubmit) {
+    if (this.props.onSubmit) {
       this.props.onSubmit(this.state.selectedId);
     }
-  }
+  };
 
-  handleRowSelection = (selectedRows) => {
-    if(selectedRows && selectedRows.length > 0){
+  handleRowSelection = selectedRows => {
+    if (selectedRows && selectedRows.length > 0) {
       const selectedIndex = selectedRows[0];
-      const selectedProductId = this.state.products && this.state.products.length >= selectedIndex ? this.state.products[selectedIndex].id : null;
+      const selectedProductId =
+        this.state.products && this.state.products.length >= selectedIndex
+          ? this.state.products[selectedIndex].id
+          : null;
       this.setState({
         selectedId: selectedProductId
       });
@@ -102,27 +106,36 @@ export default class ConfirmationDialog extends React.Component {
   handleSearch = (event, value) => {
     this.setState({search: value});
 
-    api.products.list({
-      limit: 50,
-      enabled: true,
-      discontinued: false,
-      fields: 'id,name,category_id,category_name,sku,enabled,discontinued,price,on_sale,regular_price',
-      search: value
-    }).then(productsResponse => {
-      this.setState({
-        products: productsResponse.json.data
+    api.products
+      .list({
+        limit: 50,
+        enabled: true,
+        discontinued: false,
+        fields:
+          'id,name,category_id,category_name,sku,enabled,discontinued,price,on_sale,regular_price',
+        search: value
+      })
+      .then(productsResponse => {
+        this.setState({
+          products: productsResponse.json.data
+        });
       });
-    });
-  }
+  };
 
   render() {
-    const { title, submitLabel, cancelLabel, modal = false, settings } = this.props;
+    const {
+      title,
+      submitLabel,
+      cancelLabel,
+      modal = false,
+      settings
+    } = this.props;
 
     const actions = [
       <FlatButton
         label={cancelLabel}
         onClick={this.handleCancel}
-        style={{ marginRight: 10 }}
+        style={{marginRight: 10}}
       />,
       <FlatButton
         label={submitLabel}
@@ -132,19 +145,24 @@ export default class ConfirmationDialog extends React.Component {
     ];
 
     return (
-        <Dialog
-          title={title}
-          actions={actions}
-          actionsContainerStyle={{ borderTop: '1px solid rgb(224, 224, 224)' }}
-          modal={modal}
-          open={this.state.open}
-          onRequestClose={this.handleCancel}
-        >
-          <div>
-            <SearchBox text={this.state.search} onChange={this.handleSearch} />
-            <SearchResult products={this.state.products} selectedId={this.state.selectedId} onSelect={this.handleRowSelection} settings={settings} />
-          </div>
-        </Dialog>
-    )
+      <Dialog
+        title={title}
+        actions={actions}
+        actionsContainerStyle={{borderTop: '1px solid rgb(224, 224, 224)'}}
+        modal={modal}
+        open={this.state.open}
+        onRequestClose={this.handleCancel}
+      >
+        <div>
+          <SearchBox text={this.state.search} onChange={this.handleSearch} />
+          <SearchResult
+            products={this.state.products}
+            selectedId={this.state.selectedId}
+            onSelect={this.handleRowSelection}
+            settings={settings}
+          />
+        </div>
+      </Dialog>
+    );
   }
 }

@@ -1,7 +1,7 @@
 import React from 'react';
-import { Link } from 'react-router-dom'
-import messages from 'lib/text'
-import { List, ListItem } from 'material-ui/List';
+import {Link} from 'react-router-dom';
+import messages from 'lib/text';
+import {List, ListItem} from 'material-ui/List';
 import FontIcon from 'material-ui/FontIcon';
 
 const styles = {
@@ -11,12 +11,12 @@ const styles = {
   innerItem: {
     paddingLeft: 55
   }
-}
+};
 
 const FolderIcon = <FontIcon className="material-icons">folder</FontIcon>;
 
 export default class StatusesList extends React.Component {
-  constructor(props){
+  constructor(props) {
     super(props);
   }
 
@@ -24,14 +24,8 @@ export default class StatusesList extends React.Component {
     this.props.onLoad();
   }
 
-  render(){
-    const {
-    	onSelect,
-    	selectedId,
-    	items,
-    	showAll,
-      showManage
-    } = this.props;
+  render() {
+    const {onSelect, selectedId, items, showAll, showManage} = this.props;
 
     const rows = items.map(item => (
       <ListItem
@@ -41,36 +35,42 @@ export default class StatusesList extends React.Component {
         innerDivStyle={styles.innerItem}
         primaryText={item.name}
         leftIcon={FolderIcon}
-        onClick={() => { this.props.onSelect(item.id) }}
-       />
+        onClick={() => {
+          this.props.onSelect(item.id);
+        }}
+      />
     ));
 
     return (
       <List>
-        {showAll &&
+        {showAll && (
           <ListItem
             className="treeItem"
             primaryText={messages.allOrderStatuses}
-            style={'all' === selectedId ? styles.selectedItem : null}
+            style={selectedId === 'all' ? styles.selectedItem : null}
             innerDivStyle={styles.innerItem}
             leftIcon={FolderIcon}
-            onClick={() => { onSelect('all') }}
+            onClick={() => {
+              onSelect('all');
+            }}
           />
-        }
+        )}
 
         {rows}
 
-        {showManage &&
-          <Link to="/admin/orders/statuses" style={{ textDecoration: 'none' }}>
+        {showManage && (
+          <Link to="/admin/orders/statuses" style={{textDecoration: 'none'}}>
             <ListItem
               className="treeItem"
               primaryText={messages.manageOrderStatuses}
               innerDivStyle={styles.innerItem}
-              leftIcon={<FontIcon className="material-icons">settings</FontIcon>}
+              leftIcon={
+                <FontIcon className="material-icons">settings</FontIcon>
+              }
             />
           </Link>
-        }
+        )}
       </List>
-    )
+    );
   }
 }

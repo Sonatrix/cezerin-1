@@ -1,6 +1,6 @@
-import React from 'react'
-import messages from 'lib/text'
-import DeleteConfirmation from 'modules/shared/deleteConfirmation'
+import React from 'react';
+import messages from 'lib/text';
+import DeleteConfirmation from 'modules/shared/deleteConfirmation';
 import FontIcon from 'material-ui/FontIcon';
 import IconButton from 'material-ui/IconButton';
 import Dialog from 'material-ui/Dialog';
@@ -11,7 +11,7 @@ export default class Buttons extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      openDelete: false,
+      openDelete: false
     };
   }
 
@@ -29,13 +29,23 @@ export default class Buttons extends React.Component {
   };
 
   render() {
-    const { shippingMethod, onDelete } = this.props;
-    const methodName = shippingMethod && shippingMethod.name && shippingMethod.name.length > 0 ? shippingMethod.name : 'Draft';
+    const {shippingMethod, onDelete} = this.props;
+    const methodName =
+      shippingMethod && shippingMethod.name && shippingMethod.name.length > 0
+        ? shippingMethod.name
+        : 'Draft';
 
     return (
       <span>
-        <IconButton touch={true} tooltipPosition="bottom-left" tooltip={messages.actions_delete} onClick={this.showDelete}>
-          <FontIcon color="#fff" className="material-icons">delete</FontIcon>
+        <IconButton
+          touch={true}
+          tooltipPosition="bottom-left"
+          tooltip={messages.actions_delete}
+          onClick={this.showDelete}
+        >
+          <FontIcon color="#fff" className="material-icons">
+            delete
+          </FontIcon>
         </IconButton>
         <DeleteConfirmation
           open={this.state.openDelete}
@@ -46,6 +56,6 @@ export default class Buttons extends React.Component {
           onDelete={this.deleteGroup}
         />
       </span>
-    )
+    );
   }
 }

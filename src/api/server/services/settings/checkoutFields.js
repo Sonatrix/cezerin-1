@@ -1,5 +1,3 @@
-'use strict';
-
 const mongo = require('../../lib/mongo');
 const parse = require('../../lib/parse');
 
@@ -7,23 +5,37 @@ class CheckoutFieldsService {
   constructor() {}
 
   getCheckoutFields() {
-    return mongo.db.collection('checkoutFields').find().toArray().then(fields => fields.map(field => {
-      delete field._id;
-      return field;
-    }));
+    return mongo.db
+      .collection('checkoutFields')
+      .find()
+      .toArray()
+      .then(fields =>
+        fields.map(field => {
+          delete field._id;
+          return field;
+        })
+      );
   }
 
   getCheckoutField(name) {
-    return mongo.db.collection('checkoutFields').findOne({name: name}).then(field => {
-      return this.changeProperties(field);
-    });
+    return mongo.db
+      .collection('checkoutFields')
+      .findOne({name})
+      .then(field => this.changeProperties(field));
   }
 
   updateCheckoutField(name, data) {
     const field = this.getValidDocumentForUpdate(data);
-    return mongo.db.collection('checkoutFields').updateOne({name: name}, {
-      $set: field
-    }, {upsert: true}).then(res => this.getCheckoutField(name));
+    return mongo.db
+      .collection('checkoutFields')
+      .updateOne(
+        {name},
+        {
+          $set: field
+        },
+        {upsert: true}
+      )
+      .then(res => this.getCheckoutField(name));
   }
 
   getValidDocumentForUpdate(data) {
@@ -31,7 +43,7 @@ class CheckoutFieldsService {
       return new Error('Required fields are missing');
     }
 
-    let field = {}
+    const field = {};
 
     if (data.status !== undefined) {
       field.status = parse.getString(data.status);
@@ -57,7 +69,7 @@ class CheckoutFieldsService {
         status: 'required',
         label: '',
         placeholder: ''
-      }
+      };
     }
 
     return field;

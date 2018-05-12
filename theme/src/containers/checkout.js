@@ -1,10 +1,11 @@
-import React from 'react'
-import { themeSettings, text } from '../lib/settings'
-import MetaTags from '../components/metaTags'
-import OrderSummary from '../components/orderSummary'
+import React from 'react';
+import {themeSettings, text} from '../lib/settings';
+import MetaTags from '../components/metaTags';
+import OrderSummary from '../components/orderSummary';
+
 const Fragment = React.Fragment;
 
-const CheckoutContainer = (props) => {
+const CheckoutContainer = props => {
   const {pageDetails} = props.state;
   const {checkoutForm} = props;
 
@@ -31,7 +32,7 @@ const CheckoutContainer = (props) => {
         </div>
       </section>
     </Fragment>
-  )
-}
+  );
+};
 
-export default CheckoutContainer
+export default CheckoutContainer;

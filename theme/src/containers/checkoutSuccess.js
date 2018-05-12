@@ -1,13 +1,23 @@
-import React from 'react'
-import { themeSettings, text } from '../lib/settings'
-import * as helper from '../lib/helper'
-import MetaTags from '../components/metaTags'
-import CheckoutSuccess from '../components/checkoutSuccess'
+import React from 'react';
+import {themeSettings, text} from '../lib/settings';
+import * as helper from '../lib/helper';
+import MetaTags from '../components/metaTags';
+import CheckoutSuccess from '../components/checkoutSuccess';
+
 const Fragment = React.Fragment;
 
-const CheckoutSuccessContainer = (props) => {
-  const {pageDetails, order, settings, shippingMethods, checkoutFields} = props.state;
-  const shippingMethod = helper.getShippingMethodFromOrder(order, shippingMethods);
+const CheckoutSuccessContainer = props => {
+  const {
+    pageDetails,
+    order,
+    settings,
+    shippingMethods,
+    checkoutFields
+  } = props.state;
+  const shippingMethod = helper.getShippingMethodFromOrder(
+    order,
+    shippingMethods
+  );
 
   return (
     <Fragment>
@@ -36,9 +46,8 @@ const CheckoutSuccessContainer = (props) => {
           </div>
         </div>
       </section>
-
     </Fragment>
-  )
-}
+  );
+};
 
-export default CheckoutSuccessContainer
+export default CheckoutSuccessContainer;

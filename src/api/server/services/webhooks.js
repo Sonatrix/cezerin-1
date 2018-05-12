@@ -1,5 +1,3 @@
-'use strict';
-
 const mongo = require('../lib/mongo');
 const utils = require('../lib/utils');
 const parse = require('../lib/parse');
@@ -8,6 +6,7 @@ const cache = require('lru-cache')({
   max: 10000,
   maxAge: 1000 * 60 * 60 * 24 // 24h
 });
+
 const WEBHOOKS_CACHE_KEY = 'webhooks';
 
 class WebhooksService {
@@ -18,21 +17,25 @@ class WebhooksService {
 
     if (webhooksFromCache) {
       return webhooksFromCache;
-    } else {
-      const items = await mongo.db.collection('webhooks').find().toArray();
-      const result = items.map(item => this.changeProperties(item));
-      cache.set(WEBHOOKS_CACHE_KEY, result);
-      return result;
     }
+    const items = await mongo.db
+      .collection('webhooks')
+      .find()
+      .toArray();
+    const result = items.map(item => this.changeProperties(item));
+    cache.set(WEBHOOKS_CACHE_KEY, result);
+    return result;
   }
 
   async getSingleWebhook(id) {
     if (!ObjectID.isValid(id)) {
       return Promise.reject('Invalid identifier');
     }
-    let webhookObjectID = new ObjectID(id);
+    const webhookObjectID = new ObjectID(id);
 
-    const item = await mongo.db.collection('webhooks').findOne({_id: webhookObjectID});
+    const item = await mongo.db
+      .collection('webhooks')
+      .findOne({_id: webhookObjectID});
     const result = this.changeProperties(item);
     return result;
   }
@@ -53,11 +56,14 @@ class WebhooksService {
     const webhookObjectID = new ObjectID(id);
     const webhook = this.getValidDocumentForUpdate(id, data);
 
-    const res = await mongo.db.collection('webhooks').updateOne({
-      _id: webhookObjectID
-    }, {
-      $set: webhook
-    });
+    const res = await mongo.db.collection('webhooks').updateOne(
+      {
+        _id: webhookObjectID
+      },
+      {
+        $set: webhook
+      }
+    );
 
     cache.del(WEBHOOKS_CACHE_KEY);
     const newWebhook = await this.getSingleWebhook(id);
@@ -69,14 +75,16 @@ class WebhooksService {
       return Promise.reject('Invalid identifier');
     }
     const webhookObjectID = new ObjectID(id);
-    const res = await mongo.db.collection('webhooks').deleteOne({_id: webhookObjectID});
+    const res = await mongo.db
+      .collection('webhooks')
+      .deleteOne({_id: webhookObjectID});
     cache.del(WEBHOOKS_CACHE_KEY);
     return res.deletedCount > 0;
   }
 
   getValidDocumentForInsert(data) {
-    let webhook = {
-      'date_created': new Date()
+    const webhook = {
+      date_created: new Date()
     };
 
     webhook.description = parse.getString(data.description);
@@ -93,8 +101,8 @@ class WebhooksService {
       return new Error('Required fields are missing');
     }
 
-    let webhook = {
-      'date_updated': new Date()
+    const webhook = {
+      date_updated: new Date()
     };
 
     if (data.description !== undefined) {
@@ -113,7 +121,7 @@ class WebhooksService {
       webhook.enabled = parse.getBooleanIfValid(data.enabled, false);
     }
 
-    if(data.events !== undefined) {
+    if (data.events !== undefined) {
       webhook.events = parse.getArrayIfValid(data.events) || [];
     }
 

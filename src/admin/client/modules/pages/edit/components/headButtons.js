@@ -1,7 +1,7 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
-import messages from 'lib/text'
-import DeleteConfirmation from 'modules/shared/deleteConfirmation'
+import React from 'react';
+import {Link} from 'react-router-dom';
+import messages from 'lib/text';
+import DeleteConfirmation from 'modules/shared/deleteConfirmation';
 import FontIcon from 'material-ui/FontIcon';
 import IconButton from 'material-ui/IconButton';
 import FlatButton from 'material-ui/FlatButton';
@@ -11,7 +11,7 @@ export default class Buttons extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      openDelete: false,
+      openDelete: false
     };
   }
 
@@ -29,22 +29,38 @@ export default class Buttons extends React.Component {
   };
 
   render() {
-    const { page } = this.props;
-    const pageName = page && page.meta_title && page.meta_title.length > 0 ? page.meta_title : 'Draft';
+    const {page} = this.props;
+    const pageName =
+      page && page.meta_title && page.meta_title.length > 0
+        ? page.meta_title
+        : 'Draft';
 
-    if(page && !page.is_system){
+    if (page && !page.is_system) {
       return (
         <Fragment>
-          <IconButton touch={true} tooltipPosition="bottom-left" tooltip={messages.actions_delete} onClick={this.openDelete}>
-            <FontIcon color="#fff" className="material-icons">delete</FontIcon>
+          <IconButton
+            touch={true}
+            tooltipPosition="bottom-left"
+            tooltip={messages.actions_delete}
+            onClick={this.openDelete}
+          >
+            <FontIcon color="#fff" className="material-icons">
+              delete
+            </FontIcon>
           </IconButton>
-          {page.enabled &&
+          {page.enabled && (
             <a href={page.url} target="_blank">
-              <IconButton touch={true} tooltipPosition="bottom-left" tooltip={messages.viewOnWebsite}>
-                <FontIcon color="#fff" className="material-icons">open_in_new</FontIcon>
+              <IconButton
+                touch={true}
+                tooltipPosition="bottom-left"
+                tooltip={messages.viewOnWebsite}
+              >
+                <FontIcon color="#fff" className="material-icons">
+                  open_in_new
+                </FontIcon>
               </IconButton>
             </a>
-          }
+          )}
           <DeleteConfirmation
             open={this.state.openDelete}
             isSingle={true}
@@ -54,7 +70,7 @@ export default class Buttons extends React.Component {
             onDelete={this.deletePage}
           />
         </Fragment>
-      )
+      );
     } else {
       return null;
     }

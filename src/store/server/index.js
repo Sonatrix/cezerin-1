@@ -1,4 +1,5 @@
 const express = require('express');
+
 const app = express();
 const helmet = require('helmet');
 const responseTime = require('response-time');
@@ -21,7 +22,9 @@ app.set('trust proxy', 1);
 app.use(helmet());
 app.get('/images/:entity/:id/:size/:filename', (req, res, next) => {
   // A stub of image resizing (can be done with Nginx)
-  const newUrl = `/images/${req.params.entity}/${req.params.id}/${req.params.filename}`;
+  const newUrl = `/images/${req.params.entity}/${req.params.id}/${
+    req.params.filename
+  }`;
   req.url = newUrl;
   next();
 });
@@ -29,14 +32,20 @@ app.use(express.static('public/content', STATIC_OPTIONS));
 app.use('/assets', express.static('theme/assets', STATIC_OPTIONS));
 app.use('/admin-assets', express.static('public/admin-assets', STATIC_OPTIONS));
 app.use('/sw.js', express.static('public/sw.js', STATIC_OPTIONS));
-app.use('/sw-toolbox.js', express.static('public/sw-toolbox.js', STATIC_OPTIONS));
+app.use(
+  '/sw-toolbox.js',
+  express.static('public/sw-toolbox.js', STATIC_OPTIONS)
+);
 app.use('/admin', (req, res) => {
-  res.sendFile(ADMIN_INDEX_PATH)
+  res.sendFile(ADMIN_INDEX_PATH);
 });
-app.get(/^.+\.(jpg|jpeg|gif|png|bmp|ico|webp|svg|css|js|zip|rar|flv|swf|xls)$/, (req, res) => {
-  res.status(404).end();
-});
-app.get('/robots.txt', robotsRendering)
+app.get(
+  /^.+\.(jpg|jpeg|gif|png|bmp|ico|webp|svg|css|js|zip|rar|flv|swf|xls)$/,
+  (req, res) => {
+    res.status(404).end();
+  }
+);
+app.get('/robots.txt', robotsRendering);
 app.get('/sitemap.xml', sitemapRendering);
 app.get('*', redirects);
 app.use(responseTime());

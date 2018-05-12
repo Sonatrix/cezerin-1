@@ -40,30 +40,35 @@ const scope = {
   WRITE_SETTINGS: 'write:settings',
   READ_FILES: 'read:files',
   WRITE_FILES: 'write:files'
-}
+};
 
 const checkUserScope = (requiredScope, req, res, next) => {
-  if(DEVELOPER_MODE === true){
+  if (DEVELOPER_MODE === true) {
     next();
-  } else if (req.user && req.user.scopes && req.user.scopes.length > 0 && (req.user.scopes.includes(scope.ADMIN) || req.user.scopes.includes(requiredScope))) {
+  } else if (
+    req.user &&
+    req.user.scopes &&
+    req.user.scopes.length > 0 &&
+    (req.user.scopes.includes(scope.ADMIN) ||
+      req.user.scopes.includes(requiredScope))
+  ) {
     next();
   } else {
-    res.status(403).send({'error': true, 'message': 'Forbidden'});
+    res.status(403).send({error: true, message: 'Forbidden'});
   }
-}
+};
 
-const verifyToken = token  => {
-  return new Promise((resolve, reject) => {
+const verifyToken = token =>
+  new Promise((resolve, reject) => {
     jwt.verify(token, settings.jwtSecretKey, (err, decoded) => {
-      if(err){
+      if (err) {
         reject(err);
       } else {
         // check on blacklist
         resolve(decoded);
       }
     });
-  })
-}
+  });
 
 const checkTokenInBlacklistCallback = async (req, payload, done) => {
   try {
@@ -74,26 +79,26 @@ const checkTokenInBlacklistCallback = async (req, payload, done) => {
   } catch (e) {
     done(e, SET_TOKEN_AS_REVOKEN_ON_EXCEPTION);
   }
-}
+};
 
 const applyMiddleware = app => {
-  if(DEVELOPER_MODE === false){
-    app.use(expressJwt({
-      secret: settings.jwtSecretKey,
-      isRevoked: checkTokenInBlacklistCallback})
-    .unless({path: PATHS_WITH_OPEN_ACCESS}));
+  if (DEVELOPER_MODE === false) {
+    app.use(
+      expressJwt({
+        secret: settings.jwtSecretKey,
+        isRevoked: checkTokenInBlacklistCallback
+      }).unless({path: PATHS_WITH_OPEN_ACCESS})
+    );
   }
-}
+};
 
-const getAccessControlAllowOrigin = () => {
-  return settings.storeBaseUrl || '*';
-}
+const getAccessControlAllowOrigin = () => settings.storeBaseUrl || '*';
 
 module.exports = {
-  checkUserScope: checkUserScope,
-  scope: scope,
-  verifyToken: verifyToken,
-  applyMiddleware: applyMiddleware,
-  getAccessControlAllowOrigin: getAccessControlAllowOrigin,
-  DEVELOPER_MODE: DEVELOPER_MODE
-}
+  checkUserScope,
+  scope,
+  verifyToken,
+  applyMiddleware,
+  getAccessControlAllowOrigin,
+  DEVELOPER_MODE
+};

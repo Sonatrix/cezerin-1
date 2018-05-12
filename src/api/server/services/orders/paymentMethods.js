@@ -1,5 +1,3 @@
-'use strict';
-
 const mongo = require('../../lib/mongo');
 const utils = require('../../lib/utils');
 const parse = require('../../lib/parse');
@@ -12,7 +10,7 @@ class PaymentMethodsService {
 
   getFilter(params = {}) {
     return new Promise((resolve, reject) => {
-      let filter = {};
+      const filter = {};
       const id = parse.getObjectIDIfValid(params.id);
       const enabled = parse.getBooleanIfValid(params.enabled);
 
@@ -29,25 +27,29 @@ class PaymentMethodsService {
       if (order_id) {
         return OrdersService.getSingleOrder(order_id).then(order => {
           if (order) {
-            const shippingMethodObjectID = parse.getObjectIDIfValid(order.shipping_method_id);
+            const shippingMethodObjectID = parse.getObjectIDIfValid(
+              order.shipping_method_id
+            );
 
-            filter['$and'] = [];
-            filter['$and'].push({
+            filter.$and = [];
+            filter.$and.push({
               $or: [
                 {
                   'conditions.subtotal_min': 0
-                }, {
+                },
+                {
                   'conditions.subtotal_min': {
                     $lte: order.subtotal
                   }
                 }
               ]
             });
-            filter['$and'].push({
+            filter.$and.push({
               $or: [
                 {
                   'conditions.subtotal_max': 0
-                }, {
+                },
+                {
                   'conditions.subtotal_max': {
                     $gte: order.subtotal
                   }
@@ -55,14 +57,18 @@ class PaymentMethodsService {
               ]
             });
 
-            if (order.shipping_address.country && order.shipping_address.country.length > 0) {
-              filter['$and'].push({
+            if (
+              order.shipping_address.country &&
+              order.shipping_address.country.length > 0
+            ) {
+              filter.$and.push({
                 $or: [
                   {
                     'conditions.countries': {
                       $size: 0
                     }
-                  }, {
+                  },
+                  {
                     'conditions.countries': order.shipping_address.country
                   }
                 ]
@@ -70,13 +76,14 @@ class PaymentMethodsService {
             }
 
             if (shippingMethodObjectID) {
-              filter['$and'].push({
+              filter.$and.push({
                 $or: [
                   {
                     'conditions.shipping_method_ids': {
                       $size: 0
                     }
-                  }, {
+                  },
+                  {
                     'conditions.shipping_method_ids': shippingMethodObjectID
                   }
                 ]
@@ -84,33 +91,33 @@ class PaymentMethodsService {
             }
           }
           resolve(filter);
-        })
-      } else {
-        resolve(filter);
+        });
       }
+      resolve(filter);
     });
   }
 
   getMethods(params = {}) {
-    return this.getFilter(params).then(filter => {
-      return PaymentMethodsLightService.getMethods(filter);
-    });
+    return this.getFilter(params).then(filter =>
+      PaymentMethodsLightService.getMethods(filter)
+    );
   }
 
   getSingleMethod(id) {
     if (!ObjectID.isValid(id)) {
       return Promise.reject('Invalid identifier');
     }
-    return this.getMethods({id: id}).then(methods => {
-      return methods.length > 0
-        ? methods[0]
-        : null;
-    })
+    return this.getMethods({id}).then(
+      methods => (methods.length > 0 ? methods[0] : null)
+    );
   }
 
   addMethod(data) {
     const method = this.getValidDocumentForInsert(data);
-    return mongo.db.collection('paymentMethods').insertMany([method]).then(res => this.getSingleMethod(res.ops[0]._id.toString()));
+    return mongo.db
+      .collection('paymentMethods')
+      .insertMany([method])
+      .then(res => this.getSingleMethod(res.ops[0]._id.toString()));
   }
 
   updateMethod(id, data) {
@@ -120,9 +127,15 @@ class PaymentMethodsService {
     const methodObjectID = new ObjectID(id);
     const method = this.getValidDocumentForUpdate(id, data);
 
-    return mongo.db.collection('paymentMethods').updateOne({
-      _id: methodObjectID
-    }, {$set: method}).then(res => this.getSingleMethod(id));
+    return mongo.db
+      .collection('paymentMethods')
+      .updateOne(
+        {
+          _id: methodObjectID
+        },
+        {$set: method}
+      )
+      .then(res => this.getSingleMethod(id));
   }
 
   deleteMethod(id) {
@@ -130,35 +143,38 @@ class PaymentMethodsService {
       return Promise.reject('Invalid identifier');
     }
     const methodObjectID = new ObjectID(id);
-    return mongo.db.collection('paymentMethods').deleteOne({'_id': methodObjectID}).then(deleteResponse => {
-      return deleteResponse.deletedCount > 0;
-    });
+    return mongo.db
+      .collection('paymentMethods')
+      .deleteOne({_id: methodObjectID})
+      .then(deleteResponse => deleteResponse.deletedCount > 0);
   }
 
   getPaymentMethodConditions(conditions) {
-    let methodIds = conditions ? parse.getArrayIfValid(conditions.shipping_method_ids) || [] : [];
+    const methodIds = conditions
+      ? parse.getArrayIfValid(conditions.shipping_method_ids) || []
+      : [];
     let methodObjects = [];
-    if(methodIds.length > 0){
+    if (methodIds.length > 0) {
       methodObjects = methodIds.map(id => new ObjectID(id));
     }
 
     return conditions
       ? {
-        'countries': parse.getArrayIfValid(conditions.countries) || [],
-        'shipping_method_ids': methodObjects,
-        'subtotal_min': parse.getNumberIfPositive(conditions.subtotal_min) || 0,
-        'subtotal_max': parse.getNumberIfPositive(conditions.subtotal_max) || 0
-      }
+          countries: parse.getArrayIfValid(conditions.countries) || [],
+          shipping_method_ids: methodObjects,
+          subtotal_min: parse.getNumberIfPositive(conditions.subtotal_min) || 0,
+          subtotal_max: parse.getNumberIfPositive(conditions.subtotal_max) || 0
+        }
       : {
-        'countries': [],
-        'shipping_method_ids': [],
-        'subtotal_min': 0,
-        'subtotal_max': 0
-      };
+          countries: [],
+          shipping_method_ids: [],
+          subtotal_min: 0,
+          subtotal_max: 0
+        };
   }
 
   getValidDocumentForInsert(data) {
-    let method = {};
+    const method = {};
 
     method.name = parse.getString(data.name);
     method.description = parse.getString(data.description);
@@ -175,7 +191,7 @@ class PaymentMethodsService {
       return new Error('Required fields are missing');
     }
 
-    let method = {}
+    const method = {};
 
     if (data.name !== undefined) {
       method.name = parse.getString(data.name);

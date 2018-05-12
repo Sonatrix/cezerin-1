@@ -1,18 +1,32 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom'
-import { themeSettings, text } from '../lib/settings'
-import * as helper from '../lib/helper'
+import {NavLink} from 'react-router-dom';
+import {themeSettings, text} from '../lib/settings';
+import * as helper from '../lib/helper';
 
-const SummaryItem = ({settings, item, deleteCartItem, updateCartItemQuantiry}) => {
-  const thumbnail = helper.getThumbnailUrl(item.image_url, themeSettings.cartThumbnailWidth);
+const SummaryItem = ({
+  settings,
+  item,
+  deleteCartItem,
+  updateCartItemQuantiry
+}) => {
+  const thumbnail = helper.getThumbnailUrl(
+    item.image_url,
+    themeSettings.cartThumbnailWidth
+  );
   const qtyOptions = [];
-  const maxQty = item.stock_backorder ?
-    themeSettings.maxCartItemQty :
-    (item.stock_quantity >= themeSettings.maxCartItemQty ? themeSettings.maxCartItemQty : item.stock_quantity);
+  const maxQty = item.stock_backorder
+    ? themeSettings.maxCartItemQty
+    : item.stock_quantity >= themeSettings.maxCartItemQty
+      ? themeSettings.maxCartItemQty
+      : item.stock_quantity;
 
-  for(let i = 0; i <= maxQty; i++){
+  for (let i = 0; i <= maxQty; i++) {
     const optionText = i === 0 ? text.remove : i;
-    qtyOptions.push(<option key={i} value={i}>{optionText}</option>)
+    qtyOptions.push(
+      <option key={i} value={i}>
+        {optionText}
+      </option>
+    );
   }
 
   return (
@@ -20,23 +34,31 @@ const SummaryItem = ({settings, item, deleteCartItem, updateCartItemQuantiry}) =
       <div className="column is-3">
         <div className="image">
           <NavLink to={item.path}>
-            <img className="product-image" src={thumbnail} alt={item.name} title={item.name} />
+            <img
+              className="product-image"
+              src={thumbnail}
+              alt={item.name}
+              title={item.name}
+            />
           </NavLink>
         </div>
       </div>
       <div className="column">
         <div>
-          <NavLink to={item.path}>
-            {item.name}
-          </NavLink>
+          <NavLink to={item.path}>{item.name}</NavLink>
         </div>
-        {item.variant_name.length > 0 &&
+        {item.variant_name.length > 0 && (
           <div className="cart-option-name">{item.variant_name}</div>
-        }
+        )}
         <div className="qty">
           <span>{text.qty}:</span>
           <span className="select is-small">
-            <select onChange={e => {updateCartItemQuantiry(item.id, e.target.value)}} value={item.quantity}>
+            <select
+              onChange={e => {
+                updateCartItemQuantiry(item.id, e.target.value);
+              }}
+              value={item.quantity}
+            >
               {qtyOptions}
             </select>
           </span>
@@ -46,14 +68,14 @@ const SummaryItem = ({settings, item, deleteCartItem, updateCartItemQuantiry}) =
         {helper.formatCurrency(item.price_total, settings)}
       </div>
     </div>
-  )
-}
+  );
+};
 
-const OrderSummary = (props) => {
+const OrderSummary = props => {
   const {cart, settings} = props.state;
 
   if (cart && cart.items && cart.items.length > 0) {
-    let items = cart.items.map(item =>
+    const items = cart.items.map(item => (
       <SummaryItem
         key={item.id}
         item={item}
@@ -61,10 +83,10 @@ const OrderSummary = (props) => {
         updateCartItemQuantiry={props.updateCartItemQuantiry}
         settings={settings}
       />
-    );
+    ));
 
     return (
-      <div className="checkout-box content is-small" style={{ paddingBottom: 0 }}>
+      <div className="checkout-box content is-small" style={{paddingBottom: 0}}>
         <div className="title is-4">{text.orderSummary}</div>
         <hr className="separator" />
         {items}
@@ -78,14 +100,14 @@ const OrderSummary = (props) => {
             {helper.formatCurrency(cart.shipping_total, settings)}
           </div>
 
-          {cart.discount_total > 0 &&
-              <div className="column is-7">{text.discount}</div>
-          }
-          {cart.discount_total > 0 &&
+          {cart.discount_total > 0 && (
+            <div className="column is-7">{text.discount}</div>
+          )}
+          {cart.discount_total > 0 && (
             <div className="column is-5 has-text-right price">
               {helper.formatCurrency(cart.discount_total, settings)}
             </div>
-          }
+          )}
 
           <div className="column is-12">
             <hr className="separator" />
@@ -96,10 +118,9 @@ const OrderSummary = (props) => {
           </div>
         </div>
       </div>
-    )
-  } else {
-    return null;
+    );
   }
-}
+  return null;
+};
 
-export default OrderSummary
+export default OrderSummary;

@@ -1,15 +1,15 @@
-import React from 'react'
+import React from 'react';
 
-import messages from 'lib/text'
-import style from './style.css'
+import messages from 'lib/text';
+import style from './style.css';
 
 import Paper from 'material-ui/Paper';
 import RaisedButton from 'material-ui/RaisedButton';
 import Divider from 'material-ui/Divider';
 import FontIcon from 'material-ui/FontIcon';
 
-const AppDescription = ({ name, description, coverUrl, developer, enabled }) => (
-  <div style={{ maxWidth: 720, width: '100%' }}>
+const AppDescription = ({name, description, coverUrl, developer, enabled}) => (
+  <div style={{maxWidth: 720, width: '100%'}}>
     <Paper className="paper-box" zDepth={1}>
       <div className={style.innerBox}>
         <div className="row">
@@ -29,11 +29,11 @@ const AppDescription = ({ name, description, coverUrl, developer, enabled }) => 
         </div>
         <div
           className={style.description}
-          dangerouslySetInnerHTML={{ __html: description }}>
-        </div>
+          dangerouslySetInnerHTML={{__html: description}}
+        />
       </div>
     </Paper>
   </div>
-)
+);
 
 export default AppDescription;

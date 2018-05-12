@@ -1,11 +1,20 @@
-import React from 'react'
-import { NavLink } from 'react-router-dom'
-import { themeSettings, text } from '../../lib/settings'
-import ItemTags from './itemTags'
-import ItemImage from './itemImage'
-import ItemPrice from './itemPrice'
+import React from 'react';
+import {NavLink} from 'react-router-dom';
+import {themeSettings, text} from '../../lib/settings';
+import ItemTags from './itemTags';
+import ItemImage from './itemImage';
+import ItemPrice from './itemPrice';
 
-const Item = ({product, addCartItem, settings, columnCountOnMobile, columnCountOnTablet, columnCountOnDesktop, columnCountOnWidescreen, columnCountOnFullhd}) => {
+const Item = ({
+  product,
+  addCartItem,
+  settings,
+  columnCountOnMobile,
+  columnCountOnTablet,
+  columnCountOnDesktop,
+  columnCountOnWidescreen,
+  columnCountOnFullhd
+}) => {
   columnCountOnMobile = columnCountOnMobile || 2;
   columnCountOnTablet = columnCountOnTablet || 3;
   columnCountOnDesktop = columnCountOnDesktop || 4;
@@ -20,15 +29,31 @@ const Item = ({product, addCartItem, settings, columnCountOnMobile, columnCountO
   const columnSizeOnWidescreen = columnCount / columnCountOnWidescreen;
   const columnSizeOnFullhd = columnCount / columnCountOnFullhd;
 
-  const imageHeight = themeSettings.list_image_max_height && themeSettings.list_image_max_height > 0 ? themeSettings.list_image_max_height : 'auto';
-  const placeholderHeight = themeSettings.list_image_max_height && themeSettings.list_image_max_height > 0 ? themeSettings.list_image_max_height : 200;
+  const imageHeight =
+    themeSettings.list_image_max_height &&
+    themeSettings.list_image_max_height > 0
+      ? themeSettings.list_image_max_height
+      : 'auto';
+  const placeholderHeight =
+    themeSettings.list_image_max_height &&
+    themeSettings.list_image_max_height > 0
+      ? themeSettings.list_image_max_height
+      : 200;
 
   return (
-    <div className={`column is-${columnSizeOnMobile}-mobile is-${columnSizeOnTablet}-tablet is-${columnSizeOnDesktop}-desktop is-${columnSizeOnWidescreen}-widescreen is-${columnSizeOnFullhd}-fullhd ${product.stock_status}`}>
+    <div
+      className={`column is-${columnSizeOnMobile}-mobile is-${columnSizeOnTablet}-tablet is-${columnSizeOnDesktop}-desktop is-${columnSizeOnWidescreen}-widescreen is-${columnSizeOnFullhd}-fullhd ${
+        product.stock_status
+      }`}
+    >
       <NavLink to={product.path}>
-        <figure className="image" style={{ height: imageHeight }}>
+        <figure className="image" style={{height: imageHeight}}>
           <ItemTags tags={product.tags} />
-          <ItemImage images={product.images} productName={product.name} height={placeholderHeight} />
+          <ItemImage
+            images={product.images}
+            productName={product.name}
+            height={placeholderHeight}
+          />
         </figure>
         <div className="content product-caption">
           <div className="product-name">{product.name}</div>
@@ -36,7 +61,7 @@ const Item = ({product, addCartItem, settings, columnCountOnMobile, columnCountO
         </div>
       </NavLink>
     </div>
-  )
-}
+  );
+};
 
-export default Item
+export default Item;

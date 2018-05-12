@@ -1,5 +1,3 @@
-'use strict';
-
 const url = require('url');
 const settings = require('../../lib/settings');
 const mongo = require('../../lib/mongo');
@@ -8,13 +6,13 @@ const parse = require('../../lib/parse');
 const ObjectID = require('mongodb').ObjectID;
 const SettingsService = require('../settings/settings');
 
-const DEFAULT_SORT = { is_system:-1, date_created:1 };
+const DEFAULT_SORT = {is_system: -1, date_created: 1};
 
 class PagesService {
   constructor() {}
 
   getFilter(params = {}) {
-    let filter = {};
+    const filter = {};
     const id = parse.getObjectIDIfValid(params.id);
     const tags = parse.getString(params.tags);
     if (id) {
@@ -26,15 +24,20 @@ class PagesService {
     return filter;
   }
 
-  getSortQuery({ sort }) {
-    if(sort && sort.length > 0) {
+  getSortQuery({sort}) {
+    if (sort && sort.length > 0) {
       const fields = sort.split(',');
-      return Object.assign(...fields.map(field => (
-        {[field.startsWith('-') ? field.slice(1) : field]: field.startsWith('-') ? -1 : 1}
-      )))
-    } else {
-      return DEFAULT_SORT;
+      return Object.assign(
+        ...fields.map(field => ({
+          [field.startsWith('-') ? field.slice(1) : field]: field.startsWith(
+            '-'
+          )
+            ? -1
+            : 1
+        }))
+      );
     }
+    return DEFAULT_SORT;
   }
 
   async getPages(params = {}) {
@@ -43,8 +46,12 @@ class PagesService {
     const projection = utils.getProjectionFromFields(params.fields);
     const generalSettings = await SettingsService.getSettings();
     const domain = generalSettings.domain;
-    const items = await mongo.db.collection('pages').find(filter, { projection: projection }).sort(sortQuery).toArray();
-    const result = items.map(page => this.changeProperties(page, domain))
+    const items = await mongo.db
+      .collection('pages')
+      .find(filter, {projection})
+      .sort(sortQuery)
+      .toArray();
+    const result = items.map(page => this.changeProperties(page, domain));
     return result;
   }
 
@@ -52,18 +59,18 @@ class PagesService {
     if (!ObjectID.isValid(id)) {
       return Promise.reject('Invalid identifier');
     }
-    return this.getPages({id: id}).then(pages => {
-      return pages.length > 0
-        ? pages[0]
-        : null;
-    })
+    return this.getPages({id}).then(
+      pages => (pages.length > 0 ? pages[0] : null)
+    );
   }
 
   addPage(data) {
-    return this.getValidDocumentForInsert(data)
-    .then(page => mongo.db.collection('pages')
-      .insertMany([page])
-      .then(res => this.getSinglePage(res.ops[0]._id.toString())));
+    return this.getValidDocumentForInsert(data).then(page =>
+      mongo.db
+        .collection('pages')
+        .insertMany([page])
+        .then(res => this.getSinglePage(res.ops[0]._id.toString()))
+    );
   }
 
   updatePage(id, data) {
@@ -72,10 +79,12 @@ class PagesService {
     }
     const pageObjectID = new ObjectID(id);
 
-    return this.getValidDocumentForUpdate(id, data)
-    .then(page => mongo.db.collection('pages')
-      .updateOne({_id: pageObjectID}, {$set: page})
-      .then(res => this.getSinglePage(id)));
+    return this.getValidDocumentForUpdate(id, data).then(page =>
+      mongo.db
+        .collection('pages')
+        .updateOne({_id: pageObjectID}, {$set: page})
+        .then(res => this.getSinglePage(id))
+    );
   }
 
   deletePage(id) {
@@ -83,15 +92,16 @@ class PagesService {
       return Promise.reject('Invalid identifier');
     }
     const pageObjectID = new ObjectID(id);
-    return mongo.db.collection('pages').deleteOne({'_id': pageObjectID, 'is_system': false}).then(deleteResponse => {
-      return deleteResponse.deletedCount > 0;
-    });
+    return mongo.db
+      .collection('pages')
+      .deleteOne({_id: pageObjectID, is_system: false})
+      .then(deleteResponse => deleteResponse.deletedCount > 0);
   }
 
   getValidDocumentForInsert(data) {
-    let page = {
-      'is_system': false,
-      'date_created': new Date()
+    const page = {
+      is_system: false,
+      date_created: new Date()
     };
 
     page.content = parse.getString(data.content);
@@ -100,63 +110,59 @@ class PagesService {
     page.enabled = parse.getBooleanIfValid(data.enabled, true);
     page.tags = parse.getArrayIfValid(data.tags) || [];
 
-    let slug = (!data.slug || data.slug.length === 0) ? data.meta_title : data.slug;
-    if(!slug || slug.length === 0) {
+    const slug =
+      !data.slug || data.slug.length === 0 ? data.meta_title : data.slug;
+    if (!slug || slug.length === 0) {
       return Promise.resolve(page);
-    } else {
-      return utils.getAvailableSlug(slug, null, false).then(newSlug => {
-        page.slug = newSlug;
-        return page;
-      });
     }
+    return utils.getAvailableSlug(slug, null, false).then(newSlug => {
+      page.slug = newSlug;
+      return page;
+    });
   }
 
   getValidDocumentForUpdate(id, data) {
     if (Object.keys(data).length === 0) {
       return Promise.reject('Required fields are missing');
-    } else {
-      return this.getSinglePage(id).then(prevPageData => {
-        let page = {
-          'date_updated': new Date()
-        };
-
-        if (data.content !== undefined) {
-          page.content = parse.getString(data.content);
-        }
-
-        if (data.meta_description !== undefined) {
-          page.meta_description = parse.getString(data.meta_description);
-        }
-
-        if (data.meta_title !== undefined) {
-          page.meta_title = parse.getString(data.meta_title);
-        }
-
-        if (data.enabled !== undefined && !prevPageData.is_system) {
-          page.enabled = parse.getBooleanIfValid(data.enabled, true);
-        }
-
-        if(data.tags !== undefined) {
-          page.tags = parse.getArrayIfValid(data.tags) || [];
-        }
-
-        if (data.slug !== undefined  && !prevPageData.is_system) {
-          let slug = data.slug;
-          if(!slug || slug.length === 0) {
-            slug = data.meta_title;
-          }
-
-          return utils.getAvailableSlug(slug, id, false)
-          .then(newSlug => {
-            page.slug = newSlug;
-            return page;
-          })
-
-        } else {
-          return page;
-        }
-      })
     }
+    return this.getSinglePage(id).then(prevPageData => {
+      const page = {
+        date_updated: new Date()
+      };
+
+      if (data.content !== undefined) {
+        page.content = parse.getString(data.content);
+      }
+
+      if (data.meta_description !== undefined) {
+        page.meta_description = parse.getString(data.meta_description);
+      }
+
+      if (data.meta_title !== undefined) {
+        page.meta_title = parse.getString(data.meta_title);
+      }
+
+      if (data.enabled !== undefined && !prevPageData.is_system) {
+        page.enabled = parse.getBooleanIfValid(data.enabled, true);
+      }
+
+      if (data.tags !== undefined) {
+        page.tags = parse.getArrayIfValid(data.tags) || [];
+      }
+
+      if (data.slug !== undefined && !prevPageData.is_system) {
+        let slug = data.slug;
+        if (!slug || slug.length === 0) {
+          slug = data.meta_title;
+        }
+
+        return utils.getAvailableSlug(slug, id, false).then(newSlug => {
+          page.slug = newSlug;
+          return page;
+        });
+      }
+      return page;
+    });
   }
 
   changeProperties(item, domain) {
@@ -164,7 +170,7 @@ class PagesService {
       item.id = item._id.toString();
       item._id = undefined;
 
-      if(item.slug) {
+      if (item.slug) {
         item.url = url.resolve(domain, item.slug || '');
         item.path = url.resolve('/', item.slug || '');
       }

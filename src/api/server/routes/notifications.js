@@ -1,5 +1,3 @@
-'use strict';
-
 const PaymentGateways = require('../paymentGateways');
 
 class NotificationsRoute {
@@ -9,7 +7,10 @@ class NotificationsRoute {
   }
 
   registerRoutes() {
-    this.router.post('/v1/notifications/:gateway', this.paymentNotification.bind(this));
+    this.router.post(
+      '/v1/notifications/:gateway',
+      this.paymentNotification.bind(this)
+    );
   }
 
   paymentNotification(req, res, next) {

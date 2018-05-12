@@ -1,7 +1,7 @@
 import React from 'react';
-import { Link } from 'react-router-dom'
-import messages from 'lib/text'
-import { List, ListItem } from 'material-ui/List';
+import {Link} from 'react-router-dom';
+import messages from 'lib/text';
+import {List, ListItem} from 'material-ui/List';
 import FontIcon from 'material-ui/FontIcon';
 
 const styles = {
@@ -14,23 +14,25 @@ const styles = {
   nestedListStyle: {
     padding: '0 0 0 15px'
   }
-}
+};
 
 const FolderIcon = <FontIcon className="material-icons">folder</FontIcon>;
-const DraftIcon = <FontIcon className="material-icons">visibility_off</FontIcon>;
+const DraftIcon = (
+  <FontIcon className="material-icons">visibility_off</FontIcon>
+);
 
 class Item extends React.PureComponent {
-  constructor(props){
+  constructor(props) {
     super(props);
   }
 
   handleClick = () => {
-    const { item } = this.props;
+    const {item} = this.props;
     this.props.onSelect(item.id);
-  }
+  };
 
   render() {
-    const { item, opened, selectedId, nestedItems } = this.props;
+    const {item, opened, selectedId, nestedItems} = this.props;
     const icon = item.enabled ? FolderIcon : DraftIcon;
     const style = item.id === selectedId ? styles.selectedItem : null;
 
@@ -45,13 +47,13 @@ class Item extends React.PureComponent {
         leftIcon={icon}
         onClick={this.handleClick}
         nestedListStyle={styles.nestedListStyle}
-       />
-    )
+      />
+    );
   }
 }
 
 export default class Categories extends React.Component {
-  constructor(props){
+  constructor(props) {
     super(props);
   }
 
@@ -70,12 +72,14 @@ export default class Categories extends React.Component {
         nestedItems={nestedItems}
         onSelect={this.props.onSelect}
       />
-    )
+    );
   }
 
-  getChildren(selectedId, allItems, id, opened){
-    if(allItems && id){
-      return allItems.filter(item => item.parent_id === id).map(item => this.getItem(selectedId, allItems, item, opened));
+  getChildren(selectedId, allItems, id, opened) {
+    if (allItems && id) {
+      return allItems
+        .filter(item => item.parent_id === id)
+        .map(item => this.getItem(selectedId, allItems, item, opened));
     } else {
       return [];
     }
@@ -83,17 +87,17 @@ export default class Categories extends React.Component {
 
   handleClickAll = () => {
     this.props.onSelect('all');
-  }
+  };
 
   handleClickRoot = () => {
     this.props.onSelect('root');
-  }
+  };
 
-  render(){
+  render() {
     const {
-    	selectedId,
-    	items,
-    	showAll = false,
+      selectedId,
+      items,
+      showAll = false,
       showRoot = false,
       showManage = false,
       rootName = messages.productCategories_root,
@@ -101,11 +105,13 @@ export default class Categories extends React.Component {
       opened = false
     } = this.props;
 
-    var rows = items.filter(item => item.parent_id === null).map(item => this.getItem(selectedId, items, item, opened));
+    var rows = items
+      .filter(item => item.parent_id === null)
+      .map(item => this.getItem(selectedId, items, item, opened));
 
     return (
       <List>
-        {showRoot &&
+        {showRoot && (
           <ListItem
             primaryText={rootName}
             style={'root' === selectedId ? styles.selectedItem : null}
@@ -113,9 +119,9 @@ export default class Categories extends React.Component {
             leftIcon={<FontIcon className="material-icons">home</FontIcon>}
             onClick={this.handleClickRoot}
           />
-        }
+        )}
 
-        {showAll &&
+        {showAll && (
           <ListItem
             className="treeItem"
             primaryText={allName}
@@ -124,21 +130,26 @@ export default class Categories extends React.Component {
             leftIcon={<FontIcon className="material-icons">folder</FontIcon>}
             onClick={this.handleClickAll}
           />
-        }
+        )}
 
         {rows}
 
-        {showManage &&
-          <Link to="/admin/products/categories" style={{ textDecoration: 'none' }}>
+        {showManage && (
+          <Link
+            to="/admin/products/categories"
+            style={{textDecoration: 'none'}}
+          >
             <ListItem
               className="treeItem"
               primaryText={messages.productCategories_titleEditMany}
               innerDivStyle={styles.innerItem}
-              leftIcon={<FontIcon className="material-icons">settings</FontIcon>}
+              leftIcon={
+                <FontIcon className="material-icons">settings</FontIcon>
+              }
             />
           </Link>
-        }
+        )}
       </List>
-    )
+    );
   }
 }

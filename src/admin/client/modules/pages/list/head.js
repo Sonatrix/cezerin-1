@@ -1,13 +1,11 @@
-import { connect } from 'react-redux'
-import { withRouter } from 'react-router'
-import Buttons from './components/headButtons'
+import {connect} from 'react-redux';
+import {withRouter} from 'react-router';
+import Buttons from './components/headButtons';
 
-const mapStateToProps = (state, ownProps) => {
-  return {}
-}
+const mapStateToProps = (state, ownProps) => ({});
 
-const mapDispatchToProps = (dispatch, ownProps) => {
-  return {}
-}
+const mapDispatchToProps = (dispatch, ownProps) => ({});
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Buttons));
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(Buttons)
+);

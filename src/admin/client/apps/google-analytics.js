@@ -1,8 +1,8 @@
-import React from 'react'
-import messages from 'lib/text'
-import api from 'lib/api'
-import TextField from 'material-ui/TextField'
-import RaisedButton from 'material-ui/RaisedButton'
+import React from 'react';
+import messages from 'lib/text';
+import api from 'lib/api';
+import TextField from 'material-ui/TextField';
+import RaisedButton from 'material-ui/RaisedButton';
 
 export const Description = {
   key: 'google-analytics',
@@ -41,44 +41,53 @@ export class App extends React.Component {
     };
   }
 
-  handleTrackingIdChange = (event) => {
+  handleTrackingIdChange = event => {
     this.setState({
       trackingId: event.target.value
     });
   };
 
   fetchSettings = () => {
-    api.apps.settings.retrieve('google-analytics')
-    .then(({status, json}) => {
-      const appSettings = json;
-      if(appSettings){
-        this.setState({ trackingId: appSettings.GA_TRACKING_ID });
-      }
-    })
-    .catch(error => {
-      console.log(error);
-    })
-  }
+    api.apps.settings
+      .retrieve('google-analytics')
+      .then(({status, json}) => {
+        const appSettings = json;
+        if (appSettings) {
+          this.setState({trackingId: appSettings.GA_TRACKING_ID});
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
 
   updateSettings = () => {
-    const { trackingId } = this.state;
-    const gtag = trackingId && trackingId.length > 0 ? GTAG_CODE.replace(/GA_TRACKING_ID/g, trackingId) : '';
+    const {trackingId} = this.state;
+    const gtag =
+      trackingId && trackingId.length > 0
+        ? GTAG_CODE.replace(/GA_TRACKING_ID/g, trackingId)
+        : '';
 
-    api.apps.settings.update('google-analytics', { GA_TRACKING_ID: trackingId });
+    api.apps.settings.update('google-analytics', {
+      GA_TRACKING_ID: trackingId
+    });
     api.theme.placeholders.update('google-analytics', {
       place: 'head_start',
       value: gtag
     });
-  }
+  };
 
   componentDidMount() {
-    this.fetchSettings()
+    this.fetchSettings();
   }
 
   render() {
     return (
       <div>
-        <div>Enter your Google Analytics Tracking ID to track page views and other events.</div>
+        <div>
+          Enter your Google Analytics Tracking ID to track page views and other
+          events.
+        </div>
 
         <TextField
           type="text"
@@ -88,7 +97,7 @@ export class App extends React.Component {
           hintText="UA-XXXXXXXX-X"
         />
 
-        <div style={{ textAlign: 'right' }}>
+        <div style={{textAlign: 'right'}}>
           <RaisedButton
             label={messages.save}
             primary={true}
@@ -97,6 +106,6 @@ export class App extends React.Component {
           />
         </div>
       </div>
-    )
+    );
   }
 }

@@ -1,8 +1,8 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
-import messages from 'lib/text'
-import GroupSelect from 'modules/customerGroups/select'
-import DeleteConfirmation from 'modules/shared/deleteConfirmation'
+import React from 'react';
+import {Link} from 'react-router-dom';
+import messages from 'lib/text';
+import GroupSelect from 'modules/customerGroups/select';
+import DeleteConfirmation from 'modules/shared/deleteConfirmation';
 import FontIcon from 'material-ui/FontIcon';
 import IconMenu from 'material-ui/IconMenu';
 import IconButton from 'material-ui/IconButton';
@@ -49,37 +49,51 @@ export default class Buttons extends React.Component {
     this.props.onSetGroup(this.state.groupId);
   };
 
-  selectSetGroup = (groupId) => {
+  selectSetGroup = groupId => {
     this.setState({groupId: groupId});
-  }
+  };
 
   render() {
-    const { search, setSearch, selectedCount, onDelete } = this.props;
+    const {search, setSearch, selectedCount, onDelete} = this.props;
 
     const actionsSetGroup = [
       <FlatButton
         label={messages.cancel}
         onClick={this.closeSetGroup}
-        style={{ marginRight: 10 }}
+        style={{marginRight: 10}}
       />,
       <FlatButton
         label={messages.save}
         primary={true}
         keyboardFocused={true}
         onClick={this.saveSetGroup}
-      />,
+      />
     ];
 
     return (
       <span>
         <Search value={search} setSearch={setSearch} />
-        {selectedCount > 0 &&
+        {selectedCount > 0 && (
           <span>
-            <IconButton touch={true} tooltipPosition="bottom-left" tooltip={messages.actions_delete} onClick={this.showDelete}>
-              <FontIcon color="#fff" className="material-icons">delete</FontIcon>
+            <IconButton
+              touch={true}
+              tooltipPosition="bottom-left"
+              tooltip={messages.actions_delete}
+              onClick={this.showDelete}
+            >
+              <FontIcon color="#fff" className="material-icons">
+                delete
+              </FontIcon>
             </IconButton>
-            <IconButton touch={true} tooltipPosition="bottom-left" tooltip={messages.customers_setGroup} onClick={this.showSetGroup}>
-              <FontIcon color="#fff" className="material-icons">folder</FontIcon>
+            <IconButton
+              touch={true}
+              tooltipPosition="bottom-left"
+              tooltip={messages.customers_setGroup}
+              onClick={this.showSetGroup}
+            >
+              <FontIcon color="#fff" className="material-icons">
+                folder
+              </FontIcon>
             </IconButton>
             <DeleteConfirmation
               open={this.state.openDelete}
@@ -104,8 +118,8 @@ export default class Buttons extends React.Component {
               />
             </Dialog>
           </span>
-        }
+        )}
       </span>
-    )
+    );
   }
 }

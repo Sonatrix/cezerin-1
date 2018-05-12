@@ -1,11 +1,11 @@
-import React from 'react'
+import React from 'react';
 
-import messages from 'lib/text'
-import style from './style.css'
+import messages from 'lib/text';
+import style from './style.css';
 
-import CustomerSummary from './summary'
-import CustomerOrders from './orders'
-import CustomerAddresses from './addresses'
+import CustomerSummary from './summary';
+import CustomerOrders from './orders';
+import CustomerAddresses from './addresses';
 
 export default class CustomerDetails extends React.Component {
   constructor(props) {
@@ -21,9 +21,16 @@ export default class CustomerDetails extends React.Component {
   }
 
   render() {
-    const {customer, settings, onCustomerSummaryUpdate, onUpdateAddress, onDeleteAddress, onSetDefaultBillingAddress, onSetDefaultShippingAddress} = this.props;
-    if (!customer)
-      return <br/>
+    const {
+      customer,
+      settings,
+      onCustomerSummaryUpdate,
+      onUpdateAddress,
+      onDeleteAddress,
+      onSetDefaultBillingAddress,
+      onSetDefaultShippingAddress
+    } = this.props;
+    if (!customer) return <br />;
 
     return (
       <div className="row row--no-gutter col-full-height">
@@ -31,7 +38,8 @@ export default class CustomerDetails extends React.Component {
           <CustomerSummary
             customer={customer}
             settings={settings}
-            onCustomerSummaryUpdate={onCustomerSummaryUpdate} />
+            onCustomerSummaryUpdate={onCustomerSummaryUpdate}
+          />
 
           <CustomerAddresses
             customer={customer}
@@ -39,12 +47,13 @@ export default class CustomerDetails extends React.Component {
             onUpdateAddress={onUpdateAddress}
             onDeleteAddress={onDeleteAddress}
             onSetDefaultBillingAddress={onSetDefaultBillingAddress}
-            onSetDefaultShippingAddress={onSetDefaultShippingAddress} />
+            onSetDefaultShippingAddress={onSetDefaultShippingAddress}
+          />
         </div>
         <div className="col-xs-12 col-sm-7 col-md-8 col--no-gutter scroll col-full-height">
-          <CustomerOrders customerId={customer.id} settings={settings}/>
+          <CustomerOrders customerId={customer.id} settings={settings} />
         </div>
       </div>
-    )
+    );
   }
 }

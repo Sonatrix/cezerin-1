@@ -1,9 +1,12 @@
 const path = require('path');
 const webpack = require('webpack');
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const applicationConfig = require('./config/admin.js');
-const applicationText = require('./locales/admin/' + applicationConfig.language + '.json');
+
+const applicationText = require(`./locales/admin/${
+  applicationConfig.language
+}.json`);
 
 module.exports = {
   entry: {
@@ -18,15 +21,15 @@ module.exports = {
       'redux',
       'redux-form',
       'redux-form-material-ui',
-      'material-ui'
-    ]
+      'material-ui',
+    ],
   },
 
   output: {
     publicPath: '/',
     path: path.resolve(__dirname, 'public'),
-    filename: 'admin-assets/js/[name]-[chunkhash].js',
-    chunkFilename: 'admin-assets/js/[name]-[chunkhash].js'
+    filename: 'admin-assets/js/[name]-[hash].js',
+    chunkFilename: 'admin-assets/js/[name]-[hash].js',
   },
 
   optimization: {
@@ -36,10 +39,10 @@ module.exports = {
           chunks: 'initial',
           name: 'vendor',
           test: 'vendor',
-          enforce: true
+          enforce: true,
         },
-      }
-    }
+      },
+    },
   },
 
   resolve: {
@@ -47,8 +50,8 @@ module.exports = {
       src: path.resolve(__dirname, 'src/admin/client'),
       routes: path.resolve(__dirname, 'src/admin/client/routes'),
       modules: path.resolve(__dirname, 'src/admin/client/modules'),
-      lib: path.resolve(__dirname, 'src/admin/client/lib')
-    }
+      lib: path.resolve(__dirname, 'src/admin/client/lib'),
+    },
   },
 
   module: {
@@ -56,54 +59,60 @@ module.exports = {
       {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
-        use: ['babel-loader']
-      }, {
+        use: ['babel-loader'],
+      },
+      {
         test: /\.css$/,
-        include: [ path.resolve(__dirname, "public") ],
+        include: [path.resolve(__dirname, 'public')],
         use: ExtractTextPlugin.extract({
-            use: [
-                {
-                    loader: "css-loader",
-                    options: {
-                        modules: false,
-                        importLoaders: true
-                    }
-                }
-            ]
-        })
-      }, {
+          use: [
+            {
+              loader: 'css-loader',
+              options: {
+                modules: false,
+                importLoaders: true,
+              },
+            },
+          ],
+        }),
+      },
+      {
         test: /\.css$/,
         exclude: /node_modules|public/,
         use: ExtractTextPlugin.extract({
-            use: [
-                {
-                    loader: "css-loader",
-                    options: {
-                        modules: true,
-                        importLoaders: true,
-                        localIdentName: "[name]__[local]___[hash:base64:5]"
-                    }
-                }
-            ]
-        })
-      }
-    ]
+          use: [
+            {
+              loader: 'css-loader',
+              options: {
+                modules: true,
+                importLoaders: true,
+                localIdentName: '[name]__[local]___[hash:base64:5]',
+              },
+            },
+          ],
+        }),
+      },
+    ],
   },
 
   plugins: [
-    new webpack.DefinePlugin({ APPLICATION_CONFIG: JSON.stringify(applicationConfig) }),
-    new webpack.DefinePlugin({ APPLICATION_TEXT: JSON.stringify(applicationText) }),
-    new ExtractTextPlugin("admin-assets/css/bundle-[contenthash].css"),
+    new webpack.DefinePlugin({
+      APPLICATION_CONFIG: JSON.stringify(applicationConfig),
+    }),
+    new webpack.DefinePlugin({
+      APPLICATION_TEXT: JSON.stringify(applicationText),
+    }),
+    new ExtractTextPlugin('admin-assets/css/bundle-[hash].css'),
     new HtmlWebpackPlugin({
       template: 'src/admin/client/index.html',
       language: applicationConfig.language,
       inject: 'body',
-      filename: 'admin/index.html'
+      filename: 'admin/index.html',
     }),
     new webpack.BannerPlugin({
       banner: `Created: ${new Date().toUTCString()}`,
       raw: false,
-      entryOnly: false
-    })
-  ]
+      entryOnly: false,
+    }),
+  ],
 };

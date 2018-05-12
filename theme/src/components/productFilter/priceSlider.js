@@ -1,8 +1,8 @@
-import React from 'react'
-import { NavLink } from 'react-router-dom'
+import React from 'react';
+import {NavLink} from 'react-router-dom';
 import {Range} from 'rc-slider';
-import { themeSettings, text } from '../../lib/settings'
-import * as helper from '../../lib/helper'
+import {themeSettings, text} from '../../lib/settings';
+import * as helper from '../../lib/helper';
 
 export default class PriceSlider extends React.Component {
   constructor(props) {
@@ -10,11 +10,14 @@ export default class PriceSlider extends React.Component {
     this.state = {
       minValue: props.minValue > 0 ? props.minValue : props.minPrice,
       maxValue: props.maxValue > 0 ? props.maxValue : props.maxPrice
-    }
+    };
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.minPrice !== this.props.minPrice || nextProps.maxPrice !== this.props.maxPrice) {
+    if (
+      nextProps.minPrice !== this.props.minPrice ||
+      nextProps.maxPrice !== this.props.maxPrice
+    ) {
       this.setState({
         minValue: nextProps.minPrice,
         maxValue: nextProps.maxPrice
@@ -22,17 +25,17 @@ export default class PriceSlider extends React.Component {
     }
   }
 
-  setValues = (values) => {
-    if(Array.isArray(values) && values.length === 2) {
+  setValues = values => {
+    if (Array.isArray(values) && values.length === 2) {
       this.setState({
         minValue: values[0],
         maxValue: values[1]
-      })
+      });
     }
-  }
+  };
 
   render() {
-    const { minPrice, maxPrice, setPriceFromAndTo, settings } = this.props;
+    const {minPrice, maxPrice, setPriceFromAndTo, settings} = this.props;
 
     return (
       <div className="price-filter">
@@ -43,7 +46,9 @@ export default class PriceSlider extends React.Component {
           value={[this.state.minValue, this.state.maxValue]}
           disabled={maxPrice === 0}
           className="price-filter-range"
-          onAfterChange={values => {setPriceFromAndTo(...values)}}
+          onAfterChange={values => {
+            setPriceFromAndTo(...values);
+          }}
           onChange={this.setValues}
         />
         <div className="columns is-mobile is-gapless price-filter-values">
@@ -55,6 +60,6 @@ export default class PriceSlider extends React.Component {
           </div>
         </div>
       </div>
-    )
+    );
   }
 }

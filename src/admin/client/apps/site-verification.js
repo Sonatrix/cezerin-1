@@ -1,8 +1,8 @@
-import React from 'react'
-import messages from 'lib/text'
-import api from 'lib/api'
-import TextField from 'material-ui/TextField'
-import RaisedButton from 'material-ui/RaisedButton'
+import React from 'react';
+import messages from 'lib/text';
+import api from 'lib/api';
+import TextField from 'material-ui/TextField';
+import RaisedButton from 'material-ui/RaisedButton';
 
 export const Description = {
   key: 'site-verification',
@@ -18,7 +18,8 @@ export const Description = {
   </ol>`
 };
 
-const GOOGLE_EXAMPLE = '<meta name="google-site-verification" content="1234" />';
+const GOOGLE_EXAMPLE =
+  '<meta name="google-site-verification" content="1234" />';
 const BING_EXAMPLE = '<meta name="msvalidate.01" content="1234" />';
 const PINTEREST_EXAMPLE = '<meta name="p:domain_verify" content="1234" />';
 const YANDEX_EXAMPLE = '<meta name="yandex-verification" content="1234" />';
@@ -34,52 +35,53 @@ export class App extends React.Component {
     };
   }
 
-  handleGoogleChange = (event) => {
+  handleGoogleChange = event => {
     this.setState({
       google: event.target.value
     });
-  }
+  };
 
-  handleBingChange = (event) => {
+  handleBingChange = event => {
     this.setState({
       bing: event.target.value
     });
-  }
+  };
 
-  handlePinterestChange = (event) => {
+  handlePinterestChange = event => {
     this.setState({
       pinterest: event.target.value
     });
-  }
+  };
 
-  handleYandexChange = (event) => {
+  handleYandexChange = event => {
     this.setState({
       yandex: event.target.value
     });
-  }
+  };
 
   fetchSettings = () => {
-    api.apps.settings.retrieve('site-verification')
-    .then(({status, json}) => {
-      const appSettings = json;
-      if(appSettings){
-        this.setState({
-          google: appSettings.google,
-          bing: appSettings.bing,
-          pinterest: appSettings.pinterest,
-          yandex: appSettings.yandex
-        });
-      }
-    })
-    .catch(error => {
-      console.log(error);
-    })
-  }
+    api.apps.settings
+      .retrieve('site-verification')
+      .then(({status, json}) => {
+        const appSettings = json;
+        if (appSettings) {
+          this.setState({
+            google: appSettings.google,
+            bing: appSettings.bing,
+            pinterest: appSettings.pinterest,
+            yandex: appSettings.yandex
+          });
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
 
   updateSettings = () => {
     const {google, bing, pinterest, yandex} = this.state;
     const metaTags = [google, bing, pinterest, yandex]
-      .map(tag => tag && tag.length > 0 ? tag : null)
+      .map(tag => (tag && tag.length > 0 ? tag : null))
       .filter(tag => tag !== null)
       .join('\n');
 
@@ -94,10 +96,10 @@ export class App extends React.Component {
       place: 'head_start',
       value: metaTags
     });
-  }
+  };
 
   componentDidMount() {
-    this.fetchSettings()
+    this.fetchSettings();
   }
 
   render() {
@@ -139,7 +141,7 @@ export class App extends React.Component {
           hintText={YANDEX_EXAMPLE}
         />
 
-        <div style={{ textAlign: 'right', marginTop: 20 }}>
+        <div style={{textAlign: 'right', marginTop: 20}}>
           <RaisedButton
             label={messages.save}
             primary={true}
@@ -148,6 +150,6 @@ export class App extends React.Component {
           />
         </div>
       </div>
-    )
+    );
   }
 }

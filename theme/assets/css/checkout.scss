@@ -30,9 +30,9 @@
   margin-bottom: 14px;
 }
 
-.checkout-field input[type="text"],
-.checkout-field input[type="email"],
-.checkout-field input[type="tel"],
+.checkout-field input[type='text'],
+.checkout-field input[type='email'],
+.checkout-field input[type='tel'],
 .checkout-field textarea {
   width: 100%;
   border: 1px solid #e0e0e0;
@@ -40,17 +40,17 @@
   padding: 12px 16px;
 }
 
-.checkout-field input[type="text"]:focus,
-.checkout-field input[type="email"]:focus,
-.checkout-field input[type="tel"]:focus,
+.checkout-field input[type='text']:focus,
+.checkout-field input[type='email']:focus,
+.checkout-field input[type='tel']:focus,
 .checkout-field textarea:focus {
   outline: none;
   border: 1px solid #a1a1a1;
 }
 
-.checkout-field input[type="text"].invalid,
-.checkout-field input[type="email"].invalid,
-.checkout-field input[type="tel"].invalid,
+.checkout-field input[type='text'].invalid,
+.checkout-field input[type='email'].invalid,
+.checkout-field input[type='tel'].invalid,
 .checkout-field textarea.invalid {
   border: 1px solid #e96161;
   background-color: rgba(233, 97, 97, 0.05);
@@ -60,7 +60,7 @@
   font-size: 9pt;
   font-weight: normal;
   color: #747679;
-  margin-bottom: .5em;
+  margin-bottom: 0.5em;
   display: block;
 }
 
@@ -104,13 +104,15 @@
   margin-top: 16px;
 }
 
-.shipping-methods, .payment-methods {
+.shipping-methods,
+.payment-methods {
   border: 1px solid #e0e0e0;
   border-radius: 3px;
   margin-bottom: 14px;
 }
 
-.shipping-method, .payment-method {
+.shipping-method,
+.payment-method {
   display: flex;
   align-items: center;
   flex-direction: row;
@@ -122,34 +124,39 @@
   margin: 0;
 }
 
-.shipping-method div, .payment-method div {
+.shipping-method div,
+.payment-method div {
   flex-grow: 2;
 }
 
-.shipping-method input[type="radio"], .payment-method input[type="radio"] {
+.shipping-method input[type='radio'],
+.payment-method input[type='radio'] {
   margin-right: 16px;
   min-width: 20px;
 }
 
-.shipping-method.active, .payment-method.active, .shipping-method:hover, .payment-method:hover {
+.shipping-method.active,
+.payment-method.active,
+.shipping-method:hover,
+.payment-method:hover {
   background-color: #f9f9f9;
 }
 
-.shipping-method-description, .payment-method-description {
+.shipping-method-description,
+.payment-method-description {
   font-size: 12px;
   color: #747679;
 }
 
-.payment-method:last-child, .shipping-method:last-child {
+.payment-method:last-child,
+.shipping-method:last-child {
   border-bottom: none;
 }
 
 .payment-method-name {
-
 }
 
 .shipping-method-name {
-
 }
 
 .shipping-method-rate {
@@ -160,14 +167,14 @@
 }
 
 .payment-method-logo {
-
 }
 
-.checkout-box, .checkout-step {
+.checkout-box,
+.checkout-step {
   padding: 30px;
   background-color: #fff;
   border-radius: 8px;
-  box-shadow: 0 3px 8px 0 rgba(0,0,0,0.1);
+  box-shadow: 0 3px 8px 0 rgba(0, 0, 0, 0.1);
 }
 
 .checkout-box .summary-block {
@@ -228,7 +235,8 @@
   padding-left: 10px;
 }
 
-.checkout-success-details {}
+.checkout-success-details {
+}
 
 .checkout-success-title {
   text-align: center;
@@ -239,7 +247,8 @@
   padding-bottom: 20px;
 }
 
-.checkout-success-totals {}
+.checkout-success-totals {
+}
 .checkout-success-totals div {
   display: flex;
   justify-content: space-between;
@@ -286,7 +295,8 @@ Mobile
     padding-right: 20px;
   }
 
-  .checkout-box, .checkout-step {
+  .checkout-box,
+  .checkout-step {
     // border-radius: 0px;
     // box-shadow: none;
   }

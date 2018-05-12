@@ -1,12 +1,14 @@
-'use strict';
-
 const mongo = require('../../lib/mongo');
 
 class PaymentMethodsLightService {
   constructor() {}
 
   getMethods(filter = {}) {
-    return mongo.db.collection('paymentMethods').find(filter).toArray().then(items => items.map(item => this.changeProperties(item)))
+    return mongo.db
+      .collection('paymentMethods')
+      .find(filter)
+      .toArray()
+      .then(items => items.map(item => this.changeProperties(item)));
   }
 
   changeProperties(item) {

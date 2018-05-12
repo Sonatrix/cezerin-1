@@ -1,8 +1,8 @@
-import React from 'react'
-import { Field, FieldArray, reduxForm } from 'redux-form'
-import messages from 'lib/text'
-import style from './style.css'
-import CategorySelect from 'modules/productCategories/select'
+import React from 'react';
+import {Field, FieldArray, reduxForm} from 'redux-form';
+import messages from 'lib/text';
+import style from './style.css';
+import CategorySelect from 'modules/productCategories/select';
 import FontIcon from 'material-ui/FontIcon';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
@@ -19,19 +19,23 @@ export default class ProductCategorySelect extends React.Component {
 
   close = () => {
     this.setState({open: false});
-  }
+  };
 
   open = () => {
     this.setState({open: true});
-  }
+  };
 
-  handleSelect = (categoryId) => {
+  handleSelect = categoryId => {
     this.props.input.onChange(categoryId);
-  }
+  };
 
   render() {
-    const { categories, input, meta: { touched, error } } = this.props;
-    const { open } = this.state;
+    const {
+      categories,
+      input,
+      meta: {touched, error}
+    } = this.props;
+    const {open} = this.state;
     const selectedCategoryId = input.value;
     const category = categories.find(item => item.id === selectedCategoryId);
     const categoryName = category ? category.name : '';
@@ -40,14 +44,14 @@ export default class ProductCategorySelect extends React.Component {
       <FlatButton
         label={messages.cancel}
         onClick={this.close}
-        style={{ marginRight: 10 }}
+        style={{marginRight: 10}}
       />,
       <FlatButton
         label={messages.save}
         primary={true}
         keyboardFocused={true}
         onClick={this.close}
-      />,
+      />
     ];
 
     return (
@@ -69,9 +73,13 @@ export default class ProductCategorySelect extends React.Component {
         <FlatButton
           label={categoryName}
           onClick={this.open}
-          icon={<FontIcon color="#777" className="material-icons">create</FontIcon>}
+          icon={
+            <FontIcon color="#777" className="material-icons">
+              create
+            </FontIcon>
+          }
         />
       </Fragment>
-    )
+    );
   }
 }

@@ -1,6 +1,6 @@
-import React from 'react'
-import OrdersBar from 'modules/reports/ordersBar'
-import { defaults } from 'react-chartjs-2'
+import React from 'react';
+import OrdersBar from 'modules/reports/ordersBar';
+import {defaults} from 'react-chartjs-2';
 
 // Set charts default
 defaults.global.responsive = true;
@@ -17,4 +17,4 @@ export default () => (
   <div className="scroll col-full-height">
     <OrdersBar />
   </div>
-)
+);

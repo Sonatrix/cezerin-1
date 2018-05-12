@@ -9,58 +9,55 @@ const SMTP_FROM_CONFIG_FILE = {
   port: settings.smtpServer.port,
   secure: settings.smtpServer.secure,
   auth: {
-      user: settings.smtpServer.user,
-      pass: settings.smtpServer.pass
+    user: settings.smtpServer.user,
+    pass: settings.smtpServer.pass
   }
 };
 
-const getSmtpFromEmailSettings = emailSettings => {
-  return {
-    host: emailSettings.host,
-    port: emailSettings.port,
-    secure: emailSettings.port === 465,
-    auth: {
-        user: emailSettings.user,
-        pass: emailSettings.pass
-    }
+const getSmtpFromEmailSettings = emailSettings => ({
+  host: emailSettings.host,
+  port: emailSettings.port,
+  secure: emailSettings.port === 465,
+  auth: {
+    user: emailSettings.user,
+    pass: emailSettings.pass
   }
-}
+});
 
 const getSmtp = emailSettings => {
   const useSmtpServerFromConfigFile = emailSettings.host === '';
-  const smtp = useSmtpServerFromConfigFile ?
-    SMTP_FROM_CONFIG_FILE :
-    getSmtpFromEmailSettings(emailSettings);
+  const smtp = useSmtpServerFromConfigFile
+    ? SMTP_FROM_CONFIG_FILE
+    : getSmtpFromEmailSettings(emailSettings);
 
   return smtp;
-}
+};
 
-const sendMail = (smtp, message) => {
-  return new Promise((resolve, reject) => {
+const sendMail = (smtp, message) =>
+  new Promise((resolve, reject) => {
     if (!message.to.includes('@')) {
       reject('Invalid email address');
       return;
     }
 
-    const transporter = nodemailer.createTransport(smtpTransport(smtp))
+    const transporter = nodemailer.createTransport(smtpTransport(smtp));
     transporter.sendMail(message, (err, info) => {
-      if(err) {
+      if (err) {
         reject(err);
       } else {
         resolve(info);
       }
     });
-  })
-}
+  });
 
 const getFrom = emailSettings => {
   const useSmtpServerFromConfigFile = emailSettings.host === '';
-  return useSmtpServerFromConfigFile ?
-    `"${settings.smtpServer.fromName}" <${settings.smtpServer.fromAddress}>` :
-    `"${emailSettings.from_name}" <${emailSettings.from_address}>`;
-}
+  return useSmtpServerFromConfigFile
+    ? `"${settings.smtpServer.fromName}" <${settings.smtpServer.fromAddress}>`
+    : `"${emailSettings.from_name}" <${emailSettings.from_address}>`;
+};
 
-const send = async (message) => {
+const send = async message => {
   const emailSettings = await EmailSettingsService.getEmailSettings();
   const smtp = getSmtp(emailSettings);
   message.from = getFrom(emailSettings);
@@ -73,8 +70,8 @@ const send = async (message) => {
     winston.error('Email send failed', e);
     return false;
   }
-}
+};
 
 module.exports = {
-  send: send
-}
+  send
+};

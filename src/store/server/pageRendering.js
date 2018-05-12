@@ -1,17 +1,17 @@
-import winston from 'winston'
-import serverSettings from './settings'
-import React from 'react'
-import { StaticRouter } from 'react-router'
-import {renderToString} from 'react-dom/server'
-import {createStore, applyMiddleware} from 'redux'
-import thunkMiddleware from 'redux-thunk'
-import {Provider} from 'react-redux'
-import Helmet from 'react-helmet'
-import { updateThemeSettings } from 'theme'
-import reducers from '../shared/reducers'
-import { loadState } from './loadState'
-import { indexHtml } from './readIndexHtml'
-import App from '../shared/app'
+import winston from 'winston';
+import serverSettings from './settings';
+import React from 'react';
+import {StaticRouter} from 'react-router';
+import {renderToString} from 'react-dom/server';
+import {createStore, applyMiddleware} from 'redux';
+import thunkMiddleware from 'redux-thunk';
+import {Provider} from 'react-redux';
+import Helmet from 'react-helmet';
+import {updateThemeSettings} from 'theme';
+import reducers from '../shared/reducers';
+import {loadState} from './loadState';
+import {indexHtml} from './readIndexHtml';
+import App from '../shared/app';
 
 const getHead = () => {
   const helmet = Helmet.rewind();
@@ -24,51 +24,63 @@ const getHead = () => {
     htmlAttributes: helmet.htmlAttributes.toString(),
     base: helmet.base.toString(),
     noscript: helmet.noscript.toString()
-  }
-}
+  };
+};
 
-const getReferrerCookieOptions = (isHttps) => ({
+const getReferrerCookieOptions = isHttps => ({
   maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
   httpOnly: true,
   signed: true,
   secure: isHttps,
   sameSite: 'strict'
-})
+});
 
 const renderError = (req, res, err) => {
   winston.error('Page error', req.url, err);
   res.status(500).send(err);
-}
+};
 
 const getAppHtml = (store, location, context = {}) => {
   const html = renderToString(
     <Provider store={store}>
       <StaticRouter location={location} context={context}>
-        <App/>
+        <App />
       </StaticRouter>
     </Provider>
-  )
+  );
 
   return html;
-}
+};
 
-const getPlaceholder = (placeholders) => {
-  let placeholder = {
+const getPlaceholder = placeholders => {
+  const placeholder = {
     head_start: '',
     head_end: '',
     body_start: '',
     body_end: ''
   };
 
-  if(placeholders && placeholders.length > 0){
-    placeholder.head_start = placeholders.filter(p => p.place === 'head_start').map(p => p.value).join('\n');
-    placeholder.head_end = placeholders.filter(p => p.place === 'head_end').map(p => p.value).join('\n');
-    placeholder.body_start = placeholders.filter(p => p.place === 'body_start').map(p => p.value).join('\n');
-    placeholder.body_end = placeholders.filter(p => p.place === 'body_end').map(p => p.value).join('\n');
+  if (placeholders && placeholders.length > 0) {
+    placeholder.head_start = placeholders
+      .filter(p => p.place === 'head_start')
+      .map(p => p.value)
+      .join('\n');
+    placeholder.head_end = placeholders
+      .filter(p => p.place === 'head_end')
+      .map(p => p.value)
+      .join('\n');
+    placeholder.body_start = placeholders
+      .filter(p => p.place === 'body_start')
+      .map(p => p.value)
+      .join('\n');
+    placeholder.body_end = placeholders
+      .filter(p => p.place === 'body_end')
+      .map(p => p.value)
+      .join('\n');
   }
 
   return placeholder;
-}
+};
 
 const renderPage = (req, res, store, themeText, placeholders) => {
   const appHtml = getAppHtml(store, req.url);
@@ -92,34 +104,39 @@ const renderPage = (req, res, store, themeText, placeholders) => {
 
   const isHttps = req.protocol === 'https';
   const full_url = `${req.protocol}://${req.hostname}${req.url}`;
-  const referrer_url = req.get('referrer') === undefined ? '' : req.get('referrer');
+  const referrer_url =
+    req.get('referrer') === undefined ? '' : req.get('referrer');
   const REFERRER_COOKIE_OPTIONS = getReferrerCookieOptions(isHttps);
 
-  if(!req.signedCookies.referrer_url) {
+  if (!req.signedCookies.referrer_url) {
     res.cookie('referrer_url', referrer_url, REFERRER_COOKIE_OPTIONS);
   }
 
-  if(!req.signedCookies.landing_url) {
+  if (!req.signedCookies.landing_url) {
     res.cookie('landing_url', full_url, REFERRER_COOKIE_OPTIONS);
   }
 
   const httpStatusCode = state.app.currentPage.type === 404 ? 404 : 200;
   res.status(httpStatusCode).send(html);
-}
+};
 
 const pageRendering = (req, res) => {
   loadState(req, serverSettings.language)
-  .then(({ state, themeText, placeholders }) => {
-    updateThemeSettings({
-      settings: state.app.themeSettings,
-      text: themeText
+    .then(({state, themeText, placeholders}) => {
+      updateThemeSettings({
+        settings: state.app.themeSettings,
+        text: themeText
+      });
+      const store = createStore(
+        reducers,
+        state,
+        applyMiddleware(thunkMiddleware)
+      );
+      renderPage(req, res, store, themeText, placeholders);
+    })
+    .catch(err => {
+      renderError(req, res, err);
     });
-    const store = createStore(reducers, state, applyMiddleware(thunkMiddleware));
-    renderPage(req, res, store, themeText, placeholders);
-  })
-  .catch(err => {
-    renderError(req, res, err)
-  });
-}
+};
 
 export default pageRendering;

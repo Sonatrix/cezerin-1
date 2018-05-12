@@ -1,5 +1,3 @@
-'use strict';
-
 const mongo = require('../../lib/mongo');
 const ObjectID = require('mongodb').ObjectID;
 
@@ -7,20 +5,22 @@ class ShippingMethodsLightService {
   constructor() {}
 
   getMethods(filter = {}) {
-    return mongo.db.collection('shippingMethods').find(filter).toArray().then(items => items.map(item => this.changeProperties(item)));
+    return mongo.db
+      .collection('shippingMethods')
+      .find(filter)
+      .toArray()
+      .then(items => items.map(item => this.changeProperties(item)));
   }
 
   getMethodPrice(id) {
-    let filter = {};
+    const filter = {};
     if (id) {
       filter._id = new ObjectID(id);
     }
 
-    return this.getMethods(filter).then(methods => {
-      return methods.length > 0
-        ? methods[0].price || 0
-        : 0
-    })
+    return this.getMethods(filter).then(
+      methods => (methods.length > 0 ? methods[0].price || 0 : 0)
+    );
   }
 
   changeProperties(item) {

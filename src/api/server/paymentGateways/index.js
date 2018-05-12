@@ -5,18 +5,19 @@ const PaymentGatewaysService = require('../services/settings/paymentGateways');
 const PayPalCheckout = require('./PayPalCheckout');
 const LiqPay = require('./LiqPay');
 
-const getOptions = (orderId) => {
-  return Promise.all([
+const getOptions = orderId =>
+  Promise.all([
     OrdersService.getSingleOrder(orderId),
     SettingsService.getSettings()
   ]).then(([order, settings]) => {
-    if(order && order.payment_method_id){
-      return PaymentGatewaysService.getGateway(order.payment_method_gateway).then(gatewaySettings => {
-
+    if (order && order.payment_method_id) {
+      return PaymentGatewaysService.getGateway(
+        order.payment_method_gateway
+      ).then(gatewaySettings => {
         const options = {
           gateway: order.payment_method_gateway,
-          gatewaySettings: gatewaySettings,
-          order: order,
+          gatewaySettings,
+          order,
           amount: order.grand_total,
           currency: settings.currency_code
         };
@@ -25,11 +26,10 @@ const getOptions = (orderId) => {
       });
     }
   });
-}
 
-const getPaymentFormSettings = (orderId) => {
-  return getOptions(orderId).then(options => {
-    switch(options.gateway){
+const getPaymentFormSettings = orderId =>
+  getOptions(orderId).then(options => {
+    switch (options.gateway) {
       case 'paypal-checkout':
         return PayPalCheckout.getPaymentFormSettings(options);
       case 'liqpay':
@@ -37,19 +37,18 @@ const getPaymentFormSettings = (orderId) => {
       default:
         return Promise.reject('Invalid gateway');
     }
-  })
-}
+  });
 
-const paymentNotification = (req, res, gateway) => {
-  return PaymentGatewaysService.getGateway(gateway).then(gatewaySettings => {
+const paymentNotification = (req, res, gateway) =>
+  PaymentGatewaysService.getGateway(gateway).then(gatewaySettings => {
     const options = {
-      gateway: gateway,
-      gatewaySettings: gatewaySettings,
-      req: req,
-      res: res
+      gateway,
+      gatewaySettings,
+      req,
+      res
     };
 
-    switch(gateway){
+    switch (gateway) {
       case 'paypal-checkout':
         return PayPalCheckout.paymentNotification(options);
       case 'liqpay':
@@ -58,9 +57,8 @@ const paymentNotification = (req, res, gateway) => {
         return Promise.reject('Invalid gateway');
     }
   });
-}
 
 module.exports = {
-  getPaymentFormSettings: getPaymentFormSettings,
-  paymentNotification: paymentNotification
-}
+  getPaymentFormSettings,
+  paymentNotification
+};

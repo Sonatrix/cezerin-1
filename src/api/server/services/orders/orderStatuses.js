@@ -1,5 +1,3 @@
-'use strict';
-
 const mongo = require('../../lib/mongo');
 const utils = require('../../lib/utils');
 const parse = require('../../lib/parse');
@@ -9,29 +7,34 @@ class OrderStatusesService {
   constructor() {}
 
   getStatuses(params = {}) {
-    let filter = {};
+    const filter = {};
     const id = parse.getObjectIDIfValid(params.id);
     if (id) {
       filter._id = new ObjectID(id);
     }
 
-    return mongo.db.collection('orderStatuses').find(filter).toArray().then(items => items.map(item => this.changeProperties(item)))
+    return mongo.db
+      .collection('orderStatuses')
+      .find(filter)
+      .toArray()
+      .then(items => items.map(item => this.changeProperties(item)));
   }
 
   getSingleStatus(id) {
     if (!ObjectID.isValid(id)) {
       return Promise.reject('Invalid identifier');
     }
-    return this.getStatuses({id: id}).then(statuses => {
-      return statuses.length > 0
-        ? statuses[0]
-        : null;
-    })
+    return this.getStatuses({id}).then(
+      statuses => (statuses.length > 0 ? statuses[0] : null)
+    );
   }
 
   addStatus(data) {
     const status = this.getValidDocumentForInsert(data);
-    return mongo.db.collection('orderStatuses').insertMany([status]).then(res => this.getSingleStatus(res.ops[0]._id.toString()));
+    return mongo.db
+      .collection('orderStatuses')
+      .insertMany([status])
+      .then(res => this.getSingleStatus(res.ops[0]._id.toString()));
   }
 
   updateStatus(id, data) {
@@ -41,9 +44,15 @@ class OrderStatusesService {
     const statusObjectID = new ObjectID(id);
     const status = this.getValidDocumentForUpdate(id, data);
 
-    return mongo.db.collection('orderStatuses').updateOne({
-      _id: statusObjectID
-    }, {$set: status}).then(res => this.getSingleStatus(id));
+    return mongo.db
+      .collection('orderStatuses')
+      .updateOne(
+        {
+          _id: statusObjectID
+        },
+        {$set: status}
+      )
+      .then(res => this.getSingleStatus(id));
   }
 
   deleteStatus(id) {
@@ -51,13 +60,14 @@ class OrderStatusesService {
       return Promise.reject('Invalid identifier');
     }
     const statusObjectID = new ObjectID(id);
-    return mongo.db.collection('orderStatuses').deleteOne({'_id': statusObjectID}).then(deleteResponse => {
-      return deleteResponse.deletedCount > 0;
-    });
+    return mongo.db
+      .collection('orderStatuses')
+      .deleteOne({_id: statusObjectID})
+      .then(deleteResponse => deleteResponse.deletedCount > 0);
   }
 
   getValidDocumentForInsert(data) {
-    let status = {}
+    const status = {};
 
     status.name = parse.getString(data.name);
     status.description = parse.getString(data.description);
@@ -73,7 +83,7 @@ class OrderStatusesService {
       return new Error('Required fields are missing');
     }
 
-    let status = {}
+    const status = {};
 
     if (data.name !== undefined) {
       status.name = parse.getString(data.name);

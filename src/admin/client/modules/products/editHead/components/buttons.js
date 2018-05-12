@@ -1,7 +1,7 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
-import messages from 'lib/text'
-import DeleteConfirmation from 'modules/shared/deleteConfirmation'
+import React from 'react';
+import {Link} from 'react-router-dom';
+import messages from 'lib/text';
+import DeleteConfirmation from 'modules/shared/deleteConfirmation';
 import FontIcon from 'material-ui/FontIcon';
 import IconButton from 'material-ui/IconButton';
 import FlatButton from 'material-ui/FlatButton';
@@ -24,26 +24,43 @@ export default class Buttons extends React.Component {
   };
 
   handleDelete = () => {
-    this.closeDelete()
+    this.closeDelete();
     this.props.onDelete();
   };
 
   render() {
     const {product} = this.props;
-    const productName = product && product.name && product.name.length > 0 ? product.name : 'Draft';
+    const productName =
+      product && product.name && product.name.length > 0
+        ? product.name
+        : 'Draft';
 
     return (
       <Fragment>
-        <IconButton touch={true} tooltipPosition="bottom-left" tooltip={messages.deleteProduct} onClick={this.openDelete}>
-          <FontIcon color="#fff" className="material-icons">delete</FontIcon>
+        <IconButton
+          touch={true}
+          tooltipPosition="bottom-left"
+          tooltip={messages.deleteProduct}
+          onClick={this.openDelete}
+        >
+          <FontIcon color="#fff" className="material-icons">
+            delete
+          </FontIcon>
         </IconButton>
-        {product && product.enabled &&
-          <a href={product.url} target="_blank">
-            <IconButton touch={true} tooltipPosition="bottom-left" tooltip={messages.viewOnWebsite}>
-              <FontIcon color="#fff" className="material-icons">open_in_new</FontIcon>
-            </IconButton>
-          </a>
-        }
+        {product &&
+          product.enabled && (
+            <a href={product.url} target="_blank">
+              <IconButton
+                touch={true}
+                tooltipPosition="bottom-left"
+                tooltip={messages.viewOnWebsite}
+              >
+                <FontIcon color="#fff" className="material-icons">
+                  open_in_new
+                </FontIcon>
+              </IconButton>
+            </a>
+          )}
         <DeleteConfirmation
           open={this.state.openDelete}
           isSingle={true}
@@ -53,6 +70,6 @@ export default class Buttons extends React.Component {
           onDelete={this.handleDelete}
         />
       </Fragment>
-    )
+    );
   }
 }

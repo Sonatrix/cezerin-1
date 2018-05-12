@@ -1,8 +1,8 @@
-import React from 'react'
-import messages from 'lib/text'
-import api from 'lib/api'
-import TextField from 'material-ui/TextField'
-import RaisedButton from 'material-ui/RaisedButton'
+import React from 'react';
+import messages from 'lib/text';
+import api from 'lib/api';
+import TextField from 'material-ui/TextField';
+import RaisedButton from 'material-ui/RaisedButton';
 
 export const Description = {
   key: 'jivosite',
@@ -19,37 +19,38 @@ export class App extends React.Component {
     };
   }
 
-  handleChange = (event) => {
+  handleChange = event => {
     this.setState({
       code: event.target.value
     });
   };
 
   fetchSettings = () => {
-    api.apps.settings.retrieve('jivosite')
-    .then(({status, json}) => {
-      const appSettings = json;
-      if(appSettings){
-        this.setState({ code: appSettings.code });
-      }
-    })
-    .catch(error => {
-      console.log(error);
-    })
-  }
+    api.apps.settings
+      .retrieve('jivosite')
+      .then(({status, json}) => {
+        const appSettings = json;
+        if (appSettings) {
+          this.setState({code: appSettings.code});
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
 
   updateSettings = () => {
-    const { code } = this.state;
+    const {code} = this.state;
 
-    api.apps.settings.update('jivosite', { code: code });
+    api.apps.settings.update('jivosite', {code: code});
     api.theme.placeholders.update('jivosite', {
       place: 'body_end',
       value: code
     });
-  }
+  };
 
   componentDidMount() {
-    this.fetchSettings()
+    this.fetchSettings();
   }
 
   render() {
@@ -68,7 +69,7 @@ export class App extends React.Component {
           hintText="<!-- BEGIN JIVOSITE CODE {literal} -->..."
         />
 
-        <div style={{ textAlign: 'right' }}>
+        <div style={{textAlign: 'right'}}>
           <RaisedButton
             label={messages.save}
             primary={true}
@@ -77,6 +78,6 @@ export class App extends React.Component {
           />
         </div>
       </div>
-    )
+    );
   }
 }

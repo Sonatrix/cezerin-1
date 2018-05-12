@@ -1,38 +1,41 @@
-import React from 'react'
-import { NavLink } from 'react-router-dom'
-import ImageGallery from 'react-image-gallery'
-import { themeSettings, text } from '../lib/settings'
-import * as helper from '../lib/helper'
+import React from 'react';
+import {NavLink} from 'react-router-dom';
+import ImageGallery from 'react-image-gallery';
+import {themeSettings, text} from '../lib/settings';
+import * as helper from '../lib/helper';
 
 const renderItem = item => (
   <div className="image-gallery-image">
     <NavLink to={item.path || ''}>
       <img src={item.original} alt={item.title} />
-      <div className="caption" style={{ color: themeSettings.home_slider_color || '#fff' }}>
+      <div
+        className="caption"
+        style={{color: themeSettings.home_slider_color || '#fff'}}
+      >
         <div className="caption-title">{item.title}</div>
         <div className="caption-description">{item.description}</div>
       </div>
     </NavLink>
   </div>
-)
+);
 
-const HomeSlider = ({ images }) => {
+const HomeSlider = ({images}) => {
   if (images && images.length > 0) {
     const items = images.map(item => ({
-      original: '/assets/images/' + item.image,
+      original: `/assets/images/${item.image}`,
       title: item.title,
       description: item.description,
       path: item.path || '',
-      button: item.button,
-    }))
+      button: item.button
+    }));
 
     return (
-      <section className="section" style={{ padding: 0 }}>
+      <section className="section" style={{padding: 0}}>
         <div className="container">
           <div className="home-slider">
             <ImageGallery
               items={items}
-              lazyLoad={true}
+              lazyLoad
               showThumbnails={false}
               slideInterval={2000}
               showNav={themeSettings.home_gallery_shownav === true}
@@ -45,10 +48,9 @@ const HomeSlider = ({ images }) => {
           </div>
         </div>
       </section>
-    )
-  } else {
-    return null;
+    );
   }
-}
+  return null;
+};
 
 export default HomeSlider;

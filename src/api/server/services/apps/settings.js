@@ -1,5 +1,3 @@
-'use strict';
-
 const mongo = require('../../lib/mongo');
 const parse = require('../../lib/parse');
 
@@ -7,7 +5,9 @@ class AppSettingsService {
   constructor() {}
 
   getSettings(appKey) {
-    return mongo.db.collection('appSettings').findOne({key: appKey}, { _id: 0, key: 0 });
+    return mongo.db
+      .collection('appSettings')
+      .findOne({key: appKey}, {_id: 0, key: 0});
   }
 
   updateSettings(appKey, data) {
@@ -17,9 +17,16 @@ class AppSettingsService {
 
     delete data.key;
 
-    return mongo.db.collection('appSettings').updateOne({key: appKey}, {
-      $set: data
-    }, {upsert: true}).then(res => this.getSettings(appKey));
+    return mongo.db
+      .collection('appSettings')
+      .updateOne(
+        {key: appKey},
+        {
+          $set: data
+        },
+        {upsert: true}
+      )
+      .then(res => this.getSettings(appKey));
   }
 }
 

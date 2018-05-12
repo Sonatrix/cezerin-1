@@ -1,28 +1,77 @@
 import React from 'react';
-import { findDOMNode } from 'react-dom';
+import {findDOMNode} from 'react-dom';
 import isEqual from 'lodash/isEqual';
 import clone from 'lodash/clone';
 import uuid from '../helpers/uuid';
 import ucFirst from '../helpers/ucFirst';
 
 const EVENTS = [
-  'focusin', 'focusout', 'click', 'dblclick', 'mousedown', 'mouseup',
-  'mousemove', 'mouseover', 'beforepaste', 'paste', 'cut', 'copy',
-  'selectionchange', 'mouseout', 'mouseenter', 'mouseleave', 'keydown',
-  'keypress', 'keyup', 'contextmenu', 'dragend', 'dragover', 'draggesture',
-  'dragdrop', 'drop', 'drag', 'BeforeRenderUI', 'SetAttrib', 'PreInit',
-  'PostRender', 'init', 'deactivate', 'activate', 'NodeChange',
-  'BeforeExecCommand', 'ExecCommand', 'show', 'hide', 'ProgressState',
-  'LoadContent', 'SaveContent', 'BeforeSetContent', 'SetContent',
-  'BeforeGetContent', 'GetContent', 'VisualAid', 'remove', 'submit', 'reset',
-  'BeforeAddUndo', 'AddUndo', 'change', 'undo', 'redo', 'ClearUndos',
-  'ObjectSelected', 'ObjectResizeStart', 'ObjectResized', 'PreProcess',
-  'PostProcess', 'focus', 'blur', 'dirty'
+  'focusin',
+  'focusout',
+  'click',
+  'dblclick',
+  'mousedown',
+  'mouseup',
+  'mousemove',
+  'mouseover',
+  'beforepaste',
+  'paste',
+  'cut',
+  'copy',
+  'selectionchange',
+  'mouseout',
+  'mouseenter',
+  'mouseleave',
+  'keydown',
+  'keypress',
+  'keyup',
+  'contextmenu',
+  'dragend',
+  'dragover',
+  'draggesture',
+  'dragdrop',
+  'drop',
+  'drag',
+  'BeforeRenderUI',
+  'SetAttrib',
+  'PreInit',
+  'PostRender',
+  'init',
+  'deactivate',
+  'activate',
+  'NodeChange',
+  'BeforeExecCommand',
+  'ExecCommand',
+  'show',
+  'hide',
+  'ProgressState',
+  'LoadContent',
+  'SaveContent',
+  'BeforeSetContent',
+  'SetContent',
+  'BeforeGetContent',
+  'GetContent',
+  'VisualAid',
+  'remove',
+  'submit',
+  'reset',
+  'BeforeAddUndo',
+  'AddUndo',
+  'change',
+  'undo',
+  'redo',
+  'ClearUndos',
+  'ObjectSelected',
+  'ObjectResizeStart',
+  'ObjectResized',
+  'PreProcess',
+  'PostProcess',
+  'focus',
+  'blur',
+  'dirty'
 ];
 
-const HANDLER_NAMES = EVENTS.map((event) => {
-  return 'on' + ucFirst(event);
-});
+const HANDLER_NAMES = EVENTS.map(event => `on${ucFirst(event)}`);
 
 export default class TinyMCE extends React.Component {
   constructor(props) {
@@ -30,7 +79,7 @@ export default class TinyMCE extends React.Component {
     this.state = {
       config: {},
       content: props.content
-    }
+    };
   }
 
   componentWillMount() {
@@ -43,16 +92,19 @@ export default class TinyMCE extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (!isEqual(this.props.config, nextProps.config) || !isEqual(this.props.id, nextProps.id)) {
+    if (
+      !isEqual(this.props.config, nextProps.config) ||
+      !isEqual(this.props.id, nextProps.id)
+    ) {
       this.id = nextProps.id;
       this._init(clone(nextProps.config), nextProps.content);
-      return;
     }
   }
 
   shouldComponentUpdate(nextProps) {
     return (
-      !isEqual(this.props.config, nextProps.config) || !isEqual(this.props.entityId, nextProps.entityId)
+      !isEqual(this.props.config, nextProps.config) ||
+      !isEqual(this.props.entityId, nextProps.entityId)
     );
   }
 
@@ -86,12 +138,12 @@ export default class TinyMCE extends React.Component {
     findDOMNode(this).style.hidden = 'hidden';
 
     const setupCallback = config.setup;
-    const hasSetupCallback = (typeof setupCallback === 'function');
+    const hasSetupCallback = typeof setupCallback === 'function';
 
-    config.selector = '#' + this.id;
-    config.setup = (editor) => {
+    config.selector = `#${this.id}`;
+    config.setup = editor => {
       EVENTS.forEach((eventType, index) => {
-        editor.on(eventType, (e) => {
+        editor.on(eventType, e => {
           const handler = this.props[HANDLER_NAMES[index]];
           if (typeof handler === 'function') {
             // native DOM events don't have access to the editor so we pass it here
@@ -122,4 +174,4 @@ export default class TinyMCE extends React.Component {
     tinymce.EditorManager.execCommand('mceRemoveEditor', true, this.id);
     this._isInit = false;
   }
-};
+}

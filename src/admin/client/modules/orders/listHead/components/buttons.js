@@ -1,7 +1,7 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
-import messages from 'lib/text'
-import DeleteConfirmation from 'modules/shared/deleteConfirmation'
+import React from 'react';
+import {Link} from 'react-router-dom';
+import messages from 'lib/text';
+import DeleteConfirmation from 'modules/shared/deleteConfirmation';
 import FontIcon from 'material-ui/FontIcon';
 import IconMenu from 'material-ui/IconMenu';
 import IconButton from 'material-ui/IconButton';
@@ -35,15 +35,22 @@ export default class Buttons extends React.Component {
   };
 
   render() {
-    const { search, setSearch, selectedCount, onDelete, onCreate } = this.props;
+    const {search, setSearch, selectedCount, onDelete, onCreate} = this.props;
 
     return (
       <Fragment>
         <Search value={search} setSearch={setSearch} />
-        {selectedCount > 0 &&
+        {selectedCount > 0 && (
           <Fragment>
-            <IconButton touch={true} tooltipPosition="bottom-left" tooltip={messages.actions_delete} onClick={this.openDelete}>
-              <FontIcon color="#fff" className="material-icons">delete</FontIcon>
+            <IconButton
+              touch={true}
+              tooltipPosition="bottom-left"
+              tooltip={messages.actions_delete}
+              onClick={this.openDelete}
+            >
+              <FontIcon color="#fff" className="material-icons">
+                delete
+              </FontIcon>
             </IconButton>
             <DeleteConfirmation
               open={this.state.openDelete}
@@ -53,11 +60,18 @@ export default class Buttons extends React.Component {
               onDelete={this.deleteOrders}
             />
           </Fragment>
-        }
-        <IconButton touch={true} tooltipPosition="bottom-left" tooltip={messages.orders_titleAdd} onClick={onCreate}>
-          <FontIcon color="#fff" className="material-icons">add</FontIcon>
+        )}
+        <IconButton
+          touch={true}
+          tooltipPosition="bottom-left"
+          tooltip={messages.orders_titleAdd}
+          onClick={onCreate}
+        >
+          <FontIcon color="#fff" className="material-icons">
+            add
+          </FontIcon>
         </IconButton>
       </Fragment>
-    )
+    );
   }
 }

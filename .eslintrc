@@ -1,10 +1,29 @@
 {
-    "parser": "babel-eslint",
-    "env": {
-        "browser": true,
-        "node": true
-    },
-    "rules": {
-        "quotes": "off"
+  'env': {
+    'browser': true,
+    'mocha': true,
+    'es6': true,
+    'node': true,
+  },
+  'extends': [
+    'airbnb',
+    'prettier'
+  ],
+  'plugins': [
+    'prettier',
+  ],
+  'rules': {
+    'prettier/prettier': ['error', {
+      "trailingComma": "none",
+      "singleQuote": true,
+      "semi": true,
+      "bracketSpacing": false
+    }],
+  },
+  "parserOptions": {
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true
     }
+  }
 }

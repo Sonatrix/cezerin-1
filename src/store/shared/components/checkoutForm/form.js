@@ -1,8 +1,8 @@
-import React from 'react'
-import text from '../../text'
-import CheckoutStepContacts from '../stepContacts'
-import CheckoutStepShipping from '../stepShipping'
-import CheckoutStepPayment from '../stepPayment'
+import React from 'react';
+import text from '../../text';
+import CheckoutStepContacts from '../stepContacts';
+import CheckoutStepShipping from '../stepShipping';
+import CheckoutStepPayment from '../stepPayment';
 
 export default class Form extends React.Component {
   constructor(props) {
@@ -41,8 +41,8 @@ export default class Form extends React.Component {
   };
 
   render() {
-    const { step } = this.state;
-    const { cart, settings, themeSettings } = this.props;
+    const {step} = this.state;
+    const {cart, settings, themeSettings} = this.props;
     const {
       checkoutInputClass = 'checkout-field',
       checkoutButtonClass = 'checkout-button',
@@ -50,8 +50,9 @@ export default class Form extends React.Component {
     } = themeSettings;
 
     if (cart && cart.items.length > 0) {
-      const { payment_method_gateway } = cart;
-      const showPaymentForm = payment_method_gateway && payment_method_gateway !== '';
+      const {payment_method_gateway} = cart;
+      const showPaymentForm =
+        payment_method_gateway && payment_method_gateway !== '';
 
       return (
         <div className="checkout-form">
@@ -75,18 +76,18 @@ export default class Form extends React.Component {
             editButtonClassName={checkoutEditButtonClass}
           />
 
-          {showPaymentForm &&
+          {showPaymentForm && (
             <CheckoutStepPayment
               show={step === 3}
               title={text.payment}
               inputClassName={checkoutInputClass}
               buttonClassName={checkoutButtonClass}
             />
-          }
+          )}
         </div>
-      )
+      );
     } else {
-      return <p>{text.emptyCheckout}</p>
+      return <p>{text.emptyCheckout}</p>;
     }
   }
 }

@@ -1,2 +1,3 @@
-import settings from '../../../config/store'
-export default settings
+import settings from '../../../config/store';
+
+export default settings;

@@ -1,8 +1,8 @@
-import React from 'react'
-import messages from 'lib/text'
-import api from 'lib/api'
-import TextField from 'material-ui/TextField'
-import RaisedButton from 'material-ui/RaisedButton'
+import React from 'react';
+import messages from 'lib/text';
+import api from 'lib/api';
+import TextField from 'material-ui/TextField';
+import RaisedButton from 'material-ui/RaisedButton';
 
 export const Description = {
   key: 'facebook-sdk',
@@ -48,42 +48,49 @@ export class App extends React.Component {
   }
 
   handleAppIdChange = event => {
-    this.setState({ appId: event.target.value });
+    this.setState({appId: event.target.value});
   };
 
   handleLocaleChange = event => {
-    this.setState({ locale: event.target.value });
+    this.setState({locale: event.target.value});
   };
 
   fetchSettings = () => {
-    api.apps.settings.retrieve('facebook-sdk')
-    .then(({status, json}) => {
-      const appSettings = json;
-      if(appSettings){
-        this.setState({
-          appId: appSettings.appId,
-          locale: appSettings.locale
-        });
-      }
-    })
-    .catch(error => {
-      console.log(error);
-    })
-  }
+    api.apps.settings
+      .retrieve('facebook-sdk')
+      .then(({status, json}) => {
+        const appSettings = json;
+        if (appSettings) {
+          this.setState({
+            appId: appSettings.appId,
+            locale: appSettings.locale
+          });
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
 
   updateSettings = () => {
-    const { appId, locale } = this.state;
-    const htmlCode = appId && appId.length > 0 ? FACEBOOK_CODE.replace(/YOUR_APP_ID/g, appId).replace(/YOUR_LOCALE/g, locale) : '';
+    const {appId, locale} = this.state;
+    const htmlCode =
+      appId && appId.length > 0
+        ? FACEBOOK_CODE.replace(/YOUR_APP_ID/g, appId).replace(
+            /YOUR_LOCALE/g,
+            locale
+          )
+        : '';
 
-    api.apps.settings.update('facebook-sdk', { appId: appId, locale: locale });
+    api.apps.settings.update('facebook-sdk', {appId: appId, locale: locale});
     api.theme.placeholders.update('facebook-sdk', {
       place: 'body_start',
       value: htmlCode
     });
-  }
+  };
 
   componentDidMount() {
-    this.fetchSettings()
+    this.fetchSettings();
   }
 
   render() {
@@ -108,7 +115,7 @@ export class App extends React.Component {
           hintText="en_US"
         />
 
-        <div style={{ textAlign: 'right' }}>
+        <div style={{textAlign: 'right'}}>
           <RaisedButton
             label={messages.save}
             primary={true}
@@ -117,6 +124,6 @@ export class App extends React.Component {
           />
         </div>
       </div>
-    )
+    );
   }
 }

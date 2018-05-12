@@ -1,5 +1,5 @@
-import { combineReducers } from 'redux';
-import { reducer as formReducer } from 'redux-form'
+import {combineReducers} from 'redux';
+import {reducer as formReducer} from 'redux-form';
 
 import productCategories from 'modules/productCategories/reducer';
 import products from 'modules/products/reducer';

@@ -1,6 +1,7 @@
-import React from 'react'
-import { themeSettings, text } from '../../lib/settings'
-import CustomProducts from '../products/custom'
+import React from 'react';
+import {themeSettings, text} from '../../lib/settings';
+import CustomProducts from '../products/custom';
+
 const Fragment = React.Fragment;
 
 export default class RelatedProducts extends React.PureComponent {
@@ -9,11 +10,13 @@ export default class RelatedProducts extends React.PureComponent {
   }
 
   render() {
-    const { ids, settings, addCartItem, limit } = this.props;
-    if(ids && ids.length > 0) {
-      let title = themeSettings.related_products_title && themeSettings.related_products_title.length > 0
-        ? themeSettings.related_products_title
-        : text.relatedProducts;
+    const {ids, settings, addCartItem, limit} = this.props;
+    if (ids && ids.length > 0) {
+      const title =
+        themeSettings.related_products_title &&
+        themeSettings.related_products_title.length > 0
+          ? themeSettings.related_products_title
+          : text.relatedProducts;
 
       return (
         <section className="section section-product-related">
@@ -23,15 +26,14 @@ export default class RelatedProducts extends React.PureComponent {
               ids={ids}
               sort={null}
               limit={limit}
-              isCentered={true}
+              isCentered
               settings={settings}
               addCartItem={addCartItem}
             />
           </div>
         </section>
-      )
-    } else {
-      return null;
+      );
     }
+    return null;
   }
 }

@@ -1,12 +1,12 @@
-import React from 'react'
-import messages from 'lib/text'
-import style from './style.css'
-import Account from './account'
-import Developer from './developer'
+import React from 'react';
+import messages from 'lib/text';
+import style from './style.css';
+import Account from './account';
+import Developer from './developer';
 
 export default class WebStoreAccountDetails extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
   }
 
   componentDidMount() {
@@ -14,20 +14,23 @@ export default class WebStoreAccountDetails extends React.Component {
   }
 
   render() {
-    const { account, onAccountSubmit, onDeveloperSubmit } = this.props;
+    const {account, onAccountSubmit, onDeveloperSubmit} = this.props;
     const developerData = account ? account.developer : null;
 
-    if(account){
+    if (account) {
       return (
-        <div className={style.detailsContainer + " scroll col-full-height"}>
+        <div className={`${style.detailsContainer} scroll col-full-height`}>
           <Account initialValues={account} onSubmit={onAccountSubmit} />
-          {account && account.is_developer === true &&
-            <Developer initialValues={developerData} onSubmit={onDeveloperSubmit} />
-          }
+          {account &&
+            account.is_developer === true && (
+              <Developer
+                initialValues={developerData}
+                onSubmit={onDeveloperSubmit}
+              />
+            )}
         </div>
-      )
-    } else {
-      return null;
+      );
     }
+    return null;
   }
 }

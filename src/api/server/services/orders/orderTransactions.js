@@ -1,5 +1,3 @@
-'use strict';
-
 const mongo = require('../../lib/mongo');
 const utils = require('../../lib/utils');
 const parse = require('../../lib/parse');
@@ -14,19 +12,25 @@ class OrdertTansactionsService {
     if (!ObjectID.isValid(order_id)) {
       return Promise.reject('Invalid identifier');
     }
-    let orderObjectID = new ObjectID(order_id);
+    const orderObjectID = new ObjectID(order_id);
     const transaction = this.getValidDocumentForInsert(data);
 
-    await mongo.db.collection('orders').updateOne({
-      _id: orderObjectID
-    }, {
-      $push: {
-        transactions: transaction
+    await mongo.db.collection('orders').updateOne(
+      {
+        _id: orderObjectID
+      },
+      {
+        $push: {
+          transactions: transaction
+        }
       }
-    });
+    );
 
     const order = await OrdersService.getSingleOrder(order_id);
-    await webhooks.trigger({ event: webhooks.events.TRANSACTION_CREATED, payload: order });
+    await webhooks.trigger({
+      event: webhooks.events.TRANSACTION_CREATED,
+      payload: order
+    });
     return order;
   }
 
@@ -34,19 +38,25 @@ class OrdertTansactionsService {
     if (!ObjectID.isValid(order_id) || !ObjectID.isValid(transaction_id)) {
       return Promise.reject('Invalid identifier');
     }
-    let orderObjectID = new ObjectID(order_id);
-    let transactionObjectID = new ObjectID(transaction_id);
+    const orderObjectID = new ObjectID(order_id);
+    const transactionObjectID = new ObjectID(transaction_id);
     const transaction = this.getValidDocumentForUpdate(data);
 
-    await mongo.db.collection('orders').updateOne({
-      _id: orderObjectID,
-      'transactions.id': transactionObjectID
-    }, {
-      $set: transaction
-    });
+    await mongo.db.collection('orders').updateOne(
+      {
+        _id: orderObjectID,
+        'transactions.id': transactionObjectID
+      },
+      {
+        $set: transaction
+      }
+    );
 
     const order = await OrdersService.getSingleOrder(order_id);
-    await webhooks.trigger({ event: webhooks.events.TRANSACTION_UPDATED, payload: order });
+    await webhooks.trigger({
+      event: webhooks.events.TRANSACTION_UPDATED,
+      payload: order
+    });
     return order;
   }
 
@@ -54,34 +64,40 @@ class OrdertTansactionsService {
     if (!ObjectID.isValid(order_id) || !ObjectID.isValid(transaction_id)) {
       return Promise.reject('Invalid identifier');
     }
-    let orderObjectID = new ObjectID(order_id);
-    let transactionObjectID = new ObjectID(transaction_id);
+    const orderObjectID = new ObjectID(order_id);
+    const transactionObjectID = new ObjectID(transaction_id);
 
-    await mongo.db.collection('orders').updateOne({
-      _id: orderObjectID
-    }, {
-      $pull: {
-        transactions: {
-          id: transactionObjectID
+    await mongo.db.collection('orders').updateOne(
+      {
+        _id: orderObjectID
+      },
+      {
+        $pull: {
+          transactions: {
+            id: transactionObjectID
+          }
         }
       }
-    });
+    );
 
     const order = await OrdersService.getSingleOrder(order_id);
-    await webhooks.trigger({ event: webhooks.events.TRANSACTION_DELETED, payload: order });
+    await webhooks.trigger({
+      event: webhooks.events.TRANSACTION_DELETED,
+      payload: order
+    });
     return order;
   }
 
   getValidDocumentForInsert(data) {
     return {
-      'id': new ObjectID(),
-      'transaction_id': parse.getString(data.transaction_id),
-      'amount': parse.getNumberIfPositive(data.amount) || 0,
-      'currency': parse.getString(data.currency),
-      'status': parse.getString(data.status),
-      'details': parse.getString(data.details),
-      'success': parse.getBooleanIfValid(data.success)
-    }
+      id: new ObjectID(),
+      transaction_id: parse.getString(data.transaction_id),
+      amount: parse.getNumberIfPositive(data.amount) || 0,
+      currency: parse.getString(data.currency),
+      status: parse.getString(data.status),
+      details: parse.getString(data.details),
+      success: parse.getBooleanIfValid(data.success)
+    };
   }
 
   getValidDocumentForUpdate(data) {
@@ -89,14 +105,17 @@ class OrdertTansactionsService {
       return new Error('Required fields are missing');
     }
 
-    let transaction = {};
+    const transaction = {};
 
     if (data.transaction_id !== undefined) {
-      transaction['transactions.$.transaction_id'] = parse.getString(data.transaction_id);
+      transaction['transactions.$.transaction_id'] = parse.getString(
+        data.transaction_id
+      );
     }
 
     if (data.amount !== undefined) {
-      transaction['transactions.$.amount'] = parse.getNumberIfPositive(data.amount) || 0;
+      transaction['transactions.$.amount'] =
+        parse.getNumberIfPositive(data.amount) || 0;
     }
 
     if (data.currency !== undefined) {
@@ -112,7 +131,9 @@ class OrdertTansactionsService {
     }
 
     if (data.success !== undefined) {
-      transaction['transactions.$.success'] = parse.getBooleanIfValid(data.success);
+      transaction['transactions.$.success'] = parse.getBooleanIfValid(
+        data.success
+      );
     }
 
     return transaction;

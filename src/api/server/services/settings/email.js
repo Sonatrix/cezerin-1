@@ -1,41 +1,52 @@
-'use strict';
-
 const mongo = require('../../lib/mongo');
 const parse = require('../../lib/parse');
 
 class EmailSettingsService {
   constructor() {
     this.defaultSettings = {
-        'host': '',
-        'port': '',
-        'user': '',
-        'pass': 0,
-        'from_name': '',
-        'from_address': ''
-    }
+      host: '',
+      port: '',
+      user: '',
+      pass: 0,
+      from_name: '',
+      from_address: ''
+    };
   }
 
   getEmailSettings() {
-    return mongo.db.collection('emailSettings').findOne().then(settings => {
-      return this.changeProperties(settings);
-    });
+    return mongo.db
+      .collection('emailSettings')
+      .findOne()
+      .then(settings => this.changeProperties(settings));
   }
 
   updateEmailSettings(data) {
     const settings = this.getValidDocumentForUpdate(data);
-    return this.insertDefaultSettingsIfEmpty().then(() => mongo.db.collection('emailSettings').updateOne({}, {
-      $set: settings
-    }, {upsert: true}).then(res => this.getEmailSettings()));
+    return this.insertDefaultSettingsIfEmpty().then(() =>
+      mongo.db
+        .collection('emailSettings')
+        .updateOne(
+          {},
+          {
+            $set: settings
+          },
+          {upsert: true}
+        )
+        .then(res => this.getEmailSettings())
+    );
   }
 
   insertDefaultSettingsIfEmpty() {
-    return mongo.db.collection('emailSettings').count().then(count => {
-      if (count === 0) {
-        return mongo.db.collection('emailSettings').insertOne(this.defaultSettings);
-      } else {
-        return;
-      }
-    });
+    return mongo.db
+      .collection('emailSettings')
+      .count()
+      .then(count => {
+        if (count === 0) {
+          return mongo.db
+            .collection('emailSettings')
+            .insertOne(this.defaultSettings);
+        }
+      });
   }
 
   getValidDocumentForUpdate(data) {
@@ -43,7 +54,7 @@ class EmailSettingsService {
       return new Error('Required fields are missing');
     }
 
-    let settings = {}
+    const settings = {};
 
     if (data.host !== undefined) {
       settings.host = parse.getString(data.host).toLowerCase();
