@@ -65,7 +65,9 @@ module.exports = {
       },
     ],
   },
-
+  resolve: {
+    extensions: [".js", ".jsx", ".json"]
+  },
   plugins: [
     new ExtractTextPlugin('assets/css/bundle-[hash].css'),
     new HtmlWebpackPlugin({

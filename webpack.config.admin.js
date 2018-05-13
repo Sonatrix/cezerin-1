@@ -95,7 +95,9 @@ module.exports = {
       },
     ],
   },
-
+  resolve: {
+    extensions: [".js", ".jsx", ".json"]
+  },
   plugins: [
     new webpack.DefinePlugin({
       APPLICATION_CONFIG: JSON.stringify(applicationConfig),

@@ -61,7 +61,12 @@ module.exports = {
     "consistent-return": 0,
     "no-shadow": 0,
     "prefer-const": 0,
-    "no-use-before-define": 0
+    "no-use-before-define": 0,
+    "no-plusplus":0,
+    "no-useless-escape": 0,
+    "import/first": 'off',
+    "import/no-named-as-default": 'off',
+    "import/no-named-as-default-member": 'off'
   },
   'parserOptions': {
     'ecmaFeatures': {
