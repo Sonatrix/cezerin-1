@@ -32,7 +32,7 @@ class EmailSettingsService {
           },
           {upsert: true}
         )
-        .then(res => this.getEmailSettings())
+        .then(() => this.getEmailSettings())
     );
   }
 
@@ -46,6 +46,7 @@ class EmailSettingsService {
             .collection('emailSettings')
             .insertOne(this.defaultSettings);
         }
+        return null;
       });
   }
 
@@ -85,12 +86,12 @@ class EmailSettingsService {
 
   changeProperties(settings) {
     if (settings) {
-      delete settings._id;
-    } else {
-      return this.defaultSettings;
+      return {
+        ...settings,
+        _id: undefined,
+      };
     }
-
-    return settings;
+    return this.defaultSettings;
   }
 }
 

@@ -46,7 +46,22 @@ module.exports = {
     "jsx-a11y/anchor-is-valid": 'off',
     "jsx-a11y/anchor-has-content": 'off',
     "jsx-a11y/no-noninteractive-element-interactions": 'off',
-    "no-multi-assign":0
+    "no-multi-assign":0,
+    "import/no-mutable-exports": 'off',
+    "no-underscore-dangle": 0,
+    "prefer-promise-reject-errors": 0,
+    "no-await-in-loop": 0,
+    "camelcase": 0,
+    "no-param-reassign": 0,
+    "no-unused-vars": 0,
+    "prefer-destructuring": 0,
+    "no-useless-constructor": 0,
+    "no-empty-function": 0,
+    "react/jsx-filename-extension": 'off',
+    "consistent-return": 0,
+    "no-shadow": 0,
+    "prefer-const": 0,
+    "no-use-before-define": 0
   },
   'parserOptions': {
     'ecmaFeatures': {

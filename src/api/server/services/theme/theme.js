@@ -1,4 +1,4 @@
-const exec = require('child_process').exec;
+const {exec} = require('child_process');
 const path = require('path');
 const formidable = require('formidable');
 const winston = require('winston');
@@ -6,13 +6,11 @@ const settings = require('../../lib/settings');
 const dashboardWebSocket = require('../../lib/dashboardWebSocket');
 
 class ThemesService {
-  constructor() {}
-
   exportTheme(req, res) {
     const randomFileName = Math.floor(Math.random() * 10000);
     exec(
       `npm --silent run theme:export -- ${randomFileName}.zip`,
-      (error, stdout, stderr) => {
+      (error, stdout) => {
         if (error) {
           winston.error('Exporting theme failed');
           res.status(500).send(this.getErrorMessage(error));
@@ -37,7 +35,7 @@ class ThemesService {
       } else {
         // run async NPM script
         winston.info('Installing theme...');
-        exec(`npm run theme:install ${fileName}`, (error, stdout, stderr) => {
+        exec(`npm run theme:install ${fileName}`, error => {
           dashboardWebSocket.send({
             event: dashboardWebSocket.events.THEME_INSTALLED,
             payload: fileName,
@@ -58,9 +56,8 @@ class ThemesService {
   saveThemeFile(req, res, callback) {
     const uploadDir = path.resolve(settings.filesUploadPath);
 
-    let form = new formidable.IncomingForm(),
-      file_name = null,
-      file_size = 0;
+    const form = new formidable.IncomingForm();
+    let fileName = null;
 
     form.multiples = false;
 
@@ -68,6 +65,7 @@ class ThemesService {
       .on('fileBegin', (name, file) => {
         // Emitted whenever a field / value pair has been received.
         if (file.name.endsWith('.zip')) {
+          /* eslint-disable-next-line */
           file.path = `${uploadDir}/${file.name}`;
         }
         // else - will save to /tmp
@@ -75,8 +73,7 @@ class ThemesService {
       .on('file', (field, file) => {
         // every time a file has been uploaded successfully,
         if (file.name.endsWith('.zip')) {
-          file_name = file.name;
-          file_size = file.size;
+          fileName = file.name;
         }
       })
       .on('error', err => {
@@ -84,8 +81,8 @@ class ThemesService {
       })
       .on('end', () => {
         // Emitted when the entire request has been received, and all contained files have finished flushing to disk.
-        if (file_name) {
-          callback(null, file_name);
+        if (fileName) {
+          callback(null, fileName);
         } else {
           callback('Cant upload file');
         }

@@ -2,7 +2,7 @@ const path = require('path');
 const url = require('url');
 const formidable = require('formidable');
 const fse = require('fs-extra');
-const ObjectID = require('mongodb').ObjectID;
+const {ObjectID} = require('mongodb');
 const settings = require('../../lib/settings');
 const SettingsService = require('../settings/settings');
 const mongo = require('../../lib/mongo');
@@ -51,7 +51,6 @@ class ProductCategoriesService {
   }
 
   async addCategory(data) {
-    console.log(data);
     const lastCategory = await mongo.db
       .collection('productCategories')
       .findOne({}, {sort: {position: -1}});
@@ -286,9 +285,9 @@ class ProductCategoriesService {
 
   uploadCategoryImage(req, res) {
     const categoryId = req.params.id;
-    let form = new formidable.IncomingForm(),
-      file_name = null,
-      file_size = 0;
+    const form = new formidable.IncomingForm();
+    let file_name = null;
+    let file_size = 0;
 
     form
       .on('fileBegin', (name, file) => {

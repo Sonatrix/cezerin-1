@@ -1,5 +1,5 @@
 const mongo = require('../../lib/mongo');
-const ObjectID = require('mongodb').ObjectID;
+const {ObjectID} = require('mongodb');
 const ProductsService = require('./products');
 const ProductVariantsService = require('./variants');
 
@@ -85,7 +85,7 @@ class ProductStockService {
   }
 
   getVariantQuantityFromProduct(product, variantId) {
-    const variants = product.variants;
+    const {variants} = product;
     if (variants && variants.length > 0) {
       const variant = variants.find(
         v => v.id.toString() === variantId.toString()

@@ -1,8 +1,6 @@
 const mongo = require('../../lib/mongo');
 
 class PaymentGatewaysService {
-  constructor() {}
-
   getGateway(gatewayName) {
     return mongo.db
       .collection('paymentGateways')
@@ -17,15 +15,15 @@ class PaymentGatewaysService {
     return mongo.db
       .collection('paymentGateways')
       .updateOne({name: gatewayName}, {$set: data}, {upsert: true})
-      .then(res => this.getGateway(gatewayName));
+      .then(() => this.getGateway(gatewayName));
   }
 
   changeProperties(data) {
-    if (data) {
-      delete data._id;
-      delete data.name;
-    }
-    return data;
+    return {
+      ...data,
+      _id: undefined,
+      name: undefined,
+    };
   }
 }
 

@@ -11,8 +11,6 @@ const SETTINGS_FILE = path.resolve('theme/config/settings.json');
 const SETTINGS_SCHEMA_FILE = path.resolve('theme/config/settings_schema.json');
 
 class ThemeSettingsService {
-  constructor() {}
-
   readFile(file) {
     return new Promise((resolve, reject) => {
       fs.readFile(file, 'utf8', (err, data) => {

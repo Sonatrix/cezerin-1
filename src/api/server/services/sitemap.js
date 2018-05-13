@@ -2,11 +2,9 @@ const mongo = require('../lib/mongo');
 const parse = require('../lib/parse');
 
 class SitemapService {
-  constructor() {}
-
-  getPaths(onlyEnabled) {
+  getPaths(enabledOnly) {
     const slug = null;
-    onlyEnabled = parse.getBooleanIfValid(onlyEnabled, false);
+    const onlyEnabled = parse.getBooleanIfValid(enabledOnly, false);
 
     return Promise.all([
       this.getSlugArrayFromReserved(),
@@ -78,8 +76,7 @@ class SitemapService {
 
     if (slug) {
       const slugParts = slug.split('/');
-      categoriesFilter.slug = slugParts[0];
-      productFilter.slug = slugParts[1];
+      [categoriesFilter.slug, productFilter.slug] = slugParts;
     }
 
     if (onlyEnabled === true) {
@@ -159,8 +156,8 @@ class SitemapService {
     return {};
   }
 
-  getSinglePath(path, onlyEnabled = false) {
-    onlyEnabled = parse.getBooleanIfValid(onlyEnabled, false);
+  getSinglePath(path, enabledOnly = false) {
+    const onlyEnabled = parse.getBooleanIfValid(enabledOnly, false);
     // convert path to slash (remove first slash)
     const slug = path.substr(1);
     if (slug.includes('/')) {

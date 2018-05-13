@@ -43,11 +43,11 @@ export default class PayPalButton extends React.Component {
           label: 'pay',
           size: formSettings.size,
           shape: formSettings.shape,
-          color: formSettings.color,
+          color: formSettings.color
         },
         client: {
           sandbox: formSettings.client,
-          production: formSettings.client,
+          production: formSettings.client
         },
         // Wait for the PayPal button to be clicked
         payment(data, actions) {
@@ -60,14 +60,14 @@ export default class PayPalButton extends React.Component {
                   notify_url: formSettings.notify_url,
                   amount: {
                     total: formSettings.amount,
-                    currency: formSettings.currency,
-                  },
-                },
-              ],
+                    currency: formSettings.currency
+                  }
+                }
+              ]
             },
             experience: {
-              input_fields: {no_shipping: 1},
-            },
+              input_fields: {no_shipping: 1}
+            }
           });
         },
         // Wait for the payment to be authorized by the customer
@@ -75,7 +75,7 @@ export default class PayPalButton extends React.Component {
           return actions.payment.execute().then(() => {
             onPayment();
           });
-        },
+        }
       },
       '#paypal-button-container'
     );

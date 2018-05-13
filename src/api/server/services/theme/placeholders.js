@@ -2,8 +2,6 @@ const mongo = require('../../lib/mongo');
 const parse = require('../../lib/parse');
 
 class ThemePlaceholdersService {
-  constructor() {}
-
   getPlaceholders() {
     return mongo.db
       .collection('themePlaceholders')
@@ -30,7 +28,7 @@ class ThemePlaceholdersService {
       return mongo.db
         .collection('themePlaceholders')
         .insertOne(field)
-        .then(res => this.getSinglePlaceholder(placeholderKey));
+        .then(() => this.getSinglePlaceholder(placeholderKey));
     });
   }
 
@@ -45,7 +43,7 @@ class ThemePlaceholdersService {
         },
         {upsert: true}
       )
-      .then(res => this.getSinglePlaceholder(placeholderKey));
+      .then(() => this.getSinglePlaceholder(placeholderKey));
   }
 
   deletePlaceholder(placeholderKey) {

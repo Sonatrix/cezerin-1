@@ -21,7 +21,7 @@ const RedirectsRoute = require('./routes/redirects');
 const FilesRoute = require('./routes/files');
 const AppsRoute = require('./routes/apps');
 const WebhooksRoute = require('./routes/webhooks');
-
+/* eslint-disable */
 new ProductsRoute(apiRouter);
 new ProductCategoriesRoute(apiRouter);
 new SitemapRoute(apiRouter);

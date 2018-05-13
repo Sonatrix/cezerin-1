@@ -5,7 +5,7 @@ const parse = require('../../lib/parse');
 const settings = require('../../lib/settings');
 const mailer = require('../../lib/mailer');
 const SettingsService = require('../settings/settings');
-const ObjectID = require('mongodb').ObjectID;
+const {ObjectID} = require('mongodb');
 const jwt = require('jsonwebtoken');
 const moment = require('moment');
 const uaParser = require('ua-parser-js');
@@ -17,8 +17,6 @@ const cache = require('lru-cache')({
 const BLACKLIST_CACHE_KEY = 'blacklist';
 
 class SecurityTokensService {
-  constructor() {}
-
   getTokens(params = {}) {
     const filter = {
       is_revoked: false,
@@ -82,10 +80,10 @@ class SecurityTokensService {
       .then(tokenData => mongo.db.collection('tokens').insertMany([tokenData]))
       .then(res => this.getSingleToken(res.ops[0]._id.toString()))
       .then(token =>
-        this.getSignedToken(token).then(signedToken => {
-          token.token = signedToken;
-          return token;
-        })
+        this.getSignedToken(token).then(signedToken => ({
+          ...token,
+          token: signedToken,
+        }))
       );
   }
 
@@ -104,7 +102,7 @@ class SecurityTokensService {
         },
         {$set: token}
       )
-      .then(res => this.getSingleToken(id));
+      .then(() => this.getSingleToken(id));
   }
 
   deleteToken(id) {
@@ -125,7 +123,7 @@ class SecurityTokensService {
           },
         }
       )
-      .then(res => {
+      .then(() => {
         cache.del(BLACKLIST_CACHE_KEY);
       });
   }
@@ -145,15 +143,15 @@ class SecurityTokensService {
 
   getValidDocumentForInsert(data) {
     const email = parse.getString(data.email);
-    return this.checkTokenEmailUnique(email).then(email => {
+    return this.checkTokenEmailUnique(email).then(resemail => {
       const token = {
         is_revoked: false,
         date_created: new Date(),
       };
 
       token.name = parse.getString(data.name);
-      if (email && email.length > 0) {
-        token.email = email.toLowerCase();
+      if (resemail && resemail.length > 0) {
+        token.email = resemail.toLowerCase();
       }
       token.scopes = parse.getArrayIfValid(data.scopes);
       token.expiration = parse.getNumberIfPositive(data.expiration);
@@ -184,9 +182,11 @@ class SecurityTokensService {
 
   changeProperties(item) {
     if (item) {
-      item.id = item._id.toString();
-      delete item._id;
-      delete item.is_revoked;
+      const newItem = Object.assign({}, item);
+      newItem.id = item._id.toString();
+      delete newItem._id;
+      delete newItem.is_revoked;
+      return newItem;
     }
 
     return item;
@@ -210,11 +210,11 @@ class SecurityTokensService {
         jwtOptions.expiresIn = token.expiration * 60 * 60;
       }
 
-      jwt.sign(payload, settings.jwtSecretKey, jwtOptions, (err, token) => {
+      jwt.sign(payload, settings.jwtSecretKey, jwtOptions, (err, restoken) => {
         if (err) {
           reject(err);
         } else {
-          resolve(token);
+          resolve(restoken);
         }
       });
     });
@@ -241,7 +241,7 @@ class SecurityTokensService {
     let ip = req.get('x-forwarded-for') || req.ip;
 
     if (ip && ip.includes(', ')) {
-      ip = ip.split(', ')[0];
+      [ip] = ip.split(', ');
     }
 
     if (ip && ip.includes('::ffff:')) {
@@ -276,7 +276,11 @@ class SecurityTokensService {
   }
 
   async sendDashboardSigninUrl(req) {
-    const email = req.body.email;
+    const {
+      req: {
+        body: {email},
+      },
+    } = req;
     const userAgent = uaParser(req.get('user-agent'));
     const country = req.get('cf-ipcountry') || '';
     const ip = this.getIP(req);

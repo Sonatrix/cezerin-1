@@ -1,7 +1,6 @@
 const mongo = require('../lib/mongo');
-const utils = require('../lib/utils');
 const parse = require('../lib/parse');
-const ObjectID = require('mongodb').ObjectID;
+const {ObjectID} = require('mongodb');
 const cache = require('lru-cache')({
   max: 10000,
   maxAge: 1000 * 60 * 60 * 24, // 24h
@@ -10,8 +9,6 @@ const cache = require('lru-cache')({
 const REDIRECTS_CACHE_KEY = 'redirects';
 
 class RedirectsService {
-  constructor() {}
-
   getRedirects() {
     const redirectsFromCache = cache.get(REDIRECTS_CACHE_KEY);
 
@@ -67,7 +64,7 @@ class RedirectsService {
         },
         {$set: redirect}
       )
-      .then(res => {
+      .then(() => {
         cache.del(REDIRECTS_CACHE_KEY);
         return this.getSingleRedirect(id);
       });
@@ -117,8 +114,11 @@ class RedirectsService {
 
   changeProperties(item) {
     if (item) {
-      item.id = item._id.toString();
-      delete item._id;
+      return {
+        ...item,
+        id: item._id.toString(),
+        _id: undefined,
+      };
     }
 
     return item;

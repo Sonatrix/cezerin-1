@@ -1,18 +1,11 @@
 import api from './api';
-import queryString from 'query-string';
+import * as themeLocales from './themeLocales';
 import {
   getParsedProductFilter,
   getProductFilterForCategory,
   getProductFilterForSearch,
 } from '../shared/actions';
-import * as themeLocales from './themeLocales';
-import {
-  PAGE,
-  PRODUCT_CATEGORY,
-  PRODUCT,
-  RESERVED,
-  SEARCH,
-} from '../shared/pageTypes';
+import {PAGE, PRODUCT_CATEGORY, PRODUCT, SEARCH} from '../shared/pageTypes';
 
 const PRODUCT_FIELDS =
   'path,id,name,category_id,category_ids,category_name,sku,images,enabled,discontinued,stock_status,stock_quantity,price,on_sale,regular_price,attributes,tags,position';
@@ -37,25 +30,21 @@ const getProducts = (currentPage, productFilter) => {
   if (currentPage.type === PRODUCT_CATEGORY || currentPage.type === SEARCH) {
     const filter = getParsedProductFilter(productFilter);
     filter.enabled = true;
-    return api.products.list(filter).then(({status, json}) => json);
+    return api.products.list(filter).then(({json}) => json);
   }
   return null;
 };
 
 const getProduct = currentPage => {
   if (currentPage.type === PRODUCT) {
-    return api.products
-      .retrieve(currentPage.resource)
-      .then(({status, json}) => json);
+    return api.products.retrieve(currentPage.resource).then(({json}) => json);
   }
   return {};
 };
 
 const getPage = currentPage => {
   if (currentPage.type === PAGE) {
-    return api.pages
-      .retrieve(currentPage.resource)
-      .then(({status, json}) => json);
+    return api.pages.retrieve(currentPage.resource).then(({json}) => json);
   }
   return {};
 };
@@ -63,16 +52,16 @@ const getPage = currentPage => {
 const getThemeSettings = () =>
   api.theme.settings
     .retrieve()
-    .then(({status, json}) => json)
-    .catch(err => ({}));
+    .then(({json}) => json)
+    .catch(err => err);
 
 const getAllData = (currentPage, productFilter, cookie) =>
   Promise.all([
-    api.checkoutFields.list().then(({status, json}) => json),
+    api.checkoutFields.list().then(({json}) => json),
     api.productCategories
       .list({enabled: true, fields: CATEGORIES_FIELDS})
-      .then(({status, json}) => json),
-    api.ajax.cart.retrieve(cookie).then(({status, json}) => json),
+      .then(({json}) => json),
+    api.ajax.cart.retrieve(cookie).then(({json}) => json),
     getProducts(currentPage, productFilter),
     getProduct(currentPage),
     getPage(currentPage),
@@ -207,7 +196,7 @@ const getFilter = (currentPage, urlQuery, settings) => {
   return productFilter;
 };
 
-export const loadState = (req, language) => {
+const loadState = (req, language) => {
   const cookie = req.get('cookie');
   const urlPath = req.path;
   const urlQuery = req.url.includes('?')
@@ -222,7 +211,7 @@ export const loadState = (req, language) => {
 
   return Promise.all([
     getCurrentPage(req.path),
-    api.settings.retrieve().then(({status, json}) => json),
+    api.settings.retrieve().then(({json}) => json),
     themeLocales.getText(language),
     api.theme.placeholders.list(),
   ]).then(([currentPage, settings, themeText, placeholdersResponse]) => {
@@ -244,3 +233,5 @@ export const loadState = (req, language) => {
     });
   });
 };
+
+export default loadState;

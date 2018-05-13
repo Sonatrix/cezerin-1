@@ -1,7 +1,7 @@
 const path = require('path');
 const {URL} = require('url');
 const fse = require('fs-extra');
-const ObjectID = require('mongodb').ObjectID;
+const {ObjectID} = require('mongodb');
 const settings = require('../../lib/settings');
 const mongo = require('../../lib/mongo');
 const utils = require('../../lib/utils');
@@ -10,8 +10,6 @@ const CategoriesService = require('./productCategories');
 const SettingsService = require('../settings/settings');
 
 class ProductsService {
-  constructor() {}
-
   async getProducts(params = {}) {
     const categories = await CategoriesService.getCategories({
       fields: 'parent_id',
@@ -103,17 +101,17 @@ class ProductsService {
     items = this.sortItemsByArrayOfSkuIfNeed(items, sku, sortQuery);
     items = items.filter(item => !!item);
 
-    let total_count = 0;
-    let min_price = 0;
-    let max_price = 0;
+    let totalCount = 0;
+    let minPrice = 0;
+    let maxPrice = 0;
 
     if (countResult && countResult.length === 1) {
-      total_count = countResult[0].count;
+      totalCount = countResult[0].count;
     }
 
     if (minMaxPriceResult && minMaxPriceResult.length === 1) {
-      min_price = minMaxPriceResult[0].min_price || 0;
-      max_price = minMaxPriceResult[0].max_price || 0;
+      minPrice = minMaxPriceResult[0].min_price || 0;
+      maxPrice = minMaxPriceResult[0].max_price || 0;
     }
 
     let attributes = [];
@@ -127,12 +125,12 @@ class ProductsService {
 
     return {
       price: {
-        min: min_price,
-        max: max_price,
+        min: minPrice,
+        max: maxPrice,
       },
       attributes,
-      total_count,
-      has_more: offset + items.length < total_count,
+      total_count: totalCount,
+      has_more: offset + items.length < totalCount,
       data: items,
     };
   }
@@ -496,36 +494,34 @@ class ProductsService {
 
   getMatchQuery(params, categories, useAttributes = true, usePrice = true) {
     let {
-      category_id,
+      category_id: categoryId,
       enabled,
       discontinued,
-      on_sale,
-      stock_status,
-      price_from,
-      price_to,
-      sku,
+      on_sale: onSale,
+      price_from: priceFrom,
+      price_to: priceTo,
       ids,
       tags,
     } = params;
 
+    const {stock_status: stockStatus, sku} = params;
     // parse values
-    category_id = parse.getObjectIDIfValid(category_id);
+    categoryId = parse.getObjectIDIfValid(categoryId);
     enabled = parse.getBooleanIfValid(enabled);
     discontinued = parse.getBooleanIfValid(discontinued);
-    on_sale = parse.getBooleanIfValid(on_sale);
-    price_from = parse.getNumberIfPositive(price_from);
-    price_to = parse.getNumberIfPositive(price_to);
+    onSale = parse.getBooleanIfValid(onSale);
+    priceFrom = parse.getNumberIfPositive(priceFrom);
+    priceTo = parse.getNumberIfPositive(priceTo);
     ids = parse.getString(ids);
     tags = parse.getString(tags);
 
     const queries = [];
-    const currentDate = new Date();
 
-    if (category_id !== null) {
+    if (categoryId !== null) {
       const categoryChildren = [];
       CategoriesService.findAllChildren(
         categories,
-        category_id,
+        categoryId,
         categoryChildren
       );
       queries.push({
@@ -534,7 +530,7 @@ class ProductsService {
             category_id: {$in: categoryChildren},
           },
           {
-            category_ids: category_id,
+            category_ids: categoryId,
           },
         ],
       });
@@ -552,29 +548,29 @@ class ProductsService {
       });
     }
 
-    if (on_sale !== null) {
+    if (onSale !== null) {
       queries.push({
-        on_sale,
+        on_sale: onSale,
       });
     }
 
     if (usePrice) {
-      if (price_from !== null && price_from > 0) {
+      if (priceFrom !== null && priceFrom > 0) {
         queries.push({
-          price: {$gte: price_from},
+          price: {$gte: priceFrom},
         });
       }
 
-      if (price_to !== null && price_to > 0) {
+      if (priceTo !== null && priceTo > 0) {
         queries.push({
-          price: {$lte: price_to},
+          price: {$lte: priceTo},
         });
       }
     }
 
-    if (stock_status && stock_status.length > 0) {
+    if (stockStatus && stockStatus.length > 0) {
       queries.push({
-        stock_status,
+        stock_status: stockStatus,
       });
     }
 
@@ -629,7 +625,7 @@ class ProductsService {
 
     let matchQuery = {};
     if (queries.length === 1) {
-      matchQuery = queries[0];
+      [matchQuery] = queries;
     } else if (queries.length > 1) {
       matchQuery = {
         $and: queries,
@@ -686,7 +682,7 @@ class ProductsService {
           const deleteDir = path.resolve(
             `${settings.productsUploadPath}/${productId}`
           );
-          fse.remove(deleteDir, err => {});
+          fse.remove(deleteDir, () => {});
         }
         return deleteResponse.deletedCount > 0;
       });
@@ -759,8 +755,8 @@ class ProductsService {
       product.slug = product.name;
     }
 
-    return this.setAvailableSlug(product).then(product =>
-      this.setAvailableSku(product)
+    return this.setAvailableSlug(product).then(productItem =>
+      this.setAvailableSku(productItem)
     );
   }
 
@@ -916,8 +912,8 @@ class ProductsService {
       product.category_ids = parse.getArrayOfObjectID(data.category_ids);
     }
 
-    return this.setAvailableSlug(product, id).then(product =>
-      this.setAvailableSku(product, id)
+    return this.setAvailableSlug(product, id).then(productItem =>
+      this.setAvailableSku(productItem, id)
     );
   }
 
@@ -947,8 +943,8 @@ class ProductsService {
     if (item.images && item.images.length > 0) {
       return item.images
         .map(image => {
-          image.url = this.getImageUrl(domain, item.id, image.filename || '');
-          return image;
+          const url = this.getImageUrl(domain, item.id, image.filename || '');
+          return {...image, url};
         })
         .sort((a, b) => a.position - b.position);
     }
@@ -964,45 +960,46 @@ class ProductsService {
   }
 
   changeProperties(item, domain) {
+    const newItem = Object.assign({}, item);
     if (item) {
       if (item.id) {
-        item.id = item.id.toString();
+        newItem.id = item.id.toString();
       }
 
-      item.images = this.getSortedImagesWithUrls(item, domain);
+      newItem.images = this.getSortedImagesWithUrls(newItem, domain);
 
-      if (item.category_id) {
-        item.category_id = item.category_id.toString();
+      if (newItem.category_id) {
+        newItem.category_id = newItem.category_id.toString();
 
-        if (item.categories && item.categories.length > 0) {
-          const category = item.categories[0];
+        if (newItem.categories && newItem.categories.length > 0) {
+          const category = newItem.categories[0];
           if (category) {
-            if (item.category_name === '') {
-              item.category_name = category.name;
+            if (newItem.category_name === '') {
+              newItem.category_name = category.name;
             }
 
-            if (item.category_slug === '') {
-              item.category_slug = category.slug;
+            if (newItem.category_slug === '') {
+              newItem.category_slug = category.slug;
             }
 
             const categorySlug = category.slug || '';
-            const productSlug = item.slug || '';
+            const productSlug = newItem.slug || '';
 
-            if (item.url === '') {
+            if (newItem.url === '') {
               const itemUrl = new URL(`${categorySlug}/${productSlug}`, domain);
-              item.url = itemUrl.toString();
+              newItem.url = itemUrl.toString();
             }
 
-            if (item.path === '') {
-              item.path = `/${categorySlug}/${productSlug}`;
+            if (newItem.path === '') {
+              newItem.path = `/${categorySlug}/${productSlug}`;
             }
           }
         }
       }
-      item.categories = undefined;
+      newItem.categories = undefined;
     }
 
-    return item;
+    return newItem;
   }
 
   isSkuExists(sku, productId) {
@@ -1038,8 +1035,7 @@ class ProductsService {
           while (products.find(p => p.sku === newSku)) {
             newSku += '-2';
           }
-          product.sku = newSku;
-          return product;
+          return {...product, sku: newSku};
         });
     }
     return Promise.resolve(product);
@@ -1077,8 +1073,7 @@ class ProductsService {
           while (products.find(p => p.slug === newSlug)) {
             newSlug += '-2';
           }
-          product.slug = newSlug;
-          return product;
+          return {...product, slug: newSlug};
         });
     }
     return Promise.resolve(product);

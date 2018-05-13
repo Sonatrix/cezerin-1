@@ -1,6 +1,5 @@
 const path = require('path');
 const fs = require('fs');
-const url = require('url');
 const formidable = require('formidable');
 const settings = require('../../lib/settings');
 
@@ -11,7 +10,7 @@ class ThemeAssetsService {
         `${settings.themeAssetsUploadPath}/${fileName}`
       );
       if (fs.existsSync(filePath)) {
-        fs.unlink(filePath, err => {
+        fs.unlink(filePath, () => {
           resolve();
         });
       } else {
@@ -20,32 +19,33 @@ class ThemeAssetsService {
     });
   }
 
-  uploadFile(req, res, next) {
+  uploadFile(req, res) {
     const uploadDir = path.resolve(settings.themeAssetsUploadPath);
 
-    let form = new formidable.IncomingForm(),
-      file_name = null,
-      file_size = 0;
+    const form = new formidable.IncomingForm();
+    let fileName = null;
+    let fileSize = 0;
 
     form.uploadDir = uploadDir;
 
     form
       .on('fileBegin', (name, file) => {
         // Emitted whenever a field / value pair has been received.
+        /* eslint-disable-next-line */
         file.path = `${uploadDir}/${file.name}`;
       })
       .on('file', (field, file) => {
         // every time a file has been uploaded successfully,
-        file_name = file.name;
-        file_size = file.size;
+        fileName = file.name;
+        fileSize = file.size;
       })
       .on('error', err => {
         res.status(500).send(this.getErrorMessage(err));
       })
       .on('end', () => {
         // Emitted when the entire request has been received, and all contained files have finished flushing to disk.
-        if (file_name) {
-          res.send({file: file_name, size: file_size});
+        if (fileName) {
+          res.send({file: fileName, size: fileSize});
         } else {
           res
             .status(400)

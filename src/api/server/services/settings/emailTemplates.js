@@ -2,8 +2,6 @@ const mongo = require('../../lib/mongo');
 const parse = require('../../lib/parse');
 
 class EmailTemplatesService {
-  constructor() {}
-
   getEmailTemplate(name) {
     return mongo.db
       .collection('emailTemplates')
@@ -22,7 +20,7 @@ class EmailTemplatesService {
         },
         {upsert: true}
       )
-      .then(res => this.getEmailTemplate(name));
+      .then(() => this.getEmailTemplate(name));
   }
 
   getValidDocumentForUpdate(data) {
@@ -45,16 +43,16 @@ class EmailTemplatesService {
 
   changeProperties(template) {
     if (template) {
-      delete template._id;
-      delete template.name;
-    } else {
       return {
-        subject: '',
-        body: '',
+        ...template,
+        _id: undefined,
+        name: undefined,
       };
     }
-
-    return template;
+    return {
+      subject: '',
+      body: '',
+    };
   }
 }
 

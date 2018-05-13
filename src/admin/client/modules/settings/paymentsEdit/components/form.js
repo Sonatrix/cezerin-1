@@ -5,9 +5,6 @@ import {TextField, SelectField} from 'redux-form-material-ui';
 import {CustomToggle} from 'modules/shared/form';
 import PaymentGateway from 'modules/settings/paymentGateway';
 import {AVAILABLE_PAYMENT_GATEWAYS} from 'modules/settings/paymentGateway/availablePaymentGateways';
-import SelectShippingMethodsField from './selectShipping.js';
-import messages from 'lib/text';
-import style from './style.css';
 
 import Paper from 'material-ui/Paper';
 import Divider from 'material-ui/Divider';
@@ -15,6 +12,10 @@ import RaisedButton from 'material-ui/RaisedButton';
 import MenuItem from 'material-ui/MenuItem';
 import {List, ListItem} from 'material-ui/List';
 import Checkbox from 'material-ui/Checkbox';
+
+import SelectShippingMethodsField from './selectShipping.js';
+import messages from 'lib/text';
+import style from './style.css';
 
 const validate = values => {
   const errors = {};

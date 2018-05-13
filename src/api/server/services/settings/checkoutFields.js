@@ -2,19 +2,12 @@ const mongo = require('../../lib/mongo');
 const parse = require('../../lib/parse');
 
 class CheckoutFieldsService {
-  constructor() {}
-
   getCheckoutFields() {
     return mongo.db
       .collection('checkoutFields')
       .find()
       .toArray()
-      .then(fields =>
-        fields.map(field => {
-          delete field._id;
-          return field;
-        })
-      );
+      .then(fields => fields.map(field => ({...field, _id: undefined})));
   }
 
   getCheckoutField(name) {
@@ -35,7 +28,7 @@ class CheckoutFieldsService {
         },
         {upsert: true}
       )
-      .then(res => this.getCheckoutField(name));
+      .then(() => this.getCheckoutField(name));
   }
 
   getValidDocumentForUpdate(data) {
@@ -62,17 +55,17 @@ class CheckoutFieldsService {
 
   changeProperties(field) {
     if (field) {
-      delete field._id;
-      delete field.name;
-    } else {
       return {
-        status: 'required',
-        label: '',
-        placeholder: '',
+        ...field,
+        _id: undefined,
+        name: undefined,
       };
     }
-
-    return field;
+    return {
+      status: 'required',
+      label: '',
+      placeholder: '',
+    };
   }
 }
 

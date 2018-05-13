@@ -1,7 +1,6 @@
 const mongo = require('../lib/mongo');
-const utils = require('../lib/utils');
 const parse = require('../lib/parse');
-const ObjectID = require('mongodb').ObjectID;
+const {ObjectID} = require('mongodb');
 const cache = require('lru-cache')({
   max: 10000,
   maxAge: 1000 * 60 * 60 * 24, // 24h
@@ -10,8 +9,6 @@ const cache = require('lru-cache')({
 const WEBHOOKS_CACHE_KEY = 'webhooks';
 
 class WebhooksService {
-  constructor() {}
-
   async getWebhooks() {
     const webhooksFromCache = cache.get(WEBHOOKS_CACHE_KEY);
 
@@ -56,7 +53,7 @@ class WebhooksService {
     const webhookObjectID = new ObjectID(id);
     const webhook = this.getValidDocumentForUpdate(id, data);
 
-    const res = await mongo.db.collection('webhooks').updateOne(
+    await mongo.db.collection('webhooks').updateOne(
       {
         _id: webhookObjectID,
       },
@@ -129,12 +126,13 @@ class WebhooksService {
   }
 
   changeProperties(item) {
+    const newItem = Object.assign({}, item);
     if (item) {
-      item.id = item._id.toString();
-      item._id = undefined;
+      newItem.id = item._id.toString();
+      newItem._id = undefined;
     }
 
-    return item;
+    return newItem;
   }
 }
 

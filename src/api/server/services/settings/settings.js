@@ -3,7 +3,7 @@ const fse = require('fs-extra');
 const fs = require('fs');
 const url = require('url');
 const formidable = require('formidable');
-const settings = require('../../lib/settings');
+const defaultsettings = require('../../lib/settings');
 const utils = require('../../lib/utils');
 const mongo = require('../../lib/mongo');
 const parse = require('../../lib/parse');
@@ -16,6 +16,7 @@ class SettingsService {
       language: 'en',
       currency_code: 'USD',
       currency_symbol: '$',
+      /* eslint-disable-next-line */
       currency_format: '${amount}',
       thousand_separator: ',',
       decimal_separator: '.',
@@ -41,22 +42,22 @@ class SettingsService {
     return mongo.db
       .collection('settings')
       .findOne()
-      .then(settings => this.changeProperties(settings));
+      .then(res => this.changeProperties(res));
   }
 
   updateSettings(data) {
-    const settings = this.getValidDocumentForUpdate(data);
+    const newSettings = this.getValidDocumentForUpdate(data);
     return this.insertDefaultSettingsIfEmpty().then(() =>
       mongo.db
         .collection('settings')
         .updateOne(
           {},
           {
-            $set: settings,
+            $set: newSettings,
           },
           {upsert: true}
         )
-        .then(res => this.getSettings())
+        .then(() => this.getSettings())
     );
   }
 
@@ -70,6 +71,7 @@ class SettingsService {
             .collection('settings')
             .insertOne(this.defaultSettings);
         }
+        return null;
       });
   }
 
@@ -187,16 +189,17 @@ class SettingsService {
 
   changeProperties(data) {
     if (data) {
-      delete data._id;
-      if (data.logo_file && data.logo_file.length > 0) {
-        data.logo = url.resolve(
-          data.domain,
-          `${settings.filesUploadUrl}/${data.logo_file}`
+      const newData = Object.assign({}, data);
+      delete newData._id;
+      if (newData.logo_file && newData.logo_file.length > 0) {
+        newData.logo = url.resolve(
+          newData.domain,
+          `${defaultsettings.filesUploadUrl}/${newData.logo_file}`
         );
       } else {
-        data.logo = null;
+        newData.logo = null;
       }
-      return data;
+      return newData;
     }
     return this.defaultSettings;
   }
@@ -205,44 +208,46 @@ class SettingsService {
     return this.getSettings().then(data => {
       if (data.logo_file && data.logo_file.length > 0) {
         const filePath = path.resolve(
-          `${settings.filesUploadPath}/${data.logo_file}`
+          `${defaultsettings.filesUploadPath}/${data.logo_file}`
         );
-        fs.unlink(filePath, err => {
+        fs.unlink(filePath, () => {
           this.updateSettings({logo_file: null});
         });
       }
     });
   }
 
-  uploadLogo(req, res, next) {
-    const uploadDir = path.resolve(settings.filesUploadPath);
+  uploadLogo(req, res) {
+    const uploadDir = path.resolve(defaultsettings.filesUploadPath);
     fse.ensureDirSync(uploadDir);
 
-    let form = new formidable.IncomingForm(),
-      file_name = null,
-      file_size = 0;
+    const form = new formidable.IncomingForm();
+    let fileName = null;
+    let fileSize = 0;
 
     form.uploadDir = uploadDir;
 
     form
       .on('fileBegin', (name, file) => {
         // Emitted whenever a field / value pair has been received.
+        /* eslint-disable-next-line */
         file.name = utils.getCorrectFileName(file.name);
+        /* eslint-disable-next-line */
         file.path = `${uploadDir}/${file.name}`;
       })
       .on('file', (field, file) => {
         // every time a file has been uploaded successfully,
-        file_name = file.name;
-        file_size = file.size;
+        fileName = file.name;
+        fileSize = file.size;
       })
       .on('error', err => {
         res.status(500).send(this.getErrorMessage(err));
       })
       .on('end', () => {
         // Emitted when the entire request has been received, and all contained files have finished flushing to disk.
-        if (file_name) {
-          this.updateSettings({logo_file: file_name});
-          res.send({file: file_name, size: file_size});
+        if (fileName) {
+          this.updateSettings({logo_file: fileName});
+          res.send({file: fileName, size: fileSize});
         } else {
           res
             .status(400)

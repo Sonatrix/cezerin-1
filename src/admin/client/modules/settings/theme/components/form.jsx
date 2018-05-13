@@ -1,13 +1,12 @@
 import React from 'react';
-
-import messages from 'lib/text';
-import style from './style.css';
 import api from 'lib/api';
 import ThemeSettings from 'modules/settings/themeSettings';
-
 import Paper from 'material-ui/Paper';
 import RaisedButton from 'material-ui/RaisedButton';
 import Divider from 'material-ui/Divider';
+
+import messages from 'lib/text';
+import style from './style.css';
 
 const styles = {
   button: {

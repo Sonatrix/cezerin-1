@@ -1,10 +1,8 @@
 const mongo = require('../../lib/mongo');
 const parse = require('../../lib/parse');
-const ObjectID = require('mongodb').ObjectID;
+const {ObjectID} = require('mongodb');
 
 class ProductVariantsService {
-  constructor() {}
-
   getVariants(productId) {
     if (!ObjectID.isValid(productId)) {
       return Promise.reject('Invalid identifier');
@@ -38,7 +36,7 @@ class ProductVariantsService {
           },
         }
       )
-      .then(res => this.getVariants(productId));
+      .then(() => this.getVariants(productId));
   }
 
   addVariant(productId, data) {
@@ -52,7 +50,7 @@ class ProductVariantsService {
     return mongo.db
       .collection('products')
       .updateOne({_id: productObjectID}, {$push: {variants: variantData}})
-      .then(res => this.getVariants(productId));
+      .then(() => this.getVariants(productId));
   }
 
   updateVariant(productId, variantId, data) {
@@ -73,7 +71,7 @@ class ProductVariantsService {
         },
         {$set: variantData}
       )
-      .then(res => this.getVariants(productId));
+      .then(() => this.getVariants(productId));
   }
 
   getValidDocumentForInsert(data) {
@@ -137,7 +135,8 @@ class ProductVariantsService {
   }
 
   getModifiedVariantOptions(productId, variantId, optionId, valueId) {
-    return this.getVariantOptions(productId, variantId).then(options => {
+    return this.getVariantOptions(productId, variantId).then(optionsData => {
+      let options = optionsData;
       if (options && options.length > 0) {
         const optionToChange = options.find(
           option => option.option_id.toString() === optionId
@@ -154,13 +153,12 @@ class ProductVariantsService {
 
           if (optionToChange.value_id.toString() === valueId) {
             // don't save same value
-            return option;
+            return options;
           }
 
           options = options.map(option => {
             if (option.option_id.toString() === optionId) {
-              option.value_id = new ObjectID(valueId);
-              return option;
+              return {...option, value_id: new ObjectID(valueId)};
             }
             return option;
           });
@@ -203,7 +201,7 @@ class ProductVariantsService {
             {$set: {'variants.$.options': options}}
           )
       )
-      .then(res => this.getVariants(productId));
+      .then(() => this.getVariants(productId));
   }
 }
 
