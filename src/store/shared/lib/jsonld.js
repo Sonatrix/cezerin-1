@@ -1,5 +1,14 @@
 import {getParentIds} from './helper';
-import {PAGE, PRODUCT_CATEGORY, PRODUCT, RESERVED} from '../pageTypes';
+import {PRODUCT_CATEGORY, PRODUCT} from '../pageTypes';
+
+const getBreadcrumbItem = (url, name, position) => ({
+  '@type': 'ListItem',
+  position,
+  item: {
+    '@id': url,
+    name,
+  },
+});
 
 const getBreadcrumbsForProduct = (product, categories) => {
   if (product && product.category_id) {
@@ -11,9 +20,10 @@ const getBreadcrumbsForProduct = (product, categories) => {
     const breadcrumbs = ids.reverse().map(categoryId => {
       const category = categories.find(item => item.id === categoryId);
       if (category) {
-        index++;
+        index += 1;
         return getBreadcrumbItem(category.url, category.name, index);
       }
+      return null;
     });
 
     return {
@@ -33,9 +43,10 @@ const getBreadcrumbsForCategory = (currentCategoryId, categories) => {
     const breadcrumbs = ids.reverse().map(categoryId => {
       const category = categories.find(item => item.id === categoryId);
       if (category) {
-        index++;
+        index += 1;
         return getBreadcrumbItem(category.url, category.name, index);
       }
+      return null;
     });
 
     return {
@@ -46,15 +57,6 @@ const getBreadcrumbsForCategory = (currentCategoryId, categories) => {
   }
   return null;
 };
-
-const getBreadcrumbItem = (url, name, position) => ({
-  '@type': 'ListItem',
-  position,
-  item: {
-    '@id': url,
-    name,
-  },
-});
 
 const getProduct = (product, settings) => {
   const imageUrl =
@@ -99,7 +101,7 @@ const getCategoryJSONLD = (categoryId, categories) => {
   return jsonldArray.length > 0 ? JSON.stringify(jsonldArray) : '';
 };
 
-export const getJSONLD = state => {
+const getJSONLD = state => {
   if (typeof window === 'undefined') {
     switch (state.currentPage.type) {
       case PRODUCT:
@@ -108,10 +110,8 @@ export const getJSONLD = state => {
           state.categories,
           state.settings
         );
-        break;
       case PRODUCT_CATEGORY:
         return getCategoryJSONLD(state.categoryDetails.id, state.categories);
-        break;
       default:
         return '';
     }
@@ -119,3 +119,5 @@ export const getJSONLD = state => {
     return '';
   }
 };
+
+export default getJSONLD;

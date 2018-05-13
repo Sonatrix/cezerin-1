@@ -28,8 +28,25 @@ module.exports = {
     'react/jsx-wrap-multilines':'off',
     "import/extensions": "never",
     "no-dynamic-require": 0,
+    "import/no-dynamic-require": 'off',
     "import/no-extraneous-dependencies": 'off',
-    "react/prop-types": 'off'
+    "import/no-unresolved": 'never',
+    "react/prop-types": 'off',
+    "react/no-array-index-key": 'off',
+    "no-restricted-syntax": 'off',
+    "no-loop-func": 0,
+    "jsx-a11y/no-static-element-interactions":'off',
+    "jsx-a11y/click-events-have-key-events": 'off',
+    "guard-for-in": 0,
+    "no-bitwise": 0,
+    "no-alert": 2,
+    "no-nested-ternary": 0,
+    "class-methods-use-this": 0,
+    "jsx-a11y/label-has-for": 'off',
+    "jsx-a11y/anchor-is-valid": 'off',
+    "jsx-a11y/anchor-has-content": 'off',
+    "jsx-a11y/no-noninteractive-element-interactions": 'off',
+    "no-multi-assign":0
   },
   'parserOptions': {
     'ecmaFeatures': {

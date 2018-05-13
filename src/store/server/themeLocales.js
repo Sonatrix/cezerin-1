@@ -5,7 +5,7 @@ import winston from 'winston';
 const THEME_LOCALES_PATH = 'theme/locales/';
 let text = null;
 
-export const getText = locale => {
+const getText = locale => {
   if (text) {
     return Promise.resolve(text);
   }
@@ -22,3 +22,5 @@ export const getText = locale => {
     });
   });
 };
+
+export default getText;

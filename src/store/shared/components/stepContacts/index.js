@@ -1,9 +1,7 @@
-import React from 'react';
 import {connect} from 'react-redux';
 import {withRouter} from 'react-router';
-import {reset, submit} from 'redux-form';
+import {submit} from 'redux-form';
 import {
-  checkout,
   updateCart,
   fetchShippingMethods,
   fetchPaymentMethods,
@@ -15,9 +13,9 @@ import {
   analyticsSetShippingMethod,
   analyticsSetPaymentMethod,
 } from '../../actions';
-import Form from './form';
+import {Form} from './form';
 
-const mapStateToProps = (state, ownProps) => ({
+const mapStateToProps = state => ({
   initialValues: state.app.cart,
   settings: state.app.settings,
   paymentMethods: state.app.paymentMethods,
@@ -27,13 +25,13 @@ const mapStateToProps = (state, ownProps) => ({
   checkoutFields: state.app.checkoutFields,
 });
 
-const mapDispatchToProps = (dispatch, ownProps) => ({
+const mapDispatchToProps = dispatch => ({
   onSubmit: values => {
     dispatch(updateCart(values));
     dispatch(analyticsSetShippingMethod(values.shipping_method_id));
     dispatch(analyticsSetPaymentMethod(values.payment_method_id));
   },
-  saveForm: values => {
+  saveForm: () => {
     dispatch(submit('CheckoutStepContacts'));
   },
   saveShippingCountry: countryName => {

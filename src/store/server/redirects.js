@@ -7,7 +7,7 @@ const getRedirect = req => {
   const relativeUrl = req.url;
   const relativePath = req.path;
 
-  return api.redirects.list().then(({status, json}) => {
+  return api.redirects.list().then(({json}) => {
     const items = json;
     if (items && items.length > 0) {
       /*

@@ -8,15 +8,18 @@ const DISQUS_CONFIG = [
   'category_id',
   'onNewComment',
 ];
-let __disqusAdded = false;
+
+let disqusAdded = false;
 
 function copyProps(context, props, prefix = '') {
+  const newContext = Object.assign({}, context);
+
   Object.keys(props).forEach(prop => {
-    context[prefix + prop] = props[prop];
+    newContext[prefix + prop] = props[prop];
   });
 
   if (typeof props.onNewComment === 'function') {
-    context[`${prefix}config`] = function config() {
+    newContext[`${prefix}config`] = function config() {
       this.callbacks.onNewComment = [
         function handleNewComment(comment) {
           props.onNewComment(comment);
@@ -27,10 +30,6 @@ function copyProps(context, props, prefix = '') {
 }
 
 export default class Disqus extends React.PureComponent {
-  constructor(props) {
-    super(props);
-  }
-
   componentDidMount() {
     this.loadDisqus();
   }
@@ -40,7 +39,8 @@ export default class Disqus extends React.PureComponent {
   }
 
   addDisqusScript() {
-    if (__disqusAdded) {
+    /* eslint-disable-next-line */
+    if (disqusAdded) {
       return;
     }
 
@@ -54,7 +54,7 @@ export default class Disqus extends React.PureComponent {
     child.src = `//${this.props.shortname}.disqus.com/embed.js`;
 
     parent.appendChild(child);
-    __disqusAdded = true;
+    disqusAdded = true;
   }
 
   loadDisqus() {
@@ -73,7 +73,9 @@ export default class Disqus extends React.PureComponent {
     }
 
     // If Disqus has already been added, reset it
+
     if (typeof DISQUS !== 'undefined') {
+      /* eslint-disable-next-line */
       DISQUS.reset({
         reload: true,
         config: function config() {

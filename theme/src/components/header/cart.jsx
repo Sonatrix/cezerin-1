@@ -14,7 +14,7 @@ const CartItem = ({item, deleteCartItem, settings}) => {
       <div className="column is-2">
         <div className="image">
           <NavLink to={item.path}>
-            <img src={thumbnail} />
+            <img src={thumbnail} alt={text.search} />
           </NavLink>
         </div>
       </div>

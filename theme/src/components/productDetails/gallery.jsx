@@ -1,32 +1,29 @@
-import React from 'react';
-import {NavLink} from 'react-router-dom';
+import React, {Fragment} from 'react';
 import ImageGallery from 'react-image-gallery';
 import Lightbox from 'react-image-lightbox';
 import * as helper from '../../lib/helper';
-import {themeSettings, text} from '../../lib/settings';
-
-const Fragment = React.Fragment;
+import {themeSettings} from '../../lib/settings';
 
 export default class Gallery extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       lightboxIsOpen: false,
-      lightboxPhotoIndex: 0
+      lightboxPhotoIndex: 0,
     };
   }
 
-  openLightbox = () => {
-    this.setState({lightboxIsOpen: true});
-  };
-
-  closeLightbox = () => {
-    this.setState({lightboxIsOpen: false});
-  };
-
-  setPhotoIndex = index => {
+  setPhotoIndex(index) {
     this.setState({lightboxPhotoIndex: index});
-  };
+  }
+
+  closeLightbox() {
+    this.setState({lightboxIsOpen: false});
+  }
+
+  openLightbox() {
+    this.setState({lightboxIsOpen: true});
+  }
 
   render() {
     const {images} = this.props;
@@ -43,7 +40,7 @@ export default class Gallery extends React.Component {
           themeSettings.previewThumbnailWidth
         ),
         originalAlt: image.alt,
-        thumbnailAlt: image.alt
+        thumbnailAlt: image.alt,
       }));
 
       const originalImages = images.map(image => image.url);
@@ -55,13 +52,13 @@ export default class Gallery extends React.Component {
             items={imagesArray}
             showThumbnails={showThumbnails}
             onClick={this.openLightbox}
-            lazyLoad={true}
+            lazyLoad
             slideInterval={2000}
             showNav={themeSettings.product_gallery_shownav === true}
             showBullets={showThumbnails}
             showPlayButton={false}
             showFullscreenButton={false}
-            slideOnThumbnailHover={true}
+            slideOnThumbnailHover
             thumbnailPosition={themeSettings.product_thumbnail_position}
             onSlide={this.setPhotoIndex}
           />
@@ -83,21 +80,20 @@ export default class Gallery extends React.Component {
                 this.setState({
                   lightboxPhotoIndex:
                     (lightboxPhotoIndex + originalImages.length - 1) %
-                    originalImages.length
+                    originalImages.length,
                 })
               }
               onMoveNextRequest={() =>
                 this.setState({
                   lightboxPhotoIndex:
-                    (lightboxPhotoIndex + 1) % originalImages.length
+                    (lightboxPhotoIndex + 1) % originalImages.length,
                 })
               }
             />
           )}
         </Fragment>
       );
-    } else {
-      return <div className="large-image-placeholder" />;
     }
+    return <div className="large-image-placeholder" />;
   }
 }

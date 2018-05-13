@@ -1,14 +1,16 @@
 import React from 'react';
-import text from '../../text';
-import {formatCurrency} from '../../lib/helper';
-
+/* eslint-disable */
 let scriptAdded = false;
 export default class PayPalButton extends React.Component {
-  constructor(props) {
-    super(props);
+  componentDidMount() {
+    this.addScript();
   }
 
-  addScript = () => {
+  componentDidUpdate() {
+    this.executeScript();
+  }
+
+  addScript() {
     if (scriptAdded) {
       this.executeScript();
       return;
@@ -23,9 +25,9 @@ export default class PayPalButton extends React.Component {
     };
     container.appendChild(script);
     scriptAdded = true;
-  };
+  }
 
-  executeScript = () => {
+  executeScript() {
     const {formSettings, shopSettings, onPayment} = this.props;
 
     document.getElementById('paypal-button-container').innerHTML = null;
@@ -41,14 +43,14 @@ export default class PayPalButton extends React.Component {
           label: 'pay',
           size: formSettings.size,
           shape: formSettings.shape,
-          color: formSettings.color
+          color: formSettings.color,
         },
         client: {
           sandbox: formSettings.client,
-          production: formSettings.client
+          production: formSettings.client,
         },
         // Wait for the PayPal button to be clicked
-        payment: function(data, actions) {
+        payment(data, actions) {
           return actions.payment.create({
             payment: {
               intent: 'sale',
@@ -58,36 +60,29 @@ export default class PayPalButton extends React.Component {
                   notify_url: formSettings.notify_url,
                   amount: {
                     total: formSettings.amount,
-                    currency: formSettings.currency
-                  }
-                }
-              ]
+                    currency: formSettings.currency,
+                  },
+                },
+              ],
             },
             experience: {
-              input_fields: {no_shipping: 1}
-            }
+              input_fields: {no_shipping: 1},
+            },
           });
         },
         // Wait for the payment to be authorized by the customer
-        onAuthorize: function(data, actions) {
-          return actions.payment.execute().then(function() {
+        onAuthorize(data, actions) {
+          return actions.payment.execute().then(() => {
             onPayment();
           });
-        }
+        },
       },
       '#paypal-button-container'
     );
-  };
-
-  componentDidMount() {
-    this.addScript();
-  }
-
-  componentDidUpdate() {
-    this.executeScript();
   }
 
   render() {
+    /* eslint-disable-next-line */
     const {formSettings, shopSettings, onPayment} = this.props;
 
     return (

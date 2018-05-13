@@ -15,16 +15,16 @@ export default class Quantity extends PureComponent {
     }
   }
 
-  handleChange(event) {
-    this.setQuantity(event.target.value);
-  }
-
   setQuantity(quantity) {
-    const intQuantity = parseInt(quantity);
+    const intQuantity = ~~quantity;
     if (intQuantity > 0 && intQuantity <= this.props.maxQuantity) {
       this.setState({quantity: intQuantity});
       this.props.onChange(intQuantity);
     }
+  }
+
+  handleChange(event) {
+    this.setQuantity(event.target.value);
   }
 
   increment() {

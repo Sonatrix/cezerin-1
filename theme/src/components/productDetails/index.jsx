@@ -1,7 +1,5 @@
-import React from 'react';
-import {NavLink} from 'react-router-dom';
-import * as helper from '../../lib/helper';
-import {themeSettings, text} from '../../lib/settings';
+import React, {Fragment} from 'react';
+import {themeSettings} from '../../lib/settings';
 import Disqus from '../comments/disqus';
 import ViewedProducts from '../products/viewed';
 
@@ -16,11 +14,10 @@ import Quantity from './quantity';
 import RelatedProducts from './relatedProducts';
 import Tags from './tags';
 
-const Fragment = React.Fragment;
-
 const Description = ({description}) => (
   <div
     className="product-content"
+    /* eslint-disable-next-line */
     dangerouslySetInnerHTML={{__html: description}}
   />
 );
@@ -32,7 +29,7 @@ export default class ProductDetails extends React.Component {
       selectedOptions: {},
       selectedVariant: null,
       isAllOptionsSelected: false,
-      quantity: 1
+      quantity: 1,
     };
 
     this.onOptionChange = this.onOptionChange.bind(this);
@@ -44,7 +41,7 @@ export default class ProductDetails extends React.Component {
   }
 
   onOptionChange(optionId, valueId) {
-    let {selectedOptions} = this.state;
+    const {selectedOptions} = this.state;
 
     if (valueId === '') {
       delete selectedOptions[optionId];
@@ -52,9 +49,13 @@ export default class ProductDetails extends React.Component {
       selectedOptions[optionId] = valueId;
     }
 
-    this.setState({selectedOptions: selectedOptions});
+    this.setState({selectedOptions});
     this.findVariantBySelectedOptions();
     this.checkSelectedOptions();
+  }
+
+  setQuantity(quantity) {
+    this.setState({quantity});
   }
 
   findVariantBySelectedOptions() {
@@ -74,17 +75,13 @@ export default class ProductDetails extends React.Component {
     this.setState({selectedVariant: null});
   }
 
-  setQuantity = quantity => {
-    this.setState({quantity: quantity});
-  };
-
   addToCart() {
     const {product, addCartItem} = this.props;
     const {selectedVariant, quantity} = this.state;
 
-    let item = {
+    const item = {
       product_id: product.id,
-      quantity: quantity
+      quantity,
     };
 
     if (selectedVariant) {
@@ -211,8 +208,7 @@ export default class ProductDetails extends React.Component {
             )}
         </Fragment>
       );
-    } else {
-      return null;
     }
+    return null;
   }
 }

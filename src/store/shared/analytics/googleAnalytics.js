@@ -9,6 +9,15 @@ const event = {
   PURCHASE: 'purchase',
 };
 
+const isGtagInstalled = () => typeof gtag !== 'undefined';
+
+const logEvent = ({eventName, eventParameters}) => {
+  if (isGtagInstalled()) {
+    /* eslint-disable-next-line */
+    gtag('event', eventName, eventParameters);
+  }
+};
+
 export const pageView = ({path, title}) => {
   logEvent({
     eventName: event.PAGE_VIEW,
@@ -40,7 +49,7 @@ export const addToCart = ({item, cart}) => {
     cart && cart.items && cart.items.length > 0
       ? cart.items.find(
           e =>
-            e.product_id === item.product_id && e.variant_id == item.variant_id
+            e.product_id === item.product_id && e.variant_id === item.variant_id
         )
       : null;
   if (!cartItem) {
@@ -156,12 +165,4 @@ export const purchase = ({order}) => {
     eventName: event.PURCHASE,
     eventParameters: gaPurchase,
   });
-};
-
-const isGtagInstalled = () => typeof gtag !== 'undefined';
-
-const logEvent = ({eventName, eventParameters}) => {
-  if (isGtagInstalled()) {
-    gtag('event', eventName, eventParameters);
-  }
 };

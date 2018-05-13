@@ -3,12 +3,7 @@ import {NavLink} from 'react-router-dom';
 import {themeSettings, text} from '../lib/settings';
 import * as helper from '../lib/helper';
 
-const SummaryItem = ({
-  settings,
-  item,
-  deleteCartItem,
-  updateCartItemQuantiry,
-}) => {
+const SummaryItem = ({settings, item, updateCartItemQuantiry}) => {
   const thumbnail = helper.getThumbnailUrl(
     item.image_url,
     themeSettings.cartThumbnailWidth
@@ -20,7 +15,7 @@ const SummaryItem = ({
       ? themeSettings.maxCartItemQty
       : item.stock_quantity;
 
-  for (let i = 0; i <= maxQty; i++) {
+  for (let i = 0; i <= maxQty; i += 1) {
     const optionText = i === 0 ? text.remove : i;
     qtyOptions.push(
       <option key={i} value={i}>

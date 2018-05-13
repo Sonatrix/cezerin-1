@@ -8,31 +8,9 @@ export default class PaymentForm extends React.Component {
     super(props);
     this.state = {
       formSettings: null,
-      loading: false
+      loading: false,
     };
   }
-
-  fetchFormSettings = () => {
-    this.setState({
-      loading: true
-    });
-
-    api.ajax.paymentFormSettings
-      .retrieve()
-      .then(({status, json}) => {
-        this.setState({
-          formSettings: json,
-          loading: false
-        });
-      })
-      .catch(e => {
-        this.setState({
-          formSettings: null,
-          loading: false
-        });
-        console.log(e);
-      });
-  };
 
   componentDidMount() {
     this.fetchFormSettings();
@@ -53,6 +31,27 @@ export default class PaymentForm extends React.Component {
       nextProps.amount !== this.props.amount ||
       this.state !== nextState
     );
+  }
+
+  fetchFormSettings() {
+    this.setState({
+      loading: true,
+    });
+
+    api.ajax.paymentFormSettings
+      .retrieve()
+      .then(({json}) => {
+        this.setState({
+          formSettings: json,
+          loading: false,
+        });
+      })
+      .catch(() => {
+        this.setState({
+          formSettings: null,
+          loading: false,
+        });
+      });
   }
 
   render() {

@@ -8,7 +8,7 @@ export default class Form extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      step: 1
+      step: 1,
     };
   }
 
@@ -16,43 +16,43 @@ export default class Form extends React.Component {
     this.props.onLoad();
   }
 
-  handleContactsSave = () => {
+  handleContactsSave() {
     this.setState({
-      step: 2
+      step: 2,
     });
-  };
+  }
 
-  handleContactsEdit = () => {
+  handleContactsEdit() {
     this.setState({
-      step: 1
+      step: 1,
     });
-  };
+  }
 
-  handleShippingSave = () => {
+  handleShippingSave() {
     this.setState({
-      step: 3
+      step: 3,
     });
-  };
+  }
 
-  handleShippingEdit = () => {
+  handleShippingEdit() {
     this.setState({
-      step: 2
+      step: 2,
     });
-  };
+  }
 
   render() {
     const {step} = this.state;
-    const {cart, settings, themeSettings} = this.props;
+    const {cart, themeSettings} = this.props;
     const {
       checkoutInputClass = 'checkout-field',
       checkoutButtonClass = 'checkout-button',
-      checkoutEditButtonClass = 'checkout-button-edit'
+      checkoutEditButtonClass = 'checkout-button-edit',
     } = themeSettings;
 
     if (cart && cart.items.length > 0) {
-      const {payment_method_gateway} = cart;
+      const {payment_method_gateway: paymentMethodGateway} = cart;
       const showPaymentForm =
-        payment_method_gateway && payment_method_gateway !== '';
+        paymentMethodGateway && paymentMethodGateway !== '';
 
       return (
         <div className="checkout-form">
@@ -86,8 +86,7 @@ export default class Form extends React.Component {
           )}
         </div>
       );
-    } else {
-      return <p>{text.emptyCheckout}</p>;
     }
+    return <p>{text.emptyCheckout}</p>;
   }
 }

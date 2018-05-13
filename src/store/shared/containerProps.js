@@ -17,7 +17,7 @@ const setQuery = (history, query) => {
   }
 };
 
-export const mapStateToProps = (state, ownProps) => ({
+export const mapStateToProps = state => ({
   state: state.app,
 });
 
@@ -25,11 +25,11 @@ export const mapDispatchToProps = (dispatch, ownProps) => ({
   addCartItem: item => {
     dispatch(addCartItem(item));
   },
-  deleteCartItem: item_id => {
-    dispatch(deleteCartItem(item_id));
+  deleteCartItem: itemId => {
+    dispatch(deleteCartItem(itemId));
   },
-  updateCartItemQuantiry: (item_id, quantity) => {
-    dispatch(updateCartItemQuantiry(item_id, quantity));
+  updateCartItemQuantiry: (itemId, quantity) => {
+    dispatch(updateCartItemQuantiry(itemId, quantity));
   },
   loadMoreProducts: () => {
     dispatch(fetchMoreProducts());

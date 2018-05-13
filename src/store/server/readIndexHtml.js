@@ -3,7 +3,7 @@ import path from 'path';
 import winston from 'winston';
 
 const FILE_PATH = path.resolve('theme/assets/index.html');
-export let indexHtml = null;
+let indexHtml = null;
 
 fs.readFile(FILE_PATH, 'utf8', (err, data) => {
   if (err) {
@@ -13,3 +13,5 @@ fs.readFile(FILE_PATH, 'utf8', (err, data) => {
     indexHtml = data;
   }
 });
+
+export default indexHtml;

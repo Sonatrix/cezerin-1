@@ -33,13 +33,14 @@ export const getThumbnailUrl = (originalUrl, width) => {
 export const getParentIds = (categories, categoryId) => {
   const parentIds = [];
   let parentExists = false;
+  let searchCategoryId = categoryId;
 
   do {
-    const category = categories.find(item => item.id === categoryId);
+    const category = categories.find(item => item.id === searchCategoryId);
     parentExists = category && category.parent_id;
     if (parentExists) {
       parentIds.push(category.parent_id);
-      categoryId = category.parent_id;
+      searchCategoryId = category.parent_id;
     }
   } while (parentExists);
 

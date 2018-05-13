@@ -1,4 +1,3 @@
-import fs from 'fs';
 import sm from 'sitemap';
 import api from './api';
 

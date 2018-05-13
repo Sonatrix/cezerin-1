@@ -1,20 +1,19 @@
-import React from 'react';
 import {connect} from 'react-redux';
 import {withRouter} from 'react-router';
-import {reset, submit} from 'redux-form';
+import {submit} from 'redux-form';
 import {checkout, updateShipping} from '../../actions';
-import Form from './form';
+import {Form} from './form';
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = state => {
   let shippingMethod = null;
-  const {shipping_method_id} = state.app.cart;
+  const {shipping_method_id: shippingMethodId} = state.app.cart;
   if (
-    shipping_method_id &&
+    shippingMethodId &&
     state.app.shippingMethods &&
     state.app.shippingMethods.length > 0
   ) {
     shippingMethod = state.app.shippingMethods.find(
-      method => method.id === shipping_method_id
+      method => method.id === shippingMethodId
     );
   }
 
@@ -31,7 +30,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   onSubmit: values => {
     dispatch(updateShipping(values));
   },
-  saveForm: values => {
+  saveForm: () => {
     dispatch(submit('CheckoutStepShipping'));
   },
   finishCheckout: values => {

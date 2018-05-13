@@ -1,15 +1,14 @@
-import React from 'react';
 import {connect} from 'react-redux';
 import {withRouter} from 'react-router';
-import Form from './form';
+import {Form} from './form';
 
-const mapStateToProps = (state, ownProps) => ({
+const mapStateToProps = state => ({
   cart: state.app.cart,
   settings: state.app.settings,
   themeSettings: state.app.themeSettings,
 });
 
-const mapDispatchToProps = (dispatch, ownProps) => ({
+const mapDispatchToProps = () => ({
   onLoad: () => {},
 });
 

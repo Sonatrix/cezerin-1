@@ -1,12 +1,14 @@
-import * as t from './actionTypes';
-import {PAGE, PRODUCT_CATEGORY, PRODUCT, RESERVED, SEARCH} from './pageTypes';
 import queryString from 'query-string';
 import {animateScroll} from 'react-scroll';
+
+import * as t from './actionTypes';
+import {PAGE, PRODUCT_CATEGORY, PRODUCT, SEARCH} from './pageTypes';
 import api from '../client/api';
 import * as analytics from './analytics';
-
+/* eslint-disable */
 const requestProduct = () => ({type: t.PRODUCT_REQUEST});
 
+//need to implement methods that use unused variable
 const receiveProduct = product => ({type: t.PRODUCT_RECEIVE, product});
 
 export const fetchProducts = () => (dispatch, getState) => {
@@ -35,8 +37,8 @@ export const getProductFilterForCategory = (locationSearch, sortBy) => {
   }
 
   return {
-    priceFrom: parseInt(queryFilter.price_from || 0),
-    priceTo: parseInt(queryFilter.price_to || 0),
+    priceFrom: ~~queryFilter.price_from,
+    priceTo: ~~queryFilter.price_to,
     attributes,
     search: null,
     sort: sortBy,
@@ -48,8 +50,8 @@ export const getProductFilterForSearch = locationSearch => {
 
   return {
     categoryId: null,
-    priceFrom: parseInt(queryFilter.price_from || 0),
-    priceTo: parseInt(queryFilter.price_to || 0),
+    priceFrom: ~~queryFilter.price_from,
+    priceTo: ~~queryFilter.price_to,
     search: queryFilter.search,
     sort: 'search',
   };

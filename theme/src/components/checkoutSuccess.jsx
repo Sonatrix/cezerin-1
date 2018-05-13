@@ -1,6 +1,5 @@
 import React from 'react';
-import {NavLink} from 'react-router-dom';
-import {themeSettings, text} from '../lib/settings';
+import {text} from '../lib/settings';
 import * as helper from '../lib/helper';
 
 const getCheckoutField = (checkoutFields, fieldName) => {
@@ -107,12 +106,13 @@ const CheckoutSuccess = ({
     return (
       <div className="checkout-success-details">
         <h1 className="checkout-success-title">
-          <img src="/assets/images/success.svg" />
+          <img src="/assets/images/success.svg" alt="checkout successfull" />
           <br />
           {text.checkoutSuccessTitle}
         </h1>
 
         <div
+          /* eslint-disable-next-line */
           dangerouslySetInnerHTML={{
             __html: pageDetails.content,
           }}

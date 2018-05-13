@@ -1,5 +1,4 @@
 import winston from 'winston';
-import serverSettings from './settings';
 import React from 'react';
 import {StaticRouter} from 'react-router';
 import {renderToString} from 'react-dom/server';
@@ -8,6 +7,7 @@ import thunkMiddleware from 'redux-thunk';
 import {Provider} from 'react-redux';
 import Helmet from 'react-helmet';
 import {updateThemeSettings} from 'theme';
+import serverSettings from './settings';
 import reducers from '../shared/reducers';
 import {loadState} from './loadState';
 import {indexHtml} from './readIndexHtml';
@@ -103,17 +103,17 @@ const renderPage = (req, res, store, themeText, placeholders) => {
     .replace('{app}', appHtml);
 
   const isHttps = req.protocol === 'https';
-  const full_url = `${req.protocol}://${req.hostname}${req.url}`;
-  const referrer_url =
+  const fullUrl = `${req.protocol}://${req.hostname}${req.url}`;
+  const referrerUrl =
     req.get('referrer') === undefined ? '' : req.get('referrer');
   const REFERRER_COOKIE_OPTIONS = getReferrerCookieOptions(isHttps);
 
   if (!req.signedCookies.referrer_url) {
-    res.cookie('referrer_url', referrer_url, REFERRER_COOKIE_OPTIONS);
+    res.cookie('referrer_url', referrerUrl, REFERRER_COOKIE_OPTIONS);
   }
 
   if (!req.signedCookies.landing_url) {
-    res.cookie('landing_url', full_url, REFERRER_COOKIE_OPTIONS);
+    res.cookie('landing_url', fullUrl, REFERRER_COOKIE_OPTIONS);
   }
 
   const httpStatusCode = state.app.currentPage.type === 404 ? 404 : 200;

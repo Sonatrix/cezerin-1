@@ -1,12 +1,12 @@
-import React from 'react';
+import React, {Component} from 'react';
 import api from '../../lib/api';
 import PageList from './list';
 
-export default class CustomPageList extends React.Component {
+export default class CustomPageList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      pages: []
+      pages: [],
     };
   }
 
@@ -18,18 +18,18 @@ export default class CustomPageList extends React.Component {
     this.fetchData(nextProps);
   }
 
-  fetchData = ({tags, sort}) => {
+  async fetchData({tags, sort}) {
     const filter = {
-      tags: tags,
-      sort: sort
+      tags,
+      sort,
     };
 
-    api.ajax.pages.list(filter).then(({status, json}) => {
+    await api.ajax.pages.list(filter).then(({json}) => {
       this.setState({
-        pages: json
+        pages: json,
       });
     });
-  };
+  }
 
   render() {
     const {pages} = this.state;

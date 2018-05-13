@@ -1,6 +1,5 @@
 import React from 'react';
 import {Route} from 'react-router';
-import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {animateScroll} from 'react-scroll';
 
@@ -15,13 +14,9 @@ import NotFoundContainer from './containers/notfound';
 import SearchContainer from './containers/search';
 
 import {setCurrentPage} from './actions';
-import {PAGE, PRODUCT_CATEGORY, PRODUCT, RESERVED, SEARCH} from './pageTypes';
+import {PAGE, PRODUCT_CATEGORY, PRODUCT, SEARCH} from './pageTypes';
 
 class SwitchContainers extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   componentWillReceiveProps(nextProps) {
     this.props.setCurrentPage(nextProps.location);
 
@@ -43,7 +38,7 @@ class SwitchContainers extends React.Component {
   }
 
   render() {
-    const {history, location, currentPage} = this.props;
+    const {location, currentPage} = this.props;
     const locationPathname =
       location && location.pathname ? location.pathname : '/';
 
@@ -71,11 +66,11 @@ class SwitchContainers extends React.Component {
   }
 }
 
-const mapStateToProps = (state, ownProps) => ({
+const mapStateToProps = state => ({
   currentPage: state.app.currentPage,
 });
 
-const mapDispatchToProps = (dispatch, ownProps) => ({
+const mapDispatchToProps = dispatch => ({
   setCurrentPage: location => {
     dispatch(setCurrentPage(location));
   },

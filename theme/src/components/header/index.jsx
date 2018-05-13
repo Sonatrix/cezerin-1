@@ -1,13 +1,11 @@
-import React from 'react';
+import React, {Fragment} from 'react';
 import {NavLink} from 'react-router-dom';
-import {themeSettings, text} from '../../lib/settings';
+import {text} from '../../lib/settings';
 
 import Cart from './cart';
 import CartIndicator from './cartIndicator';
 import SearchBox from './searchBox';
 import HeadMenu from './headMenu';
-
-const Fragment = React.Fragment;
 
 const Logo = ({src, onClick, alt}) => (
   <NavLink className="logo-image" to="/" onClick={onClick}>
@@ -32,6 +30,7 @@ const BackButton = ({onClick}) => (
       className="icon"
       src="/assets/images/arrow_back.svg"
       style={{width: 18}}
+      alt="back button"
     />
   </span>
 );
@@ -42,7 +41,7 @@ export default class Header extends React.Component {
     this.state = {
       mobileMenuIsActive: false,
       mobileSearchIsActive: false,
-      cartIsActive: false
+      cartIsActive: false,
     };
   }
 
@@ -55,64 +54,62 @@ export default class Header extends React.Component {
     }
   }
 
-  menuToggle = () => {
+  menuToggle() {
     this.setState({
       mobileMenuIsActive: !this.state.mobileMenuIsActive,
-      cartIsActive: false
+      cartIsActive: false,
     });
     document.body.classList.toggle('noscroll');
-  };
+  }
 
-  searchToggle = () => {
+  searchToggle() {
     this.setState({
-      mobileSearchIsActive: !this.state.mobileSearchIsActive
+      mobileSearchIsActive: !this.state.mobileSearchIsActive,
     });
     document.body.classList.toggle('search-active');
-  };
+  }
 
-  menuClose = () => {
+  menuClose() {
     this.setState({mobileMenuIsActive: false});
     document.body.classList.remove('noscroll');
-  };
+  }
 
-  closeAll = () => {
+  closeAll() {
     this.setState({
       cartIsActive: false,
-      mobileMenuIsActive: false
+      mobileMenuIsActive: false,
     });
     document.body.classList.remove('noscroll');
-  };
+  }
 
-  cartToggle = () => {
+  cartToggle() {
     this.setState({
       cartIsActive: !this.state.cartIsActive,
-      mobileMenuIsActive: false
+      mobileMenuIsActive: false,
     });
     document.body.classList.toggle('noscroll');
-  };
+  }
 
-  showCart = () => {
+  showCart() {
     this.setState({
       cartIsActive: true,
-      mobileMenuIsActive: false
+      mobileMenuIsActive: false,
     });
     document.body.classList.add('noscroll');
-  };
+  }
 
-  handleSearch = search => {
+  handleSearch(search) {
     if (this.props.state.currentPage.path === '/search') {
       this.props.setSearch(search);
-    } else {
-      if (search && search !== '') {
-        this.props.setLocation('/search?search=' + search);
-      }
+    } else if (search && search !== '') {
+      this.props.setLocation(`/search?search=${search}`);
     }
-  };
+  }
 
-  handleGoBack = () => {
+  handleGoBack() {
     this.closeAll();
     this.props.goBack();
-  };
+  }
 
   render() {
     const {
@@ -121,7 +118,7 @@ export default class Header extends React.Component {
       settings,
       currentPage,
       location,
-      productFilter
+      productFilter,
     } = this.props.state;
     const classToggle = this.state.mobileMenuIsActive
       ? 'navbar-burger is-hidden-tablet is-active'
@@ -206,13 +203,12 @@ export default class Header extends React.Component {
           onClick={this.closeAll}
         />
         <div
-          className={
-            'mobile-nav is-hidden-tablet' +
-            (this.state.mobileMenuIsActive ? ' mobile-nav-open' : '')
-          }
+          className={`mobile-nav is-hidden-tablet${
+            this.state.mobileMenuIsActive ? ' mobile-nav-open' : ''
+          }`}
         >
           <HeadMenu
-            isMobile={true}
+            isMobile
             categories={categories}
             location={location}
             onClick={this.menuClose}

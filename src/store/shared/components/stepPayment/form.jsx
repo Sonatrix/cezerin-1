@@ -1,9 +1,8 @@
-import React from 'react';
+import React, {PureComponent} from 'react';
 import text from '../../text';
-import {formatCurrency} from '../../lib/helper';
-import PaymentForm from '../paymentForm';
+import {PaymentForm} from '../paymentForm';
 
-export default class CheckoutStepPayment extends React.Component {
+export default class CheckoutStepPayment extends PureComponent {
   render() {
     const {
       cart,
@@ -14,7 +13,10 @@ export default class CheckoutStepPayment extends React.Component {
       buttonClassName,
     } = this.props;
 
-    const {payment_method_gateway, grand_total} = cart;
+    const {
+      payment_method_gateway: paymentMethodGateway,
+      grand_total: grandTotal,
+    } = cart;
 
     if (!this.props.show) {
       return (
@@ -35,8 +37,8 @@ export default class CheckoutStepPayment extends React.Component {
         <div className="checkout-button-wrap">
           {!processingCheckout && (
             <PaymentForm
-              gateway={payment_method_gateway}
-              amount={grand_total}
+              gateway={paymentMethodGateway}
+              amount={grandTotal}
               shopSettings={settings}
               onPayment={finishCheckout}
               inputClassName={inputClassName}

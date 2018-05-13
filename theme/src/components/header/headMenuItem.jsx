@@ -1,36 +1,35 @@
-import React from 'react';
+import React, {Component} from 'react';
 import {NavLink} from 'react-router-dom';
-import {themeSettings, text} from '../../lib/settings';
 
-class HeadMenuItem extends React.Component {
+export default class HeadMenuItem extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isActive: false
+      isActive: false,
     };
   }
 
-  onMouseEnterHandler = () => {
+  onMouseEnterHandler() {
     if (!this.props.isMobile && this.props.level === 1) {
       this.setState({
-        isActive: true
+        isActive: true,
       });
     }
-  };
+  }
 
-  onMouseLeaveHandler = () => {
+  onMouseLeaveHandler() {
     if (!this.props.isMobile && this.props.level === 1) {
       this.setState({
-        isActive: false
+        isActive: false,
       });
     }
-  };
+  }
 
-  isActiveToggle = () =>
+  isActiveToggle() {
     this.setState({
-      isActive: !this.state.isActive
+      isActive: !this.state.isActive,
     });
-
+  }
   render() {
     const {categories, category, onClick, level, isMobile} = this.props;
     const items = categories
@@ -71,48 +70,14 @@ class HeadMenuItem extends React.Component {
         </div>
         {hasItems && (
           <ul
-            className={
-              (level === 1 ? 'columns is-gapless is-multiline' : '') +
-              ' nav-level-' +
-              level
-            }
+            className={`${
+              level === 1 ? 'columns is-gapless is-multiline' : ''
+            } nav-level-${level}`}
           >
             {items}
           </ul>
         )}
       </li>
     );
-  }
-}
-
-export default class HeadMenu extends React.PureComponent {
-  render() {
-    const {categories, onClick, isMobile} = this.props;
-    let addItemsToMenu = [];
-    if (themeSettings.header_menu && themeSettings.header_menu.length > 0) {
-      addItemsToMenu = themeSettings.header_menu.map(item => ({
-        name: item.text,
-        path: item.url,
-        id: item.id || '',
-        parent_id: item.parent_id || null
-      }));
-    }
-    console.log(addItemsToMenu);
-    const menuItems = [...categories, ...addItemsToMenu];
-    console.log(menuItems);
-    const items = menuItems
-      .filter(category => category.parent_id === null)
-      .map((category, index) => (
-        <HeadMenuItem
-          key={index}
-          category={category}
-          onClick={onClick}
-          categories={categories}
-          level={1}
-          isMobile={isMobile}
-        />
-      ));
-
-    return <ul className="nav-level-0">{items}</ul>;
   }
 }
